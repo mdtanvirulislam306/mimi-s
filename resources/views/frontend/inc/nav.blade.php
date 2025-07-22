@@ -1,35 +1,9 @@
-    <!-- Top Bar Banner -->
-    @php
-        $topbar_banner = get_setting('topbar_banner');
-        $topbar_banner_medium = get_setting('topbar_banner_medium');
-        $topbar_banner_small = get_setting('topbar_banner_small');
-        $topbar_banner_asset = uploaded_asset($topbar_banner);
-    @endphp
-    @if ($topbar_banner != null)
-        <div class="position-relative top-banner removable-session z-1035 d-none" data-key="top-banner"
-            data-value="removed">
-            <a href="{{ get_setting('topbar_banner_link') }}" class="d-block text-reset h-40px h-lg-60px">
-                <!-- For Large device -->
-                <img src="{{ $topbar_banner_asset }}" class="d-none d-xl-block img-fit h-100" alt="{{ translate('topbar_banner') }}">
-                <!-- For Medium device -->
-                <img src="{{ $topbar_banner_medium != null ? uploaded_asset($topbar_banner_medium) : $topbar_banner_asset }}"
-                    class="d-none d-md-block d-xl-none img-fit h-100" alt="{{ translate('topbar_banner') }}">
-                <!-- For Small device -->
-                <img src="{{ $topbar_banner_small != null ? uploaded_asset($topbar_banner_small) : $topbar_banner_asset }}"
-                    class="d-md-none img-fit h-100" alt="{{ translate('topbar_banner') }}">
-            </a>
-            <button class="btn text-white h-100 absolute-top-right set-session" data-key="top-banner"
-                data-value="removed" data-toggle="remove-parent" data-parent=".top-banner">
-                <i class="la la-close la-2x"></i>
-            </button>
-        </div>
-    @endif
 
     <!-- Top Bar -->
     <div class="top-navbar bg-white z-1035 h-35px h-sm-auto">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6 col">
+                {{-- <div class="col-lg-6 col">
                     <ul class="list-inline d-flex justify-content-between justify-content-lg-start mb-0">
                         <!-- Language switcher -->
                         @if (get_setting('show_language_switcher') == 'on')
@@ -80,9 +54,9 @@
                         @endif
 
                     </ul>
-                </div>
+                </div> --}}
 
-                <div class="col-6 text-right d-none d-lg-block">
+                <div class="col-12 text-right d-none d-lg-block">
                     <ul class="list-inline mb-0 h-100 d-flex justify-content-end align-items-center">
                         @if (get_setting('vendor_system_activation') == 1)
                             <!-- Become a Seller -->
@@ -113,16 +87,16 @@
                                     class="text-secondary fs-12 pl-3 d-inline-block">{{ translate('Login to Seller') }}</a>
                             </li>
                         @endif
-                        @if (get_setting('helpline_number'))
+                        {{-- @if (get_setting('helpline_number'))
                             <!-- Helpline -->
                             <li class="list-inline-item ml-3 pl-3 mr-0 pr-0">
                                 <a href="tel:{{ get_setting('helpline_number') }}"
                                     class="text-secondary fs-12 d-inline-block py-2">
-                                    <span>{{ translate('Helpline') }}</span>
+                                    <span>{{ translate('Call for order') }}</span>
                                     <span>{{ get_setting('helpline_number') }}</span>
                                 </a>
                             </li>
-                        @endif
+                        @endif --}}
                     </ul>
                 </div>
             </div>
@@ -607,7 +581,7 @@
         </div>
 
         <!-- Menu Bar -->
-        <div class="d-none d-lg-block position-relative bg-primary h-50px">
+        <div class="d-none d-lg-block position-relative bg-primary h-70px">
             <div class="container h-100">
                 <div class="d-flex h-100">
                     <!-- Categoty Menu Button -->
@@ -617,10 +591,10 @@
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
                                     <span class="fw-700 fs-16 text-white mr-3">{{ translate('Categories') }}</span>
-                                    <a href="{{ route('categories.all') }}" class="text-reset categoriesAll">
+                                    {{-- <a href="{{ route('categories.all') }}" class="text-reset categoriesAll">
                                         <span
                                             class="d-none d-lg-inline-block text-white animate-underline-white">({{ translate('See All') }})</span>
-                                    </a>
+                                    </a> --}}
                                 </div>
                                 <i class="las la-angle-down text-white has-transition" id="category-menu-bar-icon"
                                     style="font-size: 1.2rem !important"></i>

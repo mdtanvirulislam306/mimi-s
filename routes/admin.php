@@ -7,6 +7,7 @@ use App\Http\Controllers\AizUploadController;
 use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\BlogCategoryController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\BranchController;
 use App\Http\Controllers\BrandBulkUploadController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\BusinessSettingsController;
@@ -57,7 +58,7 @@ use App\Http\Controllers\WarrantyController;
 use App\Http\Controllers\WebsiteController;
 use App\Http\Controllers\ZoneController;
 use App\Http\Controllers\Cybersource\CybersourceSettingController;
-
+use App\Http\Controllers\BarcodeController;
 /*
   |--------------------------------------------------------------------------
   | Admin Routes
@@ -80,10 +81,10 @@ Route::controller(UpdateController::class)->group(function () {
 Route::get('/admin', [AdminController::class, 'admin_dashboard'])->name('admin.dashboard')->middleware(['auth', 'admin', 'prevent-back-history']);
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-back-history']], function () {
 
-    // cyber sources
-    Route::controller(CybersourceSettingController::class)->group(function () {
-        Route::get('/cybersource-configuration', 'configuration')->name('cybersource_configuration');
-    });
+    // // cyber sources
+    // Route::controller(CybersourceSettingController::class)->group(function () {
+    //     Route::get('/cybersource-configuration', 'configuration')->name('cybersource_configuration');
+    // });
     
     // category
     Route::resource('categories', CategoryController::class);
@@ -107,6 +108,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
         Route::get('/brands/edit/{id}', 'edit')->name('brands.edit');
         Route::get('/brands/destroy/{id}', 'destroy')->name('brands.destroy');
     });
+    // Barcode 
+    Route::get('/barcode', [BarcodeController::class, 'index'])->name('barcode.index');
+    Route::post('/barcode/generate', [BarcodeController::class, 'generate'])->name('barcode.generate');
 
     // Warranty
     Route::resource('warranties', WarrantyController::class);
@@ -307,7 +311,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
         Route::get('/order-configuration', 'order_configuration')->name('order_configuration.index');
     });
 
-
+    //branch
+    Route::controller(BranchController::class)->group(function(){
+        Route::get('/branch', 'index')->name('branch.index');
+        Route::get('/branch/create', 'create')->name('branch.create');
+        Route::post('/branch/store', 'store')->name('branch.store');
+        Route::get('/branch/{id}/edit', 'edit')->name('branch.edit');
+        Route::post('/branch/update/{id}', 'update')->name('branch.update');
+        Route::get('/branch/destroy/{id}', 'destroy')->name('branch.destroy');
+    });
     //Currency
     Route::controller(CurrencyController::class)->group(function () {
         Route::get('/currency', 'currency')->name('currency.index');

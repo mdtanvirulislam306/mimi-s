@@ -2,14 +2,14 @@
     @php
         $lang = get_system_language()->code;
         $homeBanner3Images = get_setting('home_banner3_images', null, $lang);
-        $xxl_items = 3;
-        $xl_items = 2.5;
+        $xxl_items = 4;
+        $xl_items = 3.5;
         if ($homeBanner3Images != null){
             $xxl_items = 2;
             $xl_items = 1.8;
         }
     @endphp
-    <section class="border">
+    <section class="">
         <div class="px-3">
             <!-- Top Section -->
             <div class="d-flex mb-2 mb-md-3 mt-2 mt-md-3  align-items-baseline justify-content-between">
@@ -26,10 +26,10 @@
             </div>
             <!-- Products Section -->
             <div class="px-sm-3">
-                <div class="aiz-carousel arrow-none sm-gutters-16" data-rows="2" data-items="{{ $xxl_items }}" data-xl-items="{{ $xxl_items }}" data-lg-items="4"  data-md-items="3" data-sm-items="2" data-xs-items="2" data-arrows='true' data-infinite='false'>
+                <div class="aiz-carousel arrow-none sm-gutters-16" data-rows="1" data-items="{{ $xxl_items }}" data-xl-items="{{ $xxl_items }}" data-lg-items="4"  data-md-items="3" data-sm-items="2" data-xs-items="2" data-arrows='true' data-infinite='false'>
                     @foreach ($newest_products as $key => $new_product)
-                    <div class="carousel-box px-3 position-relative has-transition hov-animate-outline">
-                        @include('frontend.'.get_setting('homepage_select').'.partials.product_box_1',['product' => $new_product])
+                    <div class="px-3 position-relative has-transition ">
+                        @include('frontend.'.get_setting('homepage_select').'.partials.product_box_1_1',['product' => $new_product])
                     </div>
                     @endforeach
                 </div>

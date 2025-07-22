@@ -17,7 +17,7 @@
         <div class="container">
             <div class="row gutters-15">
                 <div class="col" id="section_featured_div">
-                    <div class="border">
+                    <div class="">
                         <!-- Top Section -->
                         <div class="d-flex px-4 py-3 align-items-baseline justify-content-between">
                             <!-- Title -->
@@ -30,13 +30,13 @@
                                 <a type="button" class="arrow-next slide-arrow text-secondary ml-2" onclick="clickToSlide('slick-next','section_featured_div')"><i class="las la-angle-right fs-20 fw-600"></i></a>
                             </div>
                         </div>
-                        <!-- Products Section -->
+                        <!-- Products Section (carousel-box,hov-animate-outline )-->
                         <div class="px-xl-1">
                             <div class="aiz-carousel arrow-none" data-items="{{ $xxl_items }}" data-xl-items="{{ $xl_items }}" data-lg-items="{{ $lg_items }}"  data-md-items="{{ $md_items }}" data-sm-items="2" data-xs-items="2" data-arrows='true' data-infinite='false'>
                                 @foreach (get_featured_products() as $key => $product)
-                                <div class="carousel-box position-relative px-0 has-transition hov-animate-outline">
+                                <div class="position-relative px-0 has-transition ">
                                     <div class="px-3">
-                                        @include('frontend.'.get_setting('homepage_select').'.partials.product_box_1',['product' => $product])
+                                        @include('frontend.'.get_setting('homepage_select').'.partials.product_box_1_1',['product' => $product])
                                     </div>
                                 </div>
                                 @endforeach
@@ -45,7 +45,7 @@
                     </div>
                 </div>
                 <!-- Banner section 1 -->
-                @if ($homeBanner1Images != null)
+                <!-- @if ($homeBanner1Images != null)
                     <div class="col-xxl-3 col-lg-4 col-md-6 d-none d-md-block">
                         @php
                             $banner_1_imags = json_decode($homeBanner1Images);
@@ -66,7 +66,7 @@
                             @endforeach
                         </div>
                     </div>
-                @endif
+                @endif -->
             </div>
         </div>
     </section>   

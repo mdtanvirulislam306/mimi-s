@@ -29,6 +29,7 @@
                     <th>{{translate('Name')}}</th>
                     <th data-breakpoints="lg">{{translate('Email')}}</th>
                     <th data-breakpoints="lg">{{translate('Phone')}}</th>
+                    <th data-breakpoints="lg">{{translate('Branch')}}</th>
                     <th data-breakpoints="lg">{{translate('Role')}}</th>
                     <th width="10%" class="text-right">{{translate('Options')}}</th>
                 </tr>
@@ -41,6 +42,7 @@
                             <td>{{$staff->user->name}}</td>
                             <td>{{$staff->user->email}}</td>
                             <td>{{$staff->user->phone}}</td>
+                            <td>{{$staff->user->branch->name}}</td>
                             <td>
 								@if ($staff->role != null)
 									{{ $staff->role->getTranslation('name') }}

@@ -121,6 +121,19 @@
                                                 <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" placeholder="{{ translate('Product Name') }}" onchange="update_sku()" required>
                                             </div>
                                         </div>
+                                        <!-- Branch -->
+                                        <div class="form-group row">
+                                            <label class="col-xxl-3 col-from-label fs-13">{{ translate('Branch') }} <span class="text-danger">*</span></label>
+                                            <div class="col-xxl-9">
+                                                <select class="form-control aiz-selectpicker" name="branch_id" id="branch_id" data-live-search="true" required>
+                                                    <option value="">{{ translate('Select Branch') }}</option>
+                                                    @foreach (\App\Models\BranchModel::select('id','name')->get() as $branch)
+                                                        <option value="{{ $branch->id }}" @selected(old('branch_id') == $branch->id)>{{ $branch->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <small class="text-muted">{{ translate('Select the branch for this product.') }}</small>
+                                            </div>
+                                        </div>
                                         <!-- Brand -->
                                         <div class="form-group row" id="brand">
                                             <label class="col-xxl-3 col-from-label fs-13">{{translate('Brand')}}</label>

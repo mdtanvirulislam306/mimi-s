@@ -10,7 +10,7 @@
             @endphp
             <section class="py-3" style="">
                 <div class="container">
-                    <div class="border">
+                    <div class="">
                         <!-- Title -->
                         <h3 class="fs-16 fs-md-20 fw-700 mb-2 mb-sm-0 mt-3 px-3 px-sm-4">
                             <span class="">{{ $category_name }}</span>
@@ -37,7 +37,7 @@
                                     @foreach (get_cached_products($category->id) as $product_key => $product)
                                         <div
                                             class="carousel-box px-3 position-relative has-transition hov-animate-outline">
-                                            @include('frontend.'.get_setting('homepage_select').'.partials.product_box_2', ['product' => $product])
+                                            @include('frontend.'.get_setting('homepage_select').'.partials.product_box_1_1',['product' => $product])
                                         </div>
                                     @endforeach
                                 </div>

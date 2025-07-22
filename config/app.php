@@ -188,6 +188,7 @@ return [
         App\Providers\ComposerServiceProvider::class,
 
         Spatie\Permission\PermissionServiceProvider::class,
+        Milon\Barcode\BarcodeServiceProvider::class,
 
     ],
 
@@ -240,6 +241,8 @@ return [
         'PDF' => niklasravnsborg\LaravelPdf\Facades\Pdf::class,
         'Str' => Illuminate\Support\Str::class,
         'Rave' => KingFlamez\Rave\Facades\Rave::class,
+        'DNS1D' => Milon\Barcode\Facades\DNS1DFacade::class,
+        'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class,
     ],
 
 ];

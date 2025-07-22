@@ -2030,7 +2030,14 @@ if (!function_exists('get_level_zero_categories')) {
         return $categories_query->where('level', 0)->orderBy('order_level', 'desc')->get();
     }
 }
-
+// Get categories by level zero with product count
+if (!function_exists('get_level_zero_categories_with_product_count')) {
+    function get_level_zero_categories_with_product_count()
+    {
+        $categories_query = Category::query()->with(['coverImage', 'catIcon']);
+        return $categories_query->where('level', 0)->orderBy('order_level', 'desc')->get();
+    }
+}
 // Get categories by products
 if (!function_exists('get_categories_by_products')) {
     function get_categories_by_products($user_id)
@@ -3018,4 +3025,16 @@ function filter_single_preorder_product($product)
     
     // If vendor system is not activated, return the product directly
     return $product;
+}
+// ======================================================
+// today's deal products
+if (!function_exists('get_todays_deal_products')) {
+    function get_todays_deal_products()
+    {
+         $todays_deal_products = Cache::rememberForever('todays_deal_products', function () {
+            return filter_products(Product::with('thumbnail')->where('todays_deal', '1'))->get();
+        });
+        return $todays_deal_products;
+
+    }
 }

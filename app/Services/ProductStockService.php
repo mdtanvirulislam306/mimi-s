@@ -27,19 +27,22 @@ class ProductStockService
                 $product_stock->product_id = $product->id;
                 $product_stock->variant = $str;
                 $product_stock->price = request()['price_' . str_replace('.', '_', $str)];
+                $product_stock->barcode = request()['barcode_' . str_replace('.', '_', $str)];
                 $product_stock->sku = request()['sku_' . str_replace('.', '_', $str)];
                 $product_stock->qty = request()['qty_' . str_replace('.', '_', $str)];
                 $product_stock->image = request()['img_' . str_replace('.', '_', $str)];
                 $product_stock->save();
             }
         } else {
+           // dd($collection);
             unset($collection['colors_active'], $collection['colors'], $collection['choice_no']);
             $qty = $collection['current_stock'];
             $price = $collection['unit_price'];
+            $barcode = $collection['barcode'];
             unset($collection['current_stock']);
 
-            $data = $collection->merge(compact('variant', 'qty', 'price'))->toArray();
-            
+            $data = $collection->merge(compact('variant', 'qty', 'price','barcode'))->toArray();
+            //dd($data);
             ProductStock::create($data);
         }
     }

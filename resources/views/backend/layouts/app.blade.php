@@ -118,6 +118,8 @@
         }
     </script>
 
+    @yield('style')
+
 </head>
 
 <body class="">

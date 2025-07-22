@@ -38,6 +38,16 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label class="col-sm-3 col-from-label" for="name">{{translate('Branch')}}</label>
+                        <div class="col-sm-9">
+                            <select name="branch_id" required class="form-control aiz-selectpicker">
+                                @foreach($branches as $branch)
+                                    <option value="{{$branch->id}}" @php if($staff->user->branch_id == $branch->id) echo "selected"; @endphp >{{$branch->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label class="col-sm-3 col-from-label" for="name">{{translate('Role')}}</label>
                         <div class="col-sm-9">
                             <select name="role_id" required class="form-control aiz-selectpicker">

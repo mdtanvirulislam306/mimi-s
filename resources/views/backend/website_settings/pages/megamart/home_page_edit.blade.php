@@ -437,9 +437,9 @@
 									<!-- Todays Deal Settings -->
 									<div class="col-lg-7">
 										<div class="w-100">
-											<!-- Large Banner -->
+											<!-- today's deal Banner -->
 											<div class="form-group">
-												<label class="col-from-label fs-13 fw-500">{{ translate("Large Banner") }} (<small>{{ translate('Will be shown in large device') }}</small>)</label>
+												<label class="col-from-label fs-13 fw-500">{{ translate("Today's Deal") }} (<small>{{ translate("Today's Deal card image.") }}</small>)</label>
 												<div class="input-group " data-toggle="aizuploader" data-type="image">
 													<div class="input-group-prepend">
 														<div class="input-group-text bg-soft-secondary">{{ translate('Browse') }}</div>
@@ -449,26 +449,40 @@
 													<input type="hidden" name="todays_deal_banner" value="{{ get_setting('todays_deal_banner', null, $lang) }}" class="selected-files">
 												</div>
 												<div class="file-preview box"></div>
-                                                <small class="text-muted">{{ translate("Minimum dimensions required: 1370px width X 242px height.") }}</small>
+                                                <small class="text-muted">{{ translate("Minimum dimensions required: 1:1.") }}</small>
 											</div>
 
-											<!-- Small Banner -->
+											<!-- featured Banner -->
 											<div class="form-group">
-												<label class="col-from-label fs-13 fw-500">{{ translate("Small Banner") }} (<small>{{ translate('Will be shown in small device') }}</small>)</label>
+												<label class="col-from-label fs-13 fw-500">{{ translate("Featured") }} (<small>{{ translate('Featured card image.') }}</small>)</label>
 												<div class="input-group " data-toggle="aizuploader" data-type="image">
 													<div class="input-group-prepend">
 														<div class="input-group-text bg-soft-secondary">{{ translate('Browse') }}</div>
 													</div>
 													<div class="form-control file-amount">{{ translate('Choose File') }}</div>
-													<input type="hidden" name="types[][{{ $lang }}]" value="todays_deal_banner_small">
-													<input type="hidden" name="todays_deal_banner_small" value="{{ get_setting('todays_deal_banner_small', null, $lang) }}" class="selected-files">
+													<input type="hidden" name="types[][{{ $lang }}]" value="featured_banner">
+													<input type="hidden" name="featured_banner" value="{{ get_setting('featured_banner', null, $lang) }}" class="selected-files">
 												</div>
 												<div class="file-preview box"></div>
-                                                <small class="text-muted">{{ translate("Minimum dimensions required: 400px width X 200px height.") }}</small>
+                                                <small class="text-muted">{{ translate("Minimum dimensions required: 1:1") }}</small>
+											</div>
+											<!-- best sell Banner -->
+											<div class="form-group">
+												<label class="col-from-label fs-13 fw-500">{{ translate("Best Selling") }} (<small>{{ translate('Best Saling card image.') }}</small>)</label>
+												<div class="input-group " data-toggle="aizuploader" data-type="image">
+													<div class="input-group-prepend">
+														<div class="input-group-text bg-soft-secondary">{{ translate('Browse') }}</div>
+													</div>
+													<div class="form-control file-amount">{{ translate('Choose File') }}</div>
+													<input type="hidden" name="types[][{{ $lang }}]" value="best_saling_banner">
+													<input type="hidden" name="best_saling_banner" value="{{ get_setting('best_saling_banner', null, $lang) }}" class="selected-files">
+												</div>
+												<div class="file-preview box"></div>
+                                                <small class="text-muted">{{ translate("Minimum dimensions required: 1:1") }}</small>
 											</div>
 
 											<!-- Products background color -->
-											<div class="form-group">
+											{{-- <div class="form-group">
 												<label class="col-from-label fs-13 fw-500">{{ translate('Products background color') }}</label>
 												<div class="input-group">
 													@php $todays_deal_bg_color =  get_setting('todays_deal_bg_color') @endphp
@@ -480,10 +494,10 @@
 														</span>
 													</div>
 												</div>
-											</div>
+											</div> --}}
 
 											<!-- Banner Text Color -->
-											<div class="form-group">
+											{{-- <div class="form-group">
 												<label class="col-from-label fs-13 fw-500">{{ translate("Today's Deal Banner Text Color") }}</label>
 												<div class="input-group mb-3 d-flex">
 													@php
@@ -499,7 +513,7 @@
 														<label for="todays_deal_banner_text_dark" class="mb-0 ml-2">{{translate('Dark')}}</label>
 													</div>
 												</div>
-											</div>
+											</div> --}}
 										</div>
 									</div>
 								</div>

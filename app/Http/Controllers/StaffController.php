@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Staff;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\BranchModel;
 use Hash;
 
 class StaffController extends Controller
@@ -37,7 +38,9 @@ class StaffController extends Controller
     public function create()
     {
         $roles = Role::where('id','!=',1)->orderBy('id', 'desc')->get();
-        return view('backend.staff.staffs.create', compact('roles'));
+        $branches = BranchModel::select('id','name')->get(); // Fetch all branches for the dropdown
+        // Ensure the branches are passed to the view
+        return view('backend.staff.staffs.create', compact('roles','branches'));
     }
 
     /**
@@ -53,6 +56,7 @@ class StaffController extends Controller
             $user->name = $request->name;
             $user->email = $request->email;
             $user->phone = $request->mobile;
+            $user->branch_id = $request->branch_id;
             $user->user_type = "staff";
             $user->password = Hash::make($request->password);
             if($user->save()){
@@ -92,7 +96,9 @@ class StaffController extends Controller
     {
         $staff = Staff::findOrFail(decrypt($id));
         $roles = $roles = Role::where('id','!=',1)->orderBy('id', 'desc')->get();
-        return view('backend.staff.staffs.edit', compact('staff', 'roles'));
+        $branches = BranchModel::select('id','name')->get(); // Fetch all branches for the dropdown
+        // Ensure the branches are passed to the view
+        return view('backend.staff.staffs.edit', compact('staff', 'roles', 'branches'));
     }
 
     /**
@@ -108,7 +114,7 @@ class StaffController extends Controller
         $user = $staff->user;
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->phone = $request->mobile;
+        $user->branch_id = $request->branch_id;
         if(strlen($request->password) > 0){
             $user->password = Hash::make($request->password);
         }
