@@ -91,7 +91,7 @@
                                         </h3>
                                     </div>
                                     <!-- Sellers Products -->
-                                    <div class="d-flex justify-content-between">
+                                    {{-- <div class="d-flex justify-content-between">
                                         <h3 class="fs-13 fw-600 text-truncate mr-2">
                                             <span class="badge badge-md badge-dot badge-circle badge-primary mr-2"></span>
                                             {{ translate('Sellers Products') }}
@@ -99,7 +99,7 @@
                                         <h3 class="fs-13 fw-600 mb-0">
                                             {{ $total_sellers_products }}
                                         </h3>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>
@@ -214,7 +214,7 @@
             <div class="col-lg-6">
                 <div class="row gutters-16">
                     <!-- Total Sales -->
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                         <div class="dashboard-box bg-soft-primary mb-2rem overflow-hidden" style="height: 470px;">
                             <div class="d-flex flex-column justify-content-between h-100">
                                 <!-- Total Sales -->
@@ -253,7 +253,7 @@
                                         </h3>
                                     </div>
                                     <!-- Sellers Sales -->
-                                    <div class="d-flex justify-content-between">
+                                    {{-- <div class="d-flex justify-content-between">
                                         <h3 class="fs-13 fw-600 mb-0">
                                             <span
                                                 class="badge badge-md badge-dot badge-circle badge-success text-truncate mr-2"></span>
@@ -262,13 +262,13 @@
                                         <h3 class="fs-13 fw-600 mb-0">
                                             {{ single_price($seller_sale_this_month->total_sale) }}
                                         </h3>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Total Sellers -->
+                    {{-- <!-- Total Sellers -->
                     <div class="col-sm-6">
                         <div class="dashboard-box bg-white mb-2rem overflow-hidden" style="height: 470px;">
                             @if (get_setting('vendor_system_activation') == 1)
@@ -341,7 +341,7 @@
                                 </div>
                             @endif
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
 

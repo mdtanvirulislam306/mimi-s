@@ -455,7 +455,10 @@
             <!-- Copyright -->
             <div class="col-lg-6 order-1 order-lg-0">
                 <div class="text-center text-lg-left fs-14" current-verison="{{get_setting("current_version")}}">
-                    {!! get_setting('frontend_copyright_text', null, App::getLocale()) !!}
+                    {!! get_setting('frontend_copyright_text', null, App::getLocale()) !!} || Developed by
+                    <a href="https://thetechresolver.com" target="_blank" class=" fw-600" style="color: #4de93a !important;">
+                        The Tech Resolver 
+                    </a>
                 </div>
             </div>
 
@@ -466,7 +469,7 @@
                         @if ( get_setting('payment_method_images') !=  null )
                             @foreach (explode(',', get_setting('payment_method_images')) as $key => $value)
                                 <li class="list-inline-item mr-3">
-                                    <img src="{{ uploaded_asset($value) }}" height="20" class="mw-100 h-auto" style="max-height: 20px" alt="{{ translate('payment_method') }}">
+                                    <img src="{{ uploaded_asset($value) }}" height="20" class="mw-100 h-auto" alt="{{ translate('payment_method') }}">
                                 </li>
                             @endforeach
                         @endif

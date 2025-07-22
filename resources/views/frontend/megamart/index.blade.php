@@ -280,7 +280,40 @@
             </div>
         </div>
     @endif
-
+    <!-- Campaign list start-->
+    <section class="container">
+      <div class="row g-4">
+        <div class="col-12 col-md-6">
+          <div
+            class="p-3 d-flex justify-content-between flex-column text-center text-md-start flex-md-row justify-content-center align-items-center custom-coupon-card"
+            style="background-color: #f6c5c5"
+          >
+            <div>
+              <h6>Our Policy: Best Price!</h6>
+              <p>Sign up to avoid missing discounts!</p>
+            </div>
+            <div>
+              <a href="{{ route('coupons.all') }}" class="custom-btn align-self-center">Check Coupon</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div
+            class="p-3 d-flex flex-column text-center text-md-start flex-md-row justify-content-center justify-content-between align-items-center custom-coupon-card2"
+            style="background-color: #d7f6c5"
+          >
+            <div>
+              <h6>Click for Campaigns!</h6>
+              <p>Sign up to avoid missing discounts!</p>
+            </div>
+            <div>
+              <a href="{{ route('flash-deals') }}" class="custom-btn align-self-center">Check Campaign</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Campaign list End-->
     <!-- Best Selling, New Products, Banner section 2 -->
     @php
         $homeBanner3Images = get_setting('home_banner3_images', null, $lang);
