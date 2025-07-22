@@ -140,14 +140,14 @@
                                 </a>
                             </li>
                             @endcan
-                            @can('show_digital_products')
+                            {{-- @can('show_digital_products')
                             <li class="aiz-side-nav-item">
                                 <a href="{{route('digitalproducts.index')}}"
                                     class="aiz-side-nav-link {{ areActiveRoutes(['digitalproducts.index', 'digitalproducts.create', 'digitalproducts.edit']) }}">
                                     <span class="aiz-side-nav-text">{{ translate('Digital Products') }}</span>
                                 </a>
                             </li>
-                            @endcan
+                            @endcan --}}
                             @if(get_setting('vendor_system_activation') == 1)
                             @can('show_seller_products')
                             <li class="aiz-side-nav-item">
@@ -415,13 +415,13 @@
                                         </ul>
                                     </li>
                                 @endcan
-                                @can('view_preorder_seller_commission_history')
+                                {{-- @can('view_preorder_seller_commission_history')
                                     <li class="aiz-side-nav-item">
                                         <a href="{{ route('preorder-commission-history') }}" class="aiz-side-nav-link">
                                             <span class="aiz-side-nav-text">{{translate("Preorder Commission History")}}</span>
                                         </a>
                                     </li>
-                                @endcan
+                                @endcan --}}
                                 @can('preorder_settings')
                                     <li class="aiz-side-nav-item">
                                         <a href="{{ route('preorder-settings') }}" class="aiz-side-nav-link {{ areActiveRoutes(['faqs.create', 'faq.edit'])}}">
@@ -1050,14 +1050,14 @@
                             </a>
                         </li>
                         @endcan
-                        @can('seller_products_sale_report')
+                        {{-- @can('seller_products_sale_report')
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('seller_sale_report.index') }}"
                                 class="aiz-side-nav-link {{ areActiveRoutes(['seller_sale_report.index'])}}">
                                 <span class="aiz-side-nav-text">{{ translate('Seller Products Sale') }}</span>
                             </a>
                         </li>
-                        @endcan
+                        @endcan --}}
                         @can('products_stock_report')
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('stock_report.index') }}"
@@ -1082,7 +1082,7 @@
                             </a>
                         </li>
                         @endcan
-                        @can('commission_history_report')
+                        {{-- @can('commission_history_report')
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('commission-log.index') }}" class="aiz-side-nav-link">
                                 <span class="aiz-side-nav-text">{{ translate('Commission History') }}</span>
@@ -1095,7 +1095,7 @@
                                 <span class="aiz-side-nav-text">{{ translate('Wallet Recharge History') }}</span>
                             </a>
                         </li>
-                        @endcan
+                        @endcan --}}
                     </ul>
                 </li>
                 @endcanany
@@ -1754,13 +1754,13 @@
                         <span class="aiz-side-nav-arrow"></span>
                     </a>
                     <ul class="aiz-side-nav-list level-2">
-                        @can('select_homepage')
+                        {{-- @can('select_homepage')
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('website.select-homepage') }}" class="aiz-side-nav-link">
                                 <span class="aiz-side-nav-text">{{translate('Select Homepage')}}</span>
                             </a>
                         </li>
-                        @endcan
+                        @endcan --}}
                         @can('edit_website_page')
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('custom-pages.edit', ['id'=>'home', 'lang'=>env('DEFAULT_LANGUAGE'), 'page'=>'home']) }}"
@@ -1828,13 +1828,13 @@
                         <span class="aiz-side-nav-arrow"></span>
                     </a>
                     <ul class="aiz-side-nav-list level-2">
-                        @can('features_activation')
+                        {{-- @can('features_activation')
                         <li class="aiz-side-nav-item">
                             <a href="{{route('activation.index')}}" class="aiz-side-nav-link">
                                 <span class="aiz-side-nav-text">{{translate('Features activation')}}</span>
                             </a>
                         </li>
-                        @endcan
+                        @endcan --}}
                          @can('branch_setup')
                         <li class="aiz-side-nav-item">
                             <a href="{{route('branch.index')}}"
@@ -2136,13 +2136,13 @@
                         <span class="aiz-side-nav-arrow"></span>
                     </a>
                     <ul class="aiz-side-nav-list level-2">
-                        @can('system_update')
+                        {{-- @can('system_update')
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('system_update') }}" class="aiz-side-nav-link">
                                 <span class="aiz-side-nav-text">{{translate('Update')}}</span>
                             </a>
                         </li>
-                        @endcan
+                        @endcan --}}
                         @can('server_status')
                         <li class="aiz-side-nav-item">
                             <a href="{{route('system_server')}}" class="aiz-side-nav-link">
@@ -2162,8 +2162,7 @@
                 </li>
                 @endcanany
 
-                <!-- Addon Manager -->
-                @can('manage_addons')
+               {{-- @can('manage_addons')
                 <li class="aiz-side-nav-item">
                     <a href="{{route('addons.index')}}"
                         class="aiz-side-nav-link {{ areActiveRoutes(['addons.index', 'addons.create'])}}">
@@ -2177,8 +2176,9 @@
                         </div>
                         <span class="aiz-side-nav-text">{{translate('Addon Manager')}}</span>
                     </a>
-                </li>
-                @endcan
+                </li> <!-- Addon Manager --> --}}
+                
+                {{-- @endcan --}}
             </ul><!-- .aiz-side-nav -->
         </div><!-- .aiz-side-nav-wrap -->
     </div><!-- .aiz-sidebar -->
