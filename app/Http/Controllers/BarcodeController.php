@@ -1,41 +1,50 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
-use Milon\Barcode\DNS1D;
+use niklasravnsborg\LaravelPdf\Facades\Pdf;
 use Milon\Barcode\Facades\DNS1DFacade;
-
+use App\Models\ProductStock;
 
 class BarcodeController extends Controller
 {
     public function index()
     {
-        $products = Product::select('id', 'name', 'barcode')->get();
-
+        $products = ProductStock::with('product:id,name')
+        ->select('id','product_id','variant','barcode','price')
+        ->get();
+        //dd($products);
         return view('backend.product.barcode.index', compact('products'));
     }
 
     public function generate(Request $request)
     {
         $request->validate([
-            'product_id' => 'required',
-            'quantity'   => 'required|integer|min:1',
-            'per_row'    => 'required|integer|min:1',
+            'stock_id' => 'required',
+            'quantity' => 'required|integer|min:1',
         ]);
 
-        $product = Product::findOrFail($request->product_id);
-        $quantity = $request->quantity;
-        $perRow = $request->per_row;
-
-        $barcodeImage = DNS1DFacade::getBarcodePNG($product->barcode, 'C128');
+        $stock = ProductStock::with('product')->findOrFail($request->stock_id);
 
         return response()->json([
-            'product'      => $product,
-            'quantity'     => $quantity,
-            'perRow'       => $perRow,
-            'barcodeImage' => $barcodeImage
+            'product' => $stock->product,
+            'stock' => $stock,
+            'quantity' => $request->quantity,
+            'barcodeImage' => DNS1DFacade::getBarcodePNG($stock->barcode, 'C128')
         ]);
     }
+
+    public function downloadPdf(Request $request)
+    {
+        //dd($request->all());
+        $stock = ProductStock::with('product')->findOrFail($request->stock_id);
+        $quantity = $request->quantity;
+        $pdf = Pdf::loadView('backend.product.barcode.pdf',  compact('stock','quantity'), [], [
+        'format' => [50, 30], // 50mm x 30mm Zebra Label
+        'orientation' => 'P'
+    ]);
+        return $pdf->download('barcode_'.$stock->barcode.'.pdf');
+    }
 }
+

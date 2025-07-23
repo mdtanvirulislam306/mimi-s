@@ -12,6 +12,7 @@ use App\Utility\PosUtility;
 use Session;
 use Mpdf\Mpdf;
 
+
 class PosController extends Controller
 {
     public function __construct()
@@ -29,13 +30,33 @@ class PosController extends Controller
 
     public function search(Request $request)
     {
-        $products = PosUtility::product_search($request->only('category', 'brand', 'keyword'));
+        $products = PosUtility::product_search($request->only('category', 'brand', 'keyword','branch_id'));
 
         $stocks = new PosProductCollection($products);
-        $stocks->appends(['keyword' =>  $request->keyword, 'category' => $request->category, 'brand' => $request->brand]);
+        $stocks->appends(['keyword' =>  $request->keyword, 'category' => $request->category, 'brand' => $request->brand, 'branch_id' => $request->branch_id]);
         return $stocks;
     }
-
+    /**
+     * Get stock id by barcode
+     */
+    public function getStockByBarcode(Request $request)
+    {
+        dd($request->all);
+        $barcode = $request->barcode;
+        $stock = PosUtility::getStockIdByBarcode($barcode);
+        if ($stock) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Stock found',
+                'stock' => $stock
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'No stock found with this barcode'
+            ]);
+        }
+    }       
     // Add product To cart
     public function addToCart(Request $request)
     {   

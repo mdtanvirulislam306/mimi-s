@@ -47,14 +47,35 @@ class PosUtility
         if ($request_data['brand'] != null) {
             $products = $products->where('products.brand_id', $request_data['brand']);
         }
-
-        if ($request_data['keyword'] != null) {
-            $products = $products->where('products.name', 'like', '%' . $request_data['keyword'] . '%')->orWhere('products.barcode', $request_data['keyword']);
-        }
+        if (!empty($request_data['keyword'])) {
+    $products = $products->where(function ($q) use ($request_data) {
+        $q->where('products.name', 'like', '%' . $request_data['keyword'] . '%')
+          ->orWhere('product_stocks.barcode', $request_data['keyword']);
+    });
+}
+        // if ($request_data['keyword'] != null) {
+        //     $products = $products->where('products.name', 'like', '%' . $request_data['keyword'] . '%')->orWhere('products.barcode', $request_data['keyword']);
+        // }
 
         return $products->paginate(16);
     }
-
+    /**
+     * Get stock id by barcode
+     */
+    public static function getStockIdByBarcode($barcode)
+    {
+        $product_stock = ProductStock::where('barcode', $barcode)->first();
+        if ($product_stock) {
+            return [
+                'id' => $product_stock->id,
+                'name' => $product_stock->product->name,
+                'variant' => $product_stock->variant,
+                'price' => $product_stock->price,
+                'qty' => $product_stock->qty,
+            ];
+        }
+        return null;
+    }
     public static function get_shipping_address($request): array
     {
         if ($request->address_id != null) {

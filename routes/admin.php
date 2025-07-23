@@ -111,6 +111,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
     // Barcode 
     Route::get('/barcode', [BarcodeController::class, 'index'])->name('barcode.index');
     Route::post('/barcode/generate', [BarcodeController::class, 'generate'])->name('barcode.generate');
+    Route::post('/barcode/download', [BarcodeController::class, 'downloadPdf'])->name('barcode.download');
+
 
     // Warranty
     Route::resource('warranties', WarrantyController::class);

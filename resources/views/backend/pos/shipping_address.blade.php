@@ -9,22 +9,22 @@
                         <span class="alpha-6">{{ translate('Address') }}:</span>
                         <span class="strong-600 ml-2">{{ $address->address }}</span>
                     </div>
-                    <div>
+                    {{-- <div>
                         <span class="alpha-6">{{ translate('Postal Code') }}:</span>
                         <span class="strong-600 ml-2">{{ $address->postal_code }}</span>
-                    </div>
-                    <div>
+                    </div> --}}
+                    {{-- <div>
                         <span class="alpha-6">{{ translate('City') }}:</span>
                         <span class="strong-600 ml-2">{{ $address->city->name }}</span>
-                    </div>
+                    </div> --}}
                     <div>
-                        <span class="alpha-6">{{ translate('State') }}:</span>
+                        <span class="alpha-6">{{ translate('District') }}:</span>
                         <span class="strong-600 ml-2">{{ $address->state->name }}</span>
                     </div>
-                    <div>
+                    {{-- <div>
                         <span class="alpha-6">{{ translate('Country') }}:</span>
                         <span class="strong-600 ml-2">{{ $address->country->name }}</span>
-                    </div>
+                    </div> --}}
                     <div>
                         <span class="alpha-6">{{ translate('Phone') }}:</span>
                         <span class="strong-600 ml-2">{{ $address->phone }}</span>

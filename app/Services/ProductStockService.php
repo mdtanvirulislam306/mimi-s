@@ -27,7 +27,7 @@ class ProductStockService
                 $product_stock->product_id = $product->id;
                 $product_stock->variant = $str;
                 $product_stock->price = request()['price_' . str_replace('.', '_', $str)];
-                $product_stock->barcode = request()['barcode_' . str_replace('.', '_', $str)];
+                $product_stock->barcode = $this->generateRandomCode();
                 $product_stock->sku = request()['sku_' . str_replace('.', '_', $str)];
                 $product_stock->qty = request()['qty_' . str_replace('.', '_', $str)];
                 $product_stock->image = request()['img_' . str_replace('.', '_', $str)];
@@ -46,7 +46,18 @@ class ProductStockService
             ProductStock::create($data);
         }
     }
+    public function generateRandomCode()
+    {
+        $prefix = 'MM';
+        $randomNumber = str_pad(mt_rand(0, 99999999), 8, '0', STR_PAD_LEFT);
+        $code = $prefix . $randomNumber;
+        while (\App\Models\ProductStock::where('barcode', $code)->exists()) {
+            $randomNumber = str_pad(mt_rand(0, 99999999), 8, '0', STR_PAD_LEFT);
+            $code = $prefix . $randomNumber;
+        }
 
+        return $code;
+    }
     public function product_duplicate_store($product_stocks , $product_new)
     {
         foreach ($product_stocks as $key => $stock) {

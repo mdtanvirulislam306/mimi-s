@@ -10,7 +10,12 @@
                 <div class="row gutters-5 mb-3">
                     <div class="col-md-3 mb-2 mb-md-0">
                         <div class="form-group mb-0">
-                            <input class="form-control form-control-lg" type="text" name="keyword" id="barcode_field" placeholder="{{ translate('Search by Product Name/Barcode') }}" onkeyup="filterProducts()">
+                            <input class="form-control form-control-lg" type="text" name="barcode" id="barcode_field" placeholder="{{ translate('Search by Barcode') }}">
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-2 mb-md-0">
+                        <div class="form-group mb-0">
+                            <input class="form-control form-control-lg" type="text" name="keyword" placeholder="{{ translate('Search by Product Name') }}" onkeyup="filterProducts()">
                         </div>
                     </div>
                     <div class="col-md-3 mb-2 mb-md-0">
@@ -42,14 +47,14 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-3 col-6">
+                    {{-- <div class="col-md-3 col-6">
                         <select name="brand"  class="form-control form-control-lg aiz-selectpicker" data-live-search="true" onchange="filterProducts()">
                             <option value="">{{ translate('All Brands') }}</option>
                             @foreach (\App\Models\Brand::all() as $key => $brand)
                                 <option value="{{ $brand->id }}">{{ $brand->getTranslation('name') }}</option>
                             @endforeach
                         </select>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="aiz-pos-product-list c-scrollbar-light">
                     <div class="d-flex flex-wrap justify-content-center" id="product-list">
@@ -274,7 +279,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <div class=" row">
                                 <label class="col-sm-2 control-label">{{translate('Country')}}</label>
                                 <div class="col-sm-10">
@@ -286,11 +291,11 @@
                                     </select>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-sm-2 control-label">
-                                    <label>{{ translate('State')}}</label>
+                                    <label>{{ translate('District')}}</label>
                                 </div>
                                 <div class="col-sm-10">
                                     <select class="form-control mb-3 aiz-selectpicker" data-live-search="true" name="state_id" required>
@@ -299,7 +304,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <div class="row">
                                 <div class="col-sm-2">
                                     <label>{{ translate('City')}}</label>
@@ -310,15 +315,15 @@
                                     </select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
+                        </div> --}}
+                        {{-- <div class="form-group">
                             <div class=" row">
                                 <label class="col-sm-2 control-label" for="postal_code">{{translate('Postal code')}}</label>
                                 <div class="col-sm-10">
                                     <input type="number" min="0" placeholder="{{translate('Postal code')}}" id="postal_code" name="postal_code" class="form-control" required>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="form-group">
                             <div class=" row">
                                 <label class="col-sm-2 control-label" for="phone">{{translate('Phone')}}</label>
@@ -425,6 +430,7 @@
         var products = null;
 
        $(document).ready(function(){
+        get_states(18);
     $('body').addClass('side-menu-closed');
 
     $('#product-list').on('click','.add-plus:not(.c-not-allowed)',function(){
@@ -433,16 +439,18 @@
     });
 
    
-    $('#barcode_field').on('keypress', function(e){
-        if(e.which == 13){
+    $('#barcode_field').on('keydown', function(e){
+        if(e.key == 'Enter'){
             e.preventDefault();
             var barcode = $(this).val().trim();
             if(barcode !== ''){
-           
                 $.post('{{ route('pos.getStockIdByBarcode') }}',{_token:AIZ.data.csrf, barcode:barcode}, function(data){
-                    if(data.success == 1){
-                        addToCart(data.stock_id);
+                    if(data.success){
+                        
+                        filterProducts();
+                        addToCart(data.stock.id);
                         $('#barcode_field').val(''); 
+                        //filterProducts();
                     } else {
                         AIZ.plugins.notify('danger', 'Invalid barcode or product not found');
                     }
@@ -492,11 +500,10 @@ function addToCart(stock_id){
 
         function filterProducts(){
             var keyword = $('input[name=keyword]').val();
+            var barcode = $('input[name=barcode]').val();
             var category = $('select[name=poscategory]').val();
-            var brand = $('select[name=brand]').val();
             var branch_id = $('select[name=branch_id]').val();
-            console.log(branch_id);
-            $.get('{{ route('pos.search_product') }}',{keyword:keyword, category:category, brand:brand,branch_id:branch_id}, function(data){
+            $.get('{{ route('pos.search_product') }}',{keyword:keyword, category:category,branch_id:branch_id,barcode:barcode}, function(data){
                 products = data;
                 $('#product-list').html(null);
                 setProductList(data);
@@ -675,10 +682,10 @@ function addToCart(stock_id){
 
 
         //address
-        $(document).on('change', '[name=country_id]', function() {
-            var country_id = $(this).val();
-            get_states(country_id);
-        });
+        // $(document).on('change', '[name=country_id]', function() {
+        //     var country_id = $(this).val();
+        //     get_states(country_id);
+        // });
 
         $(document).on('change', '[name=state_id]', function() {
             var state_id = $(this).val();

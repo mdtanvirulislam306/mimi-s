@@ -33,7 +33,7 @@ class PosUtility
             ->where('products.wholesale_product', 0)
             ->where('products.published', 1)
             ->where('products.approved', 1)
-            ->select('products.*', 'product_stocks.id as stock_id', 'product_stocks.variant', 'product_stocks.price as stock_price', 'product_stocks.qty as stock_qty', 'product_stocks.image as stock_image')
+            ->select('products.*', 'product_stocks.id as stock_id', 'product_stocks.variant','product_stocks.barcode', 'product_stocks.price as stock_price', 'product_stocks.qty as stock_qty', 'product_stocks.image as stock_image')
             ->orderBy('products.created_at', 'desc');
 
 
@@ -46,15 +46,18 @@ class PosUtility
             }
         }
          
-        if ($request_data['brand'] != null) {
-            $products = $products->where('products.brand_id', $request_data['brand']);
-        }
+        // if ($request_data['brand'] != null) {
+        //     $products = $products->where('products.brand_id', $request_data['brand']);
+        // }
 
         if ($request_data['branch_id'] != null) {
             $products = $products->where('products.branch_id', $request_data['branch_id']);
         }
         if ($request_data['keyword'] != null) {
-            $products = $products->where('products.name', 'like', '%' . $request_data['keyword'] . '%')->orWhere('products.barcode', $request_data['keyword']);
+            $products = $products->where('products.name', 'like', '%' . $request_data['keyword'] . '%');
+        }
+         if ($request_data['barcode'] != null) {
+            $products = $products->where('product_stocks.barcode', 'like', '%' . $request_data['barcode'] . '%');
         }
 
         return $products->paginate(16);
@@ -88,6 +91,7 @@ class PosUtility
 
     public static function addToCart($stockId, $userID, $temUserId)
     {
+       // dd($stockId, $userID, $temUserId);
         $productStock   = ProductStock::find($stockId);
         $product        = $productStock->product;
         $quantity       = $product->min_qty;
@@ -338,5 +342,23 @@ class PosUtility
             }
             return array('success' => 0, 'message' => translate("Please select a product."));
         }
+    }
+
+     /**
+     * Get stock id by barcode
+     */
+    public static function getStockIdByBarcode($barcode)
+    {
+        $product_stock = ProductStock::where('barcode', $barcode)->first();
+        if ($product_stock) {
+            return [
+                'id' => $product_stock->id,
+                'name' => $product_stock->product->name,
+                'variant' => $product_stock->variant,
+                'price' => $product_stock->price,
+                'qty' => $product_stock->qty,
+            ];
+        }
+        return null;
     }
 }

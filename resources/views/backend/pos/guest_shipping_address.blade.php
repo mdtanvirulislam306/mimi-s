@@ -7,12 +7,12 @@
     </div>
 </div>
 <div class="form-group">
-    <div class=" row">
+    {{-- <div class=" row">
         <label class="col-sm-2 control-label" for="email">{{translate('Email')}}</label>
         <div class="col-sm-10">
             <input type="email" placeholder="{{translate('Email')}}" id="email" name="email" class="form-control" required>
         </div>
-    </div>
+    </div> --}}
 </div>
 <div class="form-group">
     <div class=" row">
@@ -22,7 +22,7 @@
         </div>
     </div>
 </div>
-<div class="form-group">
+{{-- <div class="form-group">
     <div class=" row">
         <label class="col-sm-2 control-label">{{translate('Country')}}</label>
         <div class="col-sm-10">
@@ -34,20 +34,23 @@
             </select>
         </div>
     </div>
-</div>
+</div> --}}
 <div class="form-group">
     <div class="row">
         <div class="col-sm-2 control-label">
-            <label>{{ translate('State')}}</label>
+            <label>{{ translate('District')}}</label>
         </div>
         <div class="col-sm-10">
             <select class="form-control mb-3 aiz-selectpicker" data-live-search="true" name="state_id" required>
-
+                <option value="">{{ translate('Select your district') }}</option>
+                @foreach ($state as $key => $district)
+                    <option value="{{ $district->id }}">{{ $district->name }}</option>
+                @endforeach
             </select>
         </div>
     </div>
 </div>
-<div class="form-group">
+{{-- <div class="form-group">
     <div class="row">
         <div class="col-sm-2">
             <label>{{ translate('City')}}</label>
@@ -58,15 +61,15 @@
             </select>
         </div>
     </div>
-</div>
-<div class="form-group">
+</div> --}}
+{{-- <div class="form-group">
     <div class=" row">
         <label class="col-sm-2 control-label" for="postal_code">{{translate('Postal code')}}</label>
         <div class="col-sm-10">
             <input type="number" min="0" placeholder="{{translate('Postal code')}}" id="postal_code" name="postal_code" class="form-control" required>
         </div>
     </div>
-</div>
+</div> --}}
 <div class="form-group">
     <div class=" row">
         <label class="col-sm-2 control-label" for="phone">{{translate('Phone')}}</label>

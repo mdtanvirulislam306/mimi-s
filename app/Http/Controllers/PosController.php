@@ -7,10 +7,12 @@ use App\Models\Order;
 use App\Models\User;
 use App\Http\Resources\PosProductCollection;
 use App\Models\Cart;
+use App\Models\State;
 use App\Utility\FontUtility;
 use App\Utility\PosUtility;
 use Session;
 use Mpdf\Mpdf;
+
 
 class PosController extends Controller
 {
@@ -29,22 +31,29 @@ class PosController extends Controller
 
     public function search(Request $request)
     {
-        $products = PosUtility::product_search($request->only('category', 'brand', 'keyword', 'branch_id'));
+        $products = PosUtility::product_search($request->only('category', 'keyword', 'branch_id', 'barcode'));
 
         $stocks = new PosProductCollection($products);
         $stocks->appends(['keyword' =>  $request->keyword, 'category' => $request->category, 'brand' => $request->brand]);
         return $stocks;
     }
-    public function getStockIdByBarcode(Request $request)
-{
-    $barcode = $request->barcode;
-    $stock = ProductStock::where('barcode', $barcode)->first();
-
-    if($stock){
-        return response()->json(['success' => 1, 'stock_id' => $stock->id]);
-    }
-    return response()->json(['success' => 0, 'message' => 'Product not found']);
-}
+       public function getStockByBarcode(Request $request)
+    {
+        $barcode = $request->barcode;
+        $stock = PosUtility::getStockIdByBarcode($barcode);
+        if ($stock) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Stock found',
+                'stock' => $stock
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'No stock found with this barcode'
+            ]);
+        }
+    } 
     // Add product To cart
     public function addToCart(Request $request)
     {   
@@ -85,7 +94,8 @@ class PosController extends Controller
     {
         Session::forget('pos.shipping_info');
         $user_id = $request->id;
-        return ($user_id == '') ? view('backend.pos.guest_shipping_address') : view('backend.pos.shipping_address', compact('user_id'));
+        $state = State::where('country_id', 18)->get();
+        return ($user_id == '') ? view('backend.pos.guest_shipping_address') : view('backend.pos.shipping_address', compact('user_id', 'state'));
     }
 
     public function set_shipping_address(Request $request)

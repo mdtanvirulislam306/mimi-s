@@ -37,7 +37,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         Route::post('/pos-order', 'order_store')->name('pos.order_place');
         Route::get('/pos-activation', 'configuration')->name('poin-of-sales.activation');
         Route::get('/pos/thermal-printer/{order_id}', 'invoice')->name('admin.invoice.thermal_printer');
-        Route::post('/pos/get-stock-id-by-barcode','getStockIdByBarcode')->name('pos.getStockIdByBarcode');
+        Route::post('/pos/get-stock-id-by-barcode','getStockByBarcode')->name('pos.getStockIdByBarcode');
 
     });
 });
