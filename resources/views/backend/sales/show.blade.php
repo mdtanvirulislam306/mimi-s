@@ -107,15 +107,15 @@
                             </strong><br>
                             {{ json_decode($order->shipping_address)->email }}<br>
                             {{ json_decode($order->shipping_address)->phone }}<br>
-                            {{ json_decode($order->shipping_address)->address }}, {{ json_decode($order->shipping_address)->city }}, @if(isset(json_decode($order->shipping_address)->state)) {{ json_decode($order->shipping_address)->state }} - @endif {{ json_decode($order->shipping_address)->postal_code }}<br>
-                            {{ json_decode($order->shipping_address)->country }}
+                            {{ json_decode($order->shipping_address)->address }}, @if(isset(json_decode($order->shipping_address)->state)) {{ json_decode($order->shipping_address)->state }}. @endif<br>
+                            
                         </address>
                     @else
                         <address>
                             <strong class="text-main">
                                 {{ $order->user->name }}
                             </strong><br>
-                            {{ $order->user->email }}<br>
+                            
                             {{ $order->user->phone }}<br>
                         </address>
                     @endif

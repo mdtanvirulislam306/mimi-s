@@ -70,19 +70,19 @@ class PosUtility
             $data['name'] = $address->user->name;
             $data['email'] = $address->user->email;
             $data['address'] = $address->address;
-            $data['country'] = $address->country->name;
+            // $data['country'] = $address->country->name;
             $data['state'] = $address->state->name;
-            $data['city'] = $address->city->name;
-            $data['postal_code'] = $address->postal_code;
+            // $data['city'] = $address->city->name;
+            // $data['postal_code'] = $address->postal_code;
             $data['phone'] = $address->phone;
         } else {
             $data['name'] = $request->name;
             $data['email'] = $request->email;
             $data['address'] = $request->address;
-            $data['country'] = Country::find($request->country_id)->name;
+            // $data['country'] = Country::find($request->country_id)->name;
             $data['state'] = State::find($request->state_id)->name;
-            $data['city'] = City::find($request->city_id)->name;
-            $data['postal_code'] = $request->postal_code;
+            // $data['city'] = City::find($request->city_id)->name;
+            // $data['postal_code'] = $request->postal_code;
             $data['phone'] = $request->phone;
         }
 

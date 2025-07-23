@@ -170,7 +170,7 @@
                             </li>
                             @endcan
                             @endif
-                            @can('barcode_generator')
+                            @can('show_all_products')
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('barcode.index') }}" class="aiz-side-nav-link">
                                     <span class="aiz-side-nav-text">{{ translate('Barcode') }}</span>
@@ -1835,14 +1835,13 @@
                             </a>
                         </li>
                         @endcan --}}
-                         @can('branch_setup')
+                         
                         <li class="aiz-side-nav-item">
                             <a href="{{route('branch.index')}}"
                                 class="aiz-side-nav-link {{ areActiveRoutes(['branch.index', 'branch.create', 'branch.store', 'branch.show', 'branch.edit'])}}">
                                 <span class="aiz-side-nav-text">{{translate('Branch')}}</span>
                             </a>
                         </li>
-                        @endcan
                         @can('language_setup')
                         <li class="aiz-side-nav-item">
                             <a href="{{route('languages.index')}}"
