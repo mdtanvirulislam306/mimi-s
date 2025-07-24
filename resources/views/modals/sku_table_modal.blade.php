@@ -21,7 +21,7 @@
                                             <span class="sku-text">{{ $variation->sku ?? '-' }}</span>
                                         </td>
                                         <td>{{ $variation->price ?? '-' }}</td>
-                                        <td>{{ $variation->QTY ?? '-' }}</td>
+                                        <td>{{ $variation->qty ?? '-' }}</td>
                                         <td>
                                             @if(!empty($variation->sku))
                                                 <button type="button" class="btn btn-outline-primary btn-sm copy-sku-btn" data-sku="{{ $variation->sku }}">
