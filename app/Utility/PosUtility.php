@@ -216,6 +216,7 @@ class PosUtility
                     $order->user_id = $userId;
                 }
                 $order->shipping_address = json_encode($shippingInfo);
+                $order->sale_by = $data['sale_by'];
 
                 $order->payment_type    = $data['payment_type'];
                 $order->delivery_viewed = '0';

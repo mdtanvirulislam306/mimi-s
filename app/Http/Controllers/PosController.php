@@ -141,6 +141,7 @@ class PosController extends Controller
     public function order_store(Request $request)
     {
         $request->merge(['temp_usder_id' => Session::get('pos.temp_user_id'), 'shippingInfo' => Session::get('pos.shipping_info'), 'shippingCost' => Session::get('pos.shipping', 0), 'discount' => Session::get('pos.discount'),'sale_by'=>auth()->user()->id]);
+     
         $response = PosUtility::orderStore($request->except(['_token']));
 
         if ($response['success']) {

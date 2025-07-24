@@ -38,7 +38,7 @@ class ProductStockService
             unset($collection['colors_active'], $collection['colors'], $collection['choice_no']);
             $qty = $collection['current_stock'];
             $price = $collection['unit_price'];
-            $barcode = $collection['barcode'];
+            $barcode =  $this->generateRandomCode();
             unset($collection['current_stock']);
 
             $data = $collection->merge(compact('variant', 'qty', 'price','barcode'))->toArray();

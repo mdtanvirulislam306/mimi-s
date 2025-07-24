@@ -179,13 +179,13 @@ class ProductController extends Controller
     public function create()
     {
         CoreComponentRepository::initializeCache();
-        $barcode = $this->generateRandomCode();
+        
         $categories = Category::where('parent_id', 0)
             ->where('digital', 0)
             ->with('childrenCategories')
             ->get();
 
-        return view('backend.product.products.create', compact('categories', 'barcode'));
+        return view('backend.product.products.create', compact('categories'));
     }
     public function generateRandomCode()
     {
@@ -239,7 +239,7 @@ class ProductController extends Controller
         $this->productFlashDealService->store($request->only([
             'flash_deal_id', 'flash_discount', 'flash_discount_type'
         ]), $product);
-
+        $barcode = $this->generateRandomCode();
         //Product Stock
         $this->productStockService->store($request->only([
             'colors_active', 'colors', 'choice_no', 'unit_price', 'sku', 'current_stock', 'product_id','barcode'
