@@ -143,6 +143,7 @@
                             <td>{{ optional($product->user)->name }}</td>
                         @endif
                         <td>
+                            <strong>{{translate('SKU')}}:</strong> {{ $product->num_of_sale }} {{translate('times')}} </br>
                             <strong>{{translate('Num of Sale')}}:</strong> {{ $product->num_of_sale }} {{translate('times')}} </br>
                             <strong>{{translate('Base Price')}}:</strong> {{ single_price($product->unit_price) }} </br>
                             <strong>{{translate('Rating')}}:</strong> {{ $product->rating }} </br>

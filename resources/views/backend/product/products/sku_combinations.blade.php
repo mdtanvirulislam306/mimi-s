@@ -64,7 +64,7 @@
 					<input type="number" lang="en" name="qty_{{ $str }}" value="10" min="0" step="1" class="form-control" required>
 				</td>
 				<td>
-					<input type="text" lang="en" name="barcode_{{ $str }}" value="" class="form-control" required>
+					<input type="text" lang="en" name="barcode_{{ $str }}" value="" class="form-control" >
 				</td>
 				<td>
 					<div class=" input-group " data-toggle="aizuploader" data-type="image">
