@@ -69,10 +69,12 @@
 							<span class="">{{translate('Phone')}}:</span>
 							<span class="fw-600">{{ Session::get('pos.shipping_info')['phone'] }}</span>
 						</div>
-						<div class="d-flex justify-content-between  mb-2">
+						@if (Session::get('pos.shipping_info')['address'] != null)
+							<div class="d-flex justify-content-between  mb-2">
 							<span class="">{{translate('Address')}}:</span>
-							<span class="fw-600">{{ Session::get('pos.shipping_info')['address'] }},{{ Session::get('pos.shipping_info')['state'] }}</span>
+							<span class="fw-600">{{ Session::get('pos.shipping_info')['address'] }}{{ Session::get('pos.shipping_info')['state'] }}</span>
 						</div>
+						@endif
 						{{-- <div class="d-flex justify-content-between  mb-2">
 							<span class="">{{translate('Country')}}:</span>
 							<span class="fw-600">{{ Session::get('pos.shipping_info')['country'] }}</span>

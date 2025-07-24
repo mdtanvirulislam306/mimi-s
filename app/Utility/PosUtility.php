@@ -77,10 +77,10 @@ class PosUtility
             $data['phone'] = $address->phone;
         } else {
             $data['name'] = $request->name;
-            $data['email'] = $request->email;
-            $data['address'] = $request->address;
+            $data['email'] = $request->email?? NULL;
+            $data['address'] = $request->address?? NULL;
             // $data['country'] = Country::find($request->country_id)->name;
-            $data['state'] = State::find($request->state_id)->name;
+            $data['state'] = State::find($request->state_id)->name?? NULL;
             // $data['city'] = City::find($request->city_id)->name;
             // $data['postal_code'] = $request->postal_code;
             $data['phone'] = $request->phone;
@@ -203,7 +203,7 @@ class PosUtility
     public static function orderStore($data)
     {
         $shippingInfo = $data['shippingInfo'];
-        if ($shippingInfo == null || $shippingInfo['name'] == null || $shippingInfo['phone'] == null || $shippingInfo['address'] == null) {
+        if ($shippingInfo == null || $shippingInfo['name'] == null || $shippingInfo['phone'] == null ) {
             return array('success' => 0, 'message' => translate("Please Add Shipping Information."));
         } else {
             $carts = get_pos_user_cart($data['user_id'], $data['temp_usder_id']);
