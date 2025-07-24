@@ -159,6 +159,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
         Route::post('/product-search', 'product_search')->name('product.search');
         Route::post('/get-selected-products', 'get_selected_products')->name('get-selected-products');
         Route::post('/set-product-discount', 'setProductDiscount')->name('set_product_discount');
+        Route::get('/product-sku-list', 'getProductVariantsSkuList')->name('product.sku.list');
     });
 
     // Digital Product

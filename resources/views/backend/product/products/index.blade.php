@@ -143,7 +143,6 @@
                             <td>{{ optional($product->user)->name }}</td>
                         @endif
                         <td>
-                            <strong>{{translate('SKU')}}:</strong> {{ $product->num_of_sale }} {{translate('times')}} </br>
                             <strong>{{translate('Num of Sale')}}:</strong> {{ $product->num_of_sale }} {{translate('times')}} </br>
                             <strong>{{translate('Base Price')}}:</strong> {{ single_price($product->unit_price) }} </br>
                             <strong>{{translate('Rating')}}:</strong> {{ $product->rating }} </br>
@@ -213,11 +212,9 @@
                                     </a>
                                 @endif
                             @endcan
-                            @can('product_duplicate')
-                                <a class="btn btn-soft-warning btn-icon btn-circle btn-sm" href="{{route('products.duplicate', ['id'=>$product->id, 'type'=>$type]  )}}" title="{{ translate('Duplicate') }}">
+                                <a class="btn btn-soft-warning btn-icon btn-circle btn-sm" href="#" data-product-id="{{$product->id}}" id="copy_sku_btn" title="{{ translate('Copy SKU') }}">
                                     <i class="las la-copy"></i>
                                 </a>
-                            @endcan
                             @can('product_delete')
                                 <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('products.destroy', $product->id)}}" title="{{ translate('Delete') }}">
                                     <i class="las la-trash"></i>
@@ -238,8 +235,26 @@
 @endsection
 
 @section('modal')
+
+    {{-- sku list modal--}}
+    <div class="modal fade" id="sku_table_modal" tabindex="-1" aria-labelledby="skuTableModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="skuTableModalLabel">Product Variations &amp; SKUs</h5>
+            </div>
+            <div class="modal-body">
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+    </div>
     <!-- Delete modal -->
     @include('modals.delete_modal')
+    @include('modals.sku_table_modal')
     <!-- Bulk Delete modal -->
     @include('modals.bulk_delete_modal')
 @endsection
@@ -247,6 +262,42 @@
 
 @section('script')
     <script type="text/javascript">
+// This script handles the copy SKU functionality
+document.addEventListener('click', function (event) {
+    if (event.target.classList.contains('copy-sku-btn')) {
+        console.log('Copy button clicked');
+        
+        const sku = event.target.getAttribute('data-sku');
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(sku).then(() => {
+                event.target.textContent = 'Copied!';
+                setTimeout(() => {
+                    event.target.textContent = 'Copy';
+                }, 1000);
+            });
+        }
+    }
+});
+
+    $(document).on('click', '#copy_sku_btn', function(e) {
+        e.preventDefault();
+        var productId = $(this).attr('data-product-id');
+        if (!productId) return;
+
+        $.ajax({
+            url: "{{ route('product.sku.list') }}",
+            type: "GET",
+            _token: AIZ.data.csrfToken,
+            data: { id: productId },
+            success: function(response) {
+                $('#sku_table_modal .modal-body').html(response);
+                $('#sku_table_modal').modal('show');
+            },
+            error: function() {
+                AIZ.plugins.notify('danger', '{{ translate('Failed to load SKU data.') }}');
+            }
+        });
+    });
 
         $(document).on("change", ".check-all", function() {
             if(this.checked) {

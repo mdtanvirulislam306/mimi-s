@@ -623,4 +623,11 @@ class ProductController extends Controller
     {
         return $this->productService->setCategoryWiseDiscount($request->except(['_token']));
     }
+    public function getProductVariantsSkuList(Request $request)
+    {
+        $product = Product::findOrFail($request->id);
+        $variants = $product->stocks()->select('variant', 'sku', 'qty', 'price')->get();
+
+        return view('modals.sku_table_modal', compact('variants'));
+    }
 }

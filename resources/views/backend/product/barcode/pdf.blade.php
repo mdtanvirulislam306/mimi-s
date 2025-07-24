@@ -13,7 +13,7 @@ img { height: 12mm; }
 
 @for($i = 0; $i < $quantity; $i++)
 <div class="sticker">
-    <b>{{ $stock->product->name }}</b><br><br>
+    <b>{{ $stock->product->name }} @if($stock->variant)({{$stock->variant}})@endif</b><br><br>
     <img src="data:image/png;base64,{{ DNS1D::getBarcodePNG($stock->barcode, 'C128') }}" /><br>
     <b>{{ $stock->barcode }}</b><br>
     <b>{{$stock->price. " Taka"}}</b>

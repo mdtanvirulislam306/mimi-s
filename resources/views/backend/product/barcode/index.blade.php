@@ -58,7 +58,7 @@ $('#barcodeForm').on('submit', function(e){
         headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'},
         success: function(response){
             $('#samplePreview').show();
-            $('#pName').text(response.product.name);
+            $('#pName').text(response.product.name+" "+(response.stock.variant ? ' ('+response.stock.variant+')' : ''));
             $('#barcodeImg').attr('src','data:image/png;base64,'+response.barcodeImage);
             $('#pBarcode').text(response.stock.barcode);
             $('#pPrice').text(response.stock.price+' Taka');
