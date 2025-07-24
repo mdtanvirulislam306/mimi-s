@@ -187,18 +187,7 @@ class ProductController extends Controller
 
         return view('backend.product.products.create', compact('categories'));
     }
-    public function generateRandomCode()
-    {
-        $prefix = 'MM';
-        $randomNumber = str_pad(mt_rand(0, 99999999), 8, '0', STR_PAD_LEFT);
-        $code = $prefix . $randomNumber;
-        while (\App\Models\Product::where('barcode', $code)->exists()) {
-            $randomNumber = str_pad(mt_rand(0, 99999999), 8, '0', STR_PAD_LEFT);
-            $code = $prefix . $randomNumber;
-        }
-
-        return $code;
-    }
+    
     public function add_more_choice_option(Request $request)
     {
         $all_attribute_values = AttributeValue::with('attribute')->where('attribute_id', $request->attribute_id)->get();
@@ -239,7 +228,7 @@ class ProductController extends Controller
         $this->productFlashDealService->store($request->only([
             'flash_deal_id', 'flash_discount', 'flash_discount_type'
         ]), $product);
-        $barcode = $this->generateRandomCode();
+        $barcode = generateRandomCode('MM');
         //Product Stock
         $this->productStockService->store($request->only([
             'colors_active', 'colors', 'choice_no', 'unit_price', 'sku', 'current_stock', 'product_id','barcode'

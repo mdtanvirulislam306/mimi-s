@@ -27,8 +27,8 @@ class ProductStockService
                 $product_stock->product_id = $product->id;
                 $product_stock->variant = $str;
                 $product_stock->price = request()['price_' . str_replace('.', '_', $str)];
-                $product_stock->barcode = $this->generateRandomCode();
-                $product_stock->sku = request()['sku_' . str_replace('.', '_', $str)];
+                $product_stock->barcode = generateRandomCode('MM');
+                $product_stock->sku = request()['sku_' . str_replace('.', '_', $str)] ?? generateRandomCode('SKU');
                 $product_stock->qty = request()['qty_' . str_replace('.', '_', $str)];
                 $product_stock->image = request()['img_' . str_replace('.', '_', $str)];
                 $product_stock->save();
@@ -38,26 +38,16 @@ class ProductStockService
             unset($collection['colors_active'], $collection['colors'], $collection['choice_no']);
             $qty = $collection['current_stock'];
             $price = $collection['unit_price'];
-            $barcode =  $this->generateRandomCode();
+            $barcode =  generateRandomCode('MM');
+            $sku =  generateRandomCode('SKU');
             unset($collection['current_stock']);
 
-            $data = $collection->merge(compact('variant', 'qty', 'price','barcode'))->toArray();
+            $data = $collection->merge(compact('variant', 'qty', 'price','barcode','sku'))->toArray();
             //dd($data);
             ProductStock::create($data);
         }
     }
-    public function generateRandomCode()
-    {
-        $prefix = 'MM';
-        $randomNumber = str_pad(mt_rand(0, 99999999), 8, '0', STR_PAD_LEFT);
-        $code = $prefix . $randomNumber;
-        while (\App\Models\ProductStock::where('barcode', $code)->exists()) {
-            $randomNumber = str_pad(mt_rand(0, 99999999), 8, '0', STR_PAD_LEFT);
-            $code = $prefix . $randomNumber;
-        }
-
-        return $code;
-    }
+    
     public function product_duplicate_store($product_stocks , $product_new)
     {
         foreach ($product_stocks as $key => $stock) {

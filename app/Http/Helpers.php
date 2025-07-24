@@ -208,7 +208,28 @@ if (!function_exists('convert_price')) {
         return $price;
     }
 }
-
+if (!function_exists('generateRandomCode')){
+    function generateRandomCode($prefix = "")
+    {
+        $prefix = $prefix;
+        $randomNumber = str_pad(mt_rand(0, 99999999), 8, '0', STR_PAD_LEFT);
+        $code = $prefix . $randomNumber;
+        if($prefix == "MM"){
+            while (\App\Models\ProductStock::where('barcode', $code)->exists()) {
+            $randomNumber = str_pad(mt_rand(0, 99999999), 8, '0', STR_PAD_LEFT);
+            $code = $prefix . $randomNumber;
+             }
+        }
+        if($prefix == "SKU"){
+            while (\App\Models\ProductStock::where('sku', $code)->exists()) {
+            $randomNumber = str_pad(mt_rand(0, 99999999), 8, '0', STR_PAD_LEFT);
+            $code = $prefix . $randomNumber;
+             }
+        }
+        
+        return $code;
+    }
+}
 //gets currency symbol
 if (!function_exists('currency_symbol')) {
     function currency_symbol()
