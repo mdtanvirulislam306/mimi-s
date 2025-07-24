@@ -11,8 +11,8 @@
                     <option value="">--Choose--</option>
                     @foreach($products as $product)
                         <option value="{{ $product->id }}">{{ $product->product->name }} 
-                            @if ($product->variant)
-                            ({{ $product->variant }}) 
+                            @if ($product->sku)
+                                ({{ $product->sku }})
                             @endif
                         </option>
                     @endforeach

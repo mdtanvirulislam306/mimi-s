@@ -12,7 +12,7 @@ class BarcodeController extends Controller
     public function index()
     {
         $products = ProductStock::with('product:id,name')
-        ->select('id','product_id','variant','barcode','price')
+        ->select('id','product_id','variant','barcode','sku','price')
         ->get();
         //dd($products);
         return view('backend.product.barcode.index', compact('products'));
