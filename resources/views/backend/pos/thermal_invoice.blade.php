@@ -108,8 +108,6 @@
 						$shipping_address = json_decode($order->shipping_address);
 					@endphp
 					<tr><td class="strong">{{ translate('Name') }}: {{ $shipping_address->name }}</small></td></tr>
-					<tr><td class="gry-color small">{{ translate('Address') }}: {{ $shipping_address->address }}, {{ $shipping_address->city }},  @if(isset(json_decode($order->shipping_address)->state)) {{ json_decode($order->shipping_address)->state }} - @endif {{ $shipping_address->postal_code }}, {{ $shipping_address->country }}</small></td></tr>
-					<tr><td class="gry-color small">{{ translate('Email') }}: {{ $shipping_address->email }}</small></td></tr>
 					<tr><td class="gry-color small">{{ translate('Phone') }}: {{ $shipping_address->phone }}</small></td></tr>
 				</table>
 			</div>
