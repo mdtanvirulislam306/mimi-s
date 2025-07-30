@@ -1,6 +1,109 @@
 
-    <header class="@if (get_setting('header_stikcy') == 'on') sticky-top @endif z-1020 " 
-    style="{{ get_setting('header_background') ? 'background-color: '.get_setting('header_background') : ''  }};">
+    <!-- Top Bar -->
+    <div class="top-navbar bg-white z-1035 h-35px h-sm-auto">
+        <div class="container">
+            <div class="row">
+                {{-- <div class="col-lg-6 col">
+                    <ul class="list-inline d-flex justify-content-between justify-content-lg-start mb-0">
+                        <!-- Language switcher -->
+                        @if (get_setting('show_language_switcher') == 'on')
+                            <li class="list-inline-item dropdown mr-4" id="lang-change">
+
+                                <a href="javascript:void(0)" class="dropdown-toggle text-secondary fs-12 py-2"
+                                    data-toggle="dropdown" data-display="static">
+                                    <span class="">{{ $system_language->name }}</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-left">
+                                    @foreach (get_all_active_language() as $key => $language)
+                                        <li>
+                                            <a href="javascript:void(0)" data-flag="{{ $language->code }}"
+                                                class="dropdown-item @if ($system_language->code == $language->code) active @endif">
+                                                <img src="{{ static_asset('assets/img/placeholder.jpg') }}"
+                                                    data-src="{{ static_asset('assets/img/flags/' . $language->code . '.png') }}"
+                                                    class="mr-1 lazyload" alt="{{ $language->name }}" height="11">
+                                                <span class="language">{{ $language->name }}</span>
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                        @endif
+
+                        <!-- Currency Switcher -->
+                        @if (get_setting('show_currency_switcher') == 'on')
+                            <li class="list-inline-item dropdown ml-auto ml-lg-0 mr-0" id="currency-change">
+                                @php
+                                    $system_currency = get_system_currency();
+                                @endphp
+
+                                <a href="javascript:void(0)" class="dropdown-toggle text-secondary fs-12 py-2"
+                                    data-toggle="dropdown" data-display="static">
+                                    {{ $system_currency->name }}
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left">
+                                    @foreach (get_all_active_currency() as $key => $currency)
+                                        <li>
+                                            <a class="dropdown-item @if ($system_currency->code == $currency->code) active @endif"
+                                                href="javascript:void(0)"
+                                                data-currency="{{ $currency->code }}">{{ $currency->name }}
+                                                ({{ $currency->symbol }})</a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                        @endif
+
+                    </ul>
+                </div> --}}
+
+                <div class="col-12 text-right d-none d-lg-block">
+                    <ul class="list-inline mb-0 h-100 d-flex justify-content-end align-items-center">
+                        @if (get_setting('vendor_system_activation') == 1)
+                            <!-- Become a Seller -->
+                            <li class="list-inline-item mr-0 pl-0 py-2">
+                                <a href="{{ route(get_setting('seller_registration_verify') === '1' ? 'shop-reg.verification' : 'shops.create') }}"
+                                    class="text-secondary fs-12 pr-3 d-inline-block border-width-2 border-right">{{ translate('Become a Seller !') }}</a>
+                            </li>
+
+                             @if (addon_is_activated('affiliate_system'))
+                            <!-- Dropdown Trigger -->
+                            <li class="list-inline-item dropdown py-2">
+                                <a class="text-secondary fs-12 dropdown-toggle d-inline-block border-width-2 border-right pr-3" href="#" role="button" id="affDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-chevron-down"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right py-0" aria-labelledby="affDropdown">
+                                    <a class="dropdown-item" href="{{ route('affiliate.apply') }}">{{ translate('Become an Affiliate') }}</a>
+                                </div>
+                            </li>
+                            @endif
+                            
+                            {{-- <li class="list-inline-item mr-0 pl-0 py-2">
+                                <a href="{{ route('shops.create') }}"
+                                    class="text-secondary fs-12 pr-3 d-inline-block border-width-2 border-right">{{ translate('Become a Seller !') }}</a>
+                            </li> --}}
+                            <!-- Seller Login -->
+                            <li class="list-inline-item mr-0 pl-0 py-2">
+                                <a href="{{ route('seller.login') }}"
+                                    class="text-secondary fs-12 pl-3 d-inline-block">{{ translate('Login to Seller') }}</a>
+                            </li>
+                        @endif
+                        {{-- @if (get_setting('helpline_number'))
+                            <!-- Helpline -->
+                            <li class="list-inline-item ml-3 pl-3 mr-0 pr-0">
+                                <a href="tel:{{ get_setting('helpline_number') }}"
+                                    class="text-secondary fs-12 d-inline-block py-2">
+                                    <span>{{ translate('Call for order') }}</span>
+                                    <span>{{ get_setting('helpline_number') }}</span>
+                                </a>
+                            </li>
+                        @endif --}}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <header class="@if (get_setting('header_stikcy') == 'on') sticky-top @endif z-1020 bg-white">
         <!-- Search Bar -->
         <div class="position-relative logo-bar-area border-bottom border-md-nonea z-1025">
             <div class="container">
@@ -41,9 +144,8 @@
                             <i class="las la-search la-flip-horizontal la-2x"></i>
                         </a>
                     </div>
-                    
                     <!-- Search field -->
-                    <div class="flex-grow-1 d-lg-none front-header-search d-flex align-items-center bg-white mx-xl-5">
+                    <div class="flex-grow-1 front-header-search d-flex align-items-center bg-white mx-xl-5">
                         <div class="position-relative flex-grow-1 px-3 px-lg-0">
                             <form action="{{ route('search') }}" method="GET" class="stop-propagation">
                                 <div class="d-flex position-relative align-items-center">
@@ -91,44 +193,15 @@
                             </div>
                         </div>
                     </div>
-                  
-                     <!-- Menu Bar -->
-        <div class="d-none d-lg-block position-relative h-70px">
-            <div class="container h-100">
-                <div class="d-flex h-100 justify-content-between">
-                    <!-- Header Menus -->
-                    <div class="ml-xl-4 w-100 overflow-hidden">
-                        <div class="d-flex align-items-center justify-content-center justify-content-xl-start h-100">
-                            <ul class="list-inline mb-0 pl-0 hor-swipe c-scrollbar-light">
-                                @if (get_setting('header_menu_labels') != null)
-                                    @foreach (json_decode(get_setting('header_menu_labels'), true) as $key => $value)
-                                        <li class="list-inline-item mr-0 animate-underline-white">
-                                            <a href="{{ json_decode(get_setting('header_menu_links'), true)[$key] }}"
-                                                class="fs-13 px-3 py-3 d-inline-block fw-700  header_menu_links hov-bg-black-10
-                                            @if (url()->current() == json_decode(get_setting('header_menu_links'), true)[$key]) active @endif" style="{{ get_setting('header_text_color') ? 'color: '.get_setting('header_text_color') : '' }}">
-                                                {{ translate($value) }}
-                                            </a>
-                                        </li>
-                                    @endforeach
-                                @endif
-                            </ul>
+                    <!-- Search box -->
+                    <div class="d-none d-lg-none ml-3 mr-0">
+                        <div class="nav-search-box">
+                            <a href="#" class="nav-box-link">
+                                <i class="la la-search la-flip-horizontal d-inline-block nav-box-icon"></i>
+                            </a>
                         </div>
                     </div>
-                    {{-- cart --}}
-                </div>
-            </div>
-            <!-- Categoty Menus -->
-            <div class="hover-category-menu position-absolute w-100 top-100 left-0 right-0 z-3 d-none"
-                id="click-category-menu">
-                <div class="container">
-                    <div class="d-flex position-relative">
-                        <div class="position-static">
-                            @include('frontend.'.get_setting("homepage_select").'.partials.category_menu')
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
                     @if (Auth::check() && auth()->user()->user_type == 'customer')
                         <!-- Compare -->
                         <div class="d-none d-lg-block ml-3 mr-0">
@@ -253,8 +326,7 @@
                             </li>
                         </ul>
                     @endif
-                        <!-- Cart -->
-                    
+
                     <div class="d-none d-xl-block ml-auto mr-0">
                         @auth
                             <span
@@ -273,7 +345,7 @@
                                     @endif
                                 </span>
                                 <!-- Name -->
-                                <h4 class="h5 fs-14 fw-700  ml-2 mb-0" style="{{ get_setting('header_text_color') ? 'color: '.get_setting('header_text_color') : '' }}">{{ $user->name }}</h4>
+                                <h4 class="h5 fs-14 fw-700 text-dark ml-2 mb-0">{{ $user->name }}</h4>
                             </span>
                         @else
                             <!--Login & Registration -->
@@ -295,13 +367,6 @@
                                     class="text-reset opacity-60 hov-opacity-100 hov-text-primary fs-12 d-inline-block py-2 pl-2">{{ translate('Registration') }}</a>
                             </span>
                         @endauth
-
-                    </div>
-                    <div class="d-none d-xl-block align-self-stretch ml-5 mr-0 has-transition bg-black-10"
-                        data-hover="dropdown">
-                        <div class="nav-cart-box dropdown h-100" id="cart_items" style="width: max-content;">
-                            @include('frontend.partials.cart.cart')
-                        </div>
                     </div>
                 </div>
             </div>
@@ -381,7 +446,18 @@
                                         </a>
                                     </li>
 
-                                
+                                    @if (addon_is_activated('preorder'))
+                                    <li class="user-top-nav-element border border-top-0" data-id="1">
+                                        <a href="{{ route('preorder.order_list') }}"
+                                            class="text-truncate text-dark px-4 fs-14 d-flex align-items-center hov-column-gap-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16.002" viewBox="0 0 16 16.002">
+                                                <path id="Union_63" data-name="Union 63" d="M14072,894a8,8,0,1,1,8,8A8.011,8.011,0,0,1,14072,894Zm1,0a7,7,0,1,0,7-7A7.007,7.007,0,0,0,14073,894Zm10.652,3.674-3.2-2.781a1,1,0,0,1-.953-1.756V889.5a.5.5,0,1,1,1,0v3.634a1,1,0,0,1,.5.863c0,.015,0,.029,0,.044l3.311,2.876a.5.5,0,0,1,.05.7.5.5,0,0,1-.708.049Z" transform="translate(-14072 -885.998)" fill="#b5b5bf"/>
+                                              </svg>
+                                            <span
+                                                class="user-top-menu-name has-transition ml-3">{{ translate('Preorder List') }}</span>
+                                        </a>
+                                    </li>
+                                    @endif
 
                                     <li class="user-top-nav-element border border-top-0" data-id="1">
                                         <a href="{{ route('digital_purchase_history.index') }}"
@@ -430,7 +506,31 @@
                                         </li>
                                     @endif
 
-                                    
+                                    @if (get_setting('wallet_system') == 1)
+                                        <li class="user-top-nav-element border border-top-0" data-id="1">
+                                            <a href="{{ route('wallet.index') }}"
+                                                class="text-truncate text-dark px-4 fs-14 d-flex align-items-center hov-column-gap-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    xmlns:xlink="http://www.w3.org/1999/xlink" width="16"
+                                                    height="16" viewBox="0 0 16 16">
+                                                    <defs>
+                                                        <clipPath id="clip-path1">
+                                                            <rect id="Rectangle_1386" data-name="Rectangle 1386"
+                                                                width="16" height="16" fill="#b5b5bf" />
+                                                        </clipPath>
+                                                    </defs>
+                                                    <g id="Group_8102" data-name="Group 8102"
+                                                        clip-path="url(#clip-path1)">
+                                                        <path id="Path_2936" data-name="Path 2936"
+                                                            d="M13.5,4H13V2.5A2.5,2.5,0,0,0,10.5,0h-8A2.5,2.5,0,0,0,0,2.5v11A2.5,2.5,0,0,0,2.5,16h11A2.5,2.5,0,0,0,16,13.5v-7A2.5,2.5,0,0,0,13.5,4M2.5,1h8A1.5,1.5,0,0,1,12,2.5V4H2.5a1.5,1.5,0,0,1,0-3M15,11H10a1,1,0,0,1,0-2h5Zm0-3H10a2,2,0,0,0,0,4h5v1.5A1.5,1.5,0,0,1,13.5,15H2.5A1.5,1.5,0,0,1,1,13.5v-9A2.5,2.5,0,0,0,2.5,5h11A1.5,1.5,0,0,1,15,6.5Z"
+                                                            fill="#b5b5bf" />
+                                                    </g>
+                                                </svg>
+                                                <span
+                                                    class="user-top-menu-name has-transition ml-3">{{ translate('My Wallet') }}</span>
+                                            </a>
+                                        </li>
+                                    @endif
                                     <li class="user-top-nav-element border border-top-0" data-id="1">
                                         <a href="{{ route('support_ticket.index') }}"
                                             class="text-truncate text-dark px-4 fs-14 d-flex align-items-center hov-column-gap-1">
@@ -480,7 +580,69 @@
             </div>
         </div>
 
-       
+        <!-- Menu Bar -->
+        <div class="d-none d-lg-block position-relative bg-primary h-70px">
+            <div class="container h-100">
+                <div class="d-flex h-100">
+                    <!-- Categoty Menu Button -->
+                    <div class="d-none d-xl-block all-category has-transition bg-black-10" id="category-menu-bar">
+                        <div class="px-3 h-100"
+                            style="padding-top: 12px;padding-bottom: 12px; width:270px; cursor: pointer;">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <span class="fw-700 fs-16 text-dark mr-3">{{ translate('Categories') }}</span>
+                                    {{-- <a href="{{ route('categories.all') }}" class="text-reset categoriesAll">
+                                        <span
+                                            class="d-none d-lg-inline-block text-dark animate-underline-white">({{ translate('See All') }})</span>
+                                    </a> --}}
+                                </div>
+                                <i class="las la-angle-down text-dark has-transition" id="category-menu-bar-icon"
+                                    style="font-size: 1.2rem !important"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Header Menus -->
+                    @php
+                        $nav_txt_color = ((get_setting('header_nav_menu_text') == 'light') ||  (get_setting('header_nav_menu_text') == null)) ? 'text-white' : 'text-dark';
+                    @endphp
+                    <div class="ml-xl-4 w-100 overflow-hidden">
+                        <div class="d-flex align-items-center justify-content-center justify-content-xl-start h-100">
+                            <ul class="list-inline mb-0 pl-0 hor-swipe c-scrollbar-light">
+                                @if (get_setting('header_menu_labels') != null)
+                                    @foreach (json_decode(get_setting('header_menu_labels'), true) as $key => $value)
+                                        <li class="list-inline-item mr-0 animate-underline-white">
+                                            <a href="{{ json_decode(get_setting('header_menu_links'), true)[$key] }}"
+                                                class="fs-13 px-3 py-3 d-inline-block fw-700 {{ $nav_txt_color }} header_menu_links hov-bg-black-10
+                                            @if (url()->current() == json_decode(get_setting('header_menu_links'), true)[$key]) active @endif">
+                                                {{ translate($value) }}
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                @endif
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Cart -->
+                    <div class="d-none d-xl-block align-self-stretch ml-5 mr-0 has-transition bg-black-10"
+                        data-hover="dropdown">
+                        <div class="nav-cart-box dropdown h-100" id="cart_items" style="width: max-content;">
+                            @include('frontend.partials.cart.cart')
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Categoty Menus -->
+            <div class="hover-category-menu position-absolute w-100 top-100 left-0 right-0 z-3 d-none"
+                id="click-category-menu">
+                <div class="container">
+                    <div class="d-flex position-relative">
+                        <div class="position-static">
+                            @include('frontend.'.get_setting("homepage_select").'.partials.category_menu')
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </header>
 
     <!-- Top Menu Sidebar -->

@@ -155,6 +155,30 @@
 								</div>
 							</div>
 						</div>
+						<div class="border-top pt-3">
+						<!--Header background -->
+							<div class="form-group row">
+								<label class="col-md-3 col-from-label">{{translate('Header background')}}</label>
+								<div class="col-md-8">
+									<div class="form-group">
+										<input type="hidden" name="types[]" value="header_background">
+										<input type="text" class="form-control" placeholder="{{ translate('Header background') }}" name="header_background" value="{{ get_setting('header_background') }}">
+									</div>
+								</div>
+							</div>
+                    	</div>
+						<div class="border-top pt-3">
+						<!--Header color -->
+							<div class="form-group row">
+								<label class="col-md-3 col-from-label">{{translate('Header text-color')}}</label>
+								<div class="col-md-8">
+									<div class="form-group">
+										<input type="hidden" name="types[]" value="header_text_color">
+										<input type="text" class="form-control" placeholder="{{ translate('Header text-color') }}" name="header_text_color" value="{{ get_setting('header_text_color') }}">
+									</div>
+								</div>
+							</div>
+                    	</div>
 						<!-- Header Nav Menus -->
 						<label class="">{{translate('Header Nav Menu')}}</label>
 						<div class="header-nav-menu">

@@ -75,7 +75,7 @@
         $topbar_banner_asset = uploaded_asset($topbar_banner);
     @endphp
     @if ($topbar_banner != null)
-        <div class="position-relative top-banner removable-session z-1035 d-none" data-key="top-banner">
+        <div class="position-relative top-banner removable-session d-none" data-key="top-banner">
             <a href="{{ get_setting('topbar_banner_link') }}" class="d-block text-reset h-40px h-lg-60px">
                 <!-- For Large device -->
                 <img src="{{ $topbar_banner_asset }}" class="d-none d-xl-block img-fit h-100" alt="{{ translate('topbar_banner') }}">

@@ -23,12 +23,12 @@
             </g>
         </svg>
     </span>
-    <span class="d-none d-xl-block ml-2 fs-14 fw-700 text-white">{{ single_price($total) }}</span>
+    {{-- <span class="d-none d-xl-block ml-2 fs-14 fw-700 text-white">{{ single_price($total) }}</span>
     <span class="nav-box-text d-none d-xl-block ml-2 text-white fs-12">
 
         (<span class="cart-count">{{count($carts) > 0 ? count($carts) : 0 }}</span> {{translate('Items')}})
 
-    </span>
+    </span> --}}
 </a>
 
 <!-- Cart Items -->
