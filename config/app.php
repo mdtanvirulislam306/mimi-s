@@ -190,7 +190,6 @@ return [
         Spatie\Permission\PermissionServiceProvider::class,
         Milon\Barcode\BarcodeServiceProvider::class,
 
-        Enan\PathaoCourier\PathaoCourierServiceProvider::class,
 
     ],
 
@@ -250,7 +249,6 @@ return [
         'Rave' => KingFlamez\Rave\Facades\Rave::class,
         'DNS1D' => Milon\Barcode\Facades\DNS1DFacade::class,
         'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class,
-        'PathaoCourier' => Enan\PathaoCourier\Facades\PathaoCourier::class,
     ],
 
 ];
