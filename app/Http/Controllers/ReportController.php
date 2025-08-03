@@ -5,11 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\CommissionHistory;
+use App\Models\Order;
 use App\Models\Wallet;
 use App\Models\User;
 use App\Models\Search;
 use App\Models\Shop;
 use Auth;
+use DB;
+use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Models\StaffWiseSaleExport;
+
 
 class ReportController extends Controller
 {
@@ -47,6 +53,87 @@ class ReportController extends Controller
         }
         $products = $products->paginate(15);
         return view('backend.reports.in_house_sale_report', compact('products', 'sort_by'));
+    }
+
+    public function staff_wise_sale_report(Request $request)
+    {
+        
+        $date = $request->date;
+        $staffs = User::where('user_type', 'staff')->get();
+
+        $query = Order::query()->whereNotNull('sale_by');
+
+        if ($date != null) {
+            $orders = $query->where('created_at', '>=', date('Y-m-d', strtotime(explode(" to ", $date)[0])) . '  00:00:00')
+                ->where('created_at', '<=', date('Y-m-d', strtotime(explode(" to ", $date)[1])) . '  23:59:59');
+        }
+
+        if ($request->filled('staff_id')) {
+            $query->where('sale_by', $request->staff_id);
+        }
+
+        $salesData = $query->selectRaw('sale_by, COUNT(*) as total_sales, SUM(grand_total) as total_amount')
+            ->groupBy('sale_by');
+        
+        if ($request->sort == 'desc') {
+            $salesData->orderBy('total_sales', 'desc');
+        } elseif ($request->sort == 'asc') {
+            $salesData->orderBy('total_sales', 'asc');
+        }
+
+        $sales = $salesData->get()->map(function ($item) {
+            $user = User::find($item->sale_by);
+            return [
+                'name' => $user ? $user->name : 'Unknown',
+                'number' => $user ? $user->number : 'Unknown',
+                'email' => $user ? $user->email : 'Unknown',
+                'total_sales' => $item->total_sales,
+                'total_amount' => $item->total_amount,
+            ];
+        });
+        return view('backend.reports.staff_wise_sale_report', compact('staffs', 'sales', 'date'));
+    }
+
+    
+    public function staff_wise_sale_export(Request $request)
+    {
+         $date = $request->date;
+        $staffs = User::where('user_type', 'staff')->get();
+
+        $query = Order::query()->whereNotNull('sale_by');
+
+        if ($date != null) {
+            $orders = $query->where('created_at', '>=', date('Y-m-d', strtotime(explode(" to ", $date)[0])) . '  00:00:00')
+                ->where('created_at', '<=', date('Y-m-d', strtotime(explode(" to ", $date)[1])) . '  23:59:59');
+        }
+
+        if ($request->filled('staff_id')) {
+            $query->where('sale_by', $request->staff_id);
+        }
+
+        $salesData = $query->selectRaw('sale_by, COUNT(*) as total_sales, SUM(grand_total) as total_amount')
+            ->groupBy('sale_by');
+        
+        if ($request->sort == 'desc') {
+            $salesData->orderBy('total_sales', 'desc');
+        } elseif ($request->sort == 'asc') {
+            $salesData->orderBy('total_sales', 'asc');
+        }
+
+        $sales = $salesData->get()->map(function ($item) {
+            $user = User::find($item->sale_by);
+            return [
+                'name' => $user ? $user->name : 'Unknown',
+                'number' => $user ? $user->number : 'Unknown',
+                'email' => $user ? $user->email : 'Unknown',
+                'total_sales' => $item->total_sales,
+                'total_amount' => $item->total_amount,
+            ];
+        });
+        if(!empty($sales)) {
+          return Excel::download(new StaffWiseSaleExport($sales), 'Staff Wise Sales Report.xlsx');
+        }
+        return back();
     }
 
     public function seller_sale_report(Request $request)

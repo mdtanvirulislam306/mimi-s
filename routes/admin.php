@@ -454,6 +454,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
     //Reports
     Route::controller(ReportController::class)->group(function () {
         Route::get('/in_house_sale_report', 'in_house_sale_report')->name('in_house_sale_report.index');
+        Route::get('/staff_wise_sale_report', 'staff_wise_sale_report')->name('staff_wise_sale_report.index');
+        // Order bulk export
+        Route::get('/staff_wise_sale_export', 'staff_wise_sale_export')->name('staff_wise_sale_export');
         Route::get('/seller_sale_report', 'seller_sale_report')->name('seller_sale_report.index');
         Route::get('/stock_report', 'stock_report')->name('stock_report.index');
         Route::get('/wish_report', 'wish_report')->name('wish_report.index');

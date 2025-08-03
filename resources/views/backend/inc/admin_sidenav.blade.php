@@ -1035,10 +1035,12 @@
                         <span class="aiz-side-nav-arrow"></span>
                     </a>
                     <ul class="aiz-side-nav-list level-2">
-                        @can('earning_report')
+                       
+                        @can('staff_wise_sale_report')
                         <li class="aiz-side-nav-item">
-                            <a href="{{ route('earning_payout_report.index') }}" class="aiz-side-nav-link">
-                                <span class="aiz-side-nav-text">{{ translate('Earning Report') }}</span>
+                            <a href="{{ route('staff_wise_sale_report.index') }}"
+                                class="aiz-side-nav-link {{ areActiveRoutes(['staff_wise_sale_report.index'])}}">
+                                <span class="aiz-side-nav-text">{{ translate('Staff Wise Sale') }}</span>
                             </a>
                         </li>
                         @endcan
@@ -1050,14 +1052,7 @@
                             </a>
                         </li>
                         @endcan
-                        {{-- @can('seller_products_sale_report')
-                        <li class="aiz-side-nav-item">
-                            <a href="{{ route('seller_sale_report.index') }}"
-                                class="aiz-side-nav-link {{ areActiveRoutes(['seller_sale_report.index'])}}">
-                                <span class="aiz-side-nav-text">{{ translate('Seller Products Sale') }}</span>
-                            </a>
-                        </li>
-                        @endcan --}}
+                       
                         @can('products_stock_report')
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('stock_report.index') }}"
