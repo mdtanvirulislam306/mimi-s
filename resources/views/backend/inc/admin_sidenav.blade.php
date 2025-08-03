@@ -1563,8 +1563,8 @@
                     <ul class="aiz-side-nav-list level-2">
                         @can('otp_configurations')
                             <li class="aiz-side-nav-item">
-                                <a href="{{ route('otp.login_configuration') }}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{translate('OTP Login Configuration')}}</span>
+                                <a href="{{ route('otp.credentials_index') }}" class="aiz-side-nav-link">
+                                    <span class="aiz-side-nav-text">{{translate('OTP Credentials')}}</span>
                                 </a>
                             </li>
                             <li class="aiz-side-nav-item">
@@ -2006,22 +2006,15 @@
                                     </a>
                                 </li>
                                 @endcan
-                                @can('manage_shipping_cities')
+                                {{-- @can('manage_shipping_cities')
                                 <li class="aiz-side-nav-item">
                                     <a href="{{route('cities.index')}}"
                                         class="aiz-side-nav-link {{ areActiveRoutes(['cities.index','cities.edit','cities.update'])}}">
                                         <span class="aiz-side-nav-text">{{translate('Shipping Cities')}}</span>
                                     </a>
                                 </li>
-                                @endcan
-                                @can('manage_zones')
-                                <li class="aiz-side-nav-item">
-                                    <a href="{{route('zones.index')}}"
-                                        class="aiz-side-nav-link {{ areActiveRoutes(['zones.index','zones.create','zones.edit'])}}">
-                                        <span class="aiz-side-nav-text">{{translate('Shipping Zones')}}</span>
-                                    </a>
-                                </li>
-                                @endcan
+                                @endcan --}}
+                                
                                 @can('manage_carriers')
                                 <li class="aiz-side-nav-item">
                                     <a href="{{route('carriers.index')}}"

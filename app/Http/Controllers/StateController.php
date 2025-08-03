@@ -5,14 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\State;
 use App\Models\Country;
-
 class StateController extends Controller
 {
+      protected $pathao;
+
     public function __construct()
     {
         // Staff Permission Check
         $this->middleware(['permission:manage_shipping_states'])->only('index', 'edit');
-    }
+    }  
 
     /**
      * Display a listing of the resource.
@@ -139,4 +140,5 @@ class StateController extends Controller
 
         return 1;
     }
+   
 }

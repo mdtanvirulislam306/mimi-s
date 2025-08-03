@@ -103,7 +103,10 @@
             @php
                 $flash_deal = get_featured_flash_deal();
                 $flash_products = get_flash_deal_products($flash_deal->id)
+
+                
             @endphp
+            @if ($flash_deal != null && $flash_products->count() > 0)
             <div class="col-12 col-md-4 col-lg-3 mb-3 d-flex px-1 py-1 justify-content-center">
                 <div class="position-relative banner-hover overflow-hidden w-100">
                     <a href="{{ route('flash-deals') }}">
@@ -117,7 +120,7 @@
                     </div>
                 </div>
             </div>
-
+            @endif
             {{-- Today Deal --}}
             @php
                 $todays_deal_banner = get_setting('todays_deal_banner', null, $lang);

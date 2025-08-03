@@ -444,6 +444,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
 
         // 
         Route::post('order-payment-notification', 'unpaid_order_payment_notification_send')->name('unpaid_order_payment_notification');
+
+        // send order to pathao
+        Route::post('send-to-pathao', 'sendOrderToPathao')->name('send_to_pathao');
     });
 
     Route::post('/pay_to_seller', [CommissionController::class, 'pay_to_seller'])->name('commissions.pay_to_seller');
@@ -592,6 +595,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
     // States
     Route::resource('states', StateController::class);
     Route::post('/states/status', [StateController::class, 'updateStatus'])->name('states.status');
+   
 
     // Carriers
     Route::resource('carriers', CarrierController::class);
@@ -617,6 +621,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
     Route::view('/system/import-demo-data', 'backend.system.import_demo_data')->name('import_demo_data');
 
     Route::post('/import-data', [BusinessSettingsController::class, 'import_data'])->name('import_data');
+    Route::get('/sync-pathao-data', [BusinessSettingsController::class, 'syncPathaoData'])->name('sync_pathao_data');
 
     // uploaded files
     Route::resource('/uploaded-files', AizUploadController::class);

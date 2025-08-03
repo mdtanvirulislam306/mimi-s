@@ -635,4 +635,48 @@ class OrderController extends Controller
         }
         return back();
     }
+
+    public function sendOrderToPathao (Request $request)
+    {
+        $orderIds = $request->order_ids;
+        
+        if (!is_array($orderIds)) {
+            flash(translate('Invalid order IDs'))->error();
+            return back();
+        }
+
+        $pathaoService = new \App\Services\PathaoCourierService();
+        $successCount = 0;
+        $failures = [];
+
+        foreach ($orderIds as $orderId) {
+            $order = Order::find($orderId);
+            if (!$order) {
+                $failures[] = "Order ID {$orderId} not found";
+                continue;
+            }
+                //dd($order);
+            try {
+                $response = $pathaoService->sendOrder($order);
+                //dd($response);
+                if ($response['type']=='success') {
+                    $successCount++;
+                    // Update delivery status to 'confirmed'
+                    $order->delivery_status = 'confirmed';
+                    $order->save();
+                   
+                }
+            } catch (\Exception $e) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Error sending order to Pathao: ' . $e->getMessage(),
+                ]);
+            }
+        }
+         return response()->json([
+                        'success' => true,
+                        'message' => translate("{$successCount} order(s) sent to Pathao successfully")
+                    ]);
+        
+    }
 }

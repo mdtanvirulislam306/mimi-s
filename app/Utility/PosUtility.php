@@ -72,7 +72,7 @@ class PosUtility
             $data['address'] = $address->address;
             // $data['country'] = $address->country->name;
             $data['state'] = $address->state->name;
-            // $data['city'] = $address->city->name;
+            $data['city'] = $address->city->name;
             // $data['postal_code'] = $address->postal_code;
             $data['phone'] = $address->phone;
         } else {
@@ -81,7 +81,7 @@ class PosUtility
             $data['address'] = $request->address?? NULL;
             // $data['country'] = Country::find($request->country_id)->name;
             $data['state'] = State::find($request->state_id)->name?? NULL;
-            // $data['city'] = City::find($request->city_id)->name;
+            $data['city'] = City::find($request->city_id)->name;
             // $data['postal_code'] = $request->postal_code;
             $data['phone'] = $request->phone;
         }
@@ -202,6 +202,7 @@ class PosUtility
 
     public static function orderStore($data)
     {
+       //dd($data);
         $shippingInfo = $data['shippingInfo'];
         if ($shippingInfo == null || $shippingInfo['name'] == null || $shippingInfo['phone'] == null ) {
             return array('success' => 0, 'message' => translate("Please Add Shipping Information."));

@@ -76,6 +76,98 @@
     <div class="col-lg-6">
         <div class="card">
             <div class="card-header">
+                <h5 class="mb-0 h6">{{translate('Pathao Credentials')}}</h5>
+            </div>
+            <form action="{{ route('shipping_configuration.update') }}" method="POST" enctype="multipart/form-data">
+              <div class="card-body">
+                  @csrf
+                  
+                  <div class="form-group">
+                      <div class="col-lg-12">
+                        <input type="hidden" name="types[]" value="pathao_base_url">
+                        <label for="">API url: <span class="text-danger">*</span></label>
+                          <input class="form-control" type="text" name="pathao_base_url" value="{{ get_setting('pathao_base_url') }}" required> 
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <div class="col-lg-12">
+                        <input type="hidden" name="types[]" value="pathao_client_id">
+                        <label for="">Client ID:<span class="text-danger">*</span></label>
+                          <input class="form-control" type="text" name="pathao_client_id" value="{{ get_setting('pathao_client_id') }}"required>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <div class="col-lg-12">
+                        <input type="hidden" name="types[]" value="pathao_client_secret">
+                        <label for="">Client Secret:<span class="text-danger">*</span></label>
+                          <input class="form-control" type="text" name="pathao_client_secret" value="{{ get_setting('pathao_client_secret') }}"required>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <div class="col-lg-12">
+                        <input type="hidden" name="types[]" value="pathao_store_id">
+                        <label for="">Store ID:<span class="text-danger">*</span></label>
+                          <input class="form-control" type="text" name="pathao_store_id" value="{{ get_setting('pathao_store_id') }}"required>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <div class="col-lg-12">
+                        <input type="hidden" name="types[]" value="pathao_username">
+                        <label for="">Username:<span class="text-danger">*</span></label>
+                          <input class="form-control" type="text" name="pathao_username" value="{{ get_setting('pathao_username') }}"required>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <div class="col-lg-12">
+                        <input type="hidden" name="types[]" value="pathao_password">
+                        <label for="">Password:<span class="text-danger">*</span></label>
+                          <input class="form-control" type="text" name="pathao_password" value="{{ get_setting('pathao_password') }}"required>
+                      </div>
+                  </div>
+                  <div class="form-group mb-0 text-right">
+                      <button type="submit" class="btn btn-sm btn-primary">{{translate('Save')}}</button>
+                  </div>
+              </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0 h6">{{translate('Note')}}</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        {{ translate('1. Create pathao merchant account.') }}<br>
+                    </li>
+                    <li class="list-group-item">
+                        {{ translate('2. Go to Developer\'s API.') }}<br>
+                        </li>
+                    <li class="list-group-item">
+                        {{ translate('3. Collect your credentials and fill input fields.') }}<br>
+                        </li>
+                    <li class="list-group-item">
+                        {{ translate('4. All field is required.') }}<br>
+                        </li>
+                    <li class="list-group-item">
+                        {{ translate('5. If you don\'t have pathao merchant account, please contact with pathao support.') }}
+                    </li>
+                    <li class="list-group-item">
+                        {{ translate('5. Once the credentials are set up, you need to sync the data with Pathao. 
+Click on "Sync pathao" to proceed.') }} <a href="{{ route('sync_pathao_data')}}">Sync pathao</a>
+                    </li>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header">
                 <h5 class="mb-0 h6">{{translate('Flat Rate Cost')}}</h5>
             </div>
             <form action="{{ route('shipping_configuration.update') }}" method="POST" enctype="multipart/form-data">

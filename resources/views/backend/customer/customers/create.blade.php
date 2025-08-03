@@ -75,7 +75,7 @@
                         </div>
                     </div>
                 @endif
-                {{-- <div class="form-group row">
+                <div class="form-group row">
                     <label class="col-sm-2 col-from-label" for="email">
                         {{translate('Password')}} <span class="text-danger">*</span>
                     </label>
@@ -95,7 +95,7 @@
                     <div class="col-sm-10">
                         <input type="password" class="form-control" name="password_confirmation" value="{{ old('password_confirmation') }}" placeholder="{{translate('Confirm Password')}}" required>
                     </div>
-                </div> --}}
+                </div>
                 
                 
                 <div class="form-group mb-3 text-right">

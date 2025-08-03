@@ -39,6 +39,7 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
     Route::controller(OTPController::class)->group(function () {
         Route::get('/otp-login-configuration', 'loginConfigure')->name('otp.login_configuration');
         Route::get('/otp-configuration', 'configure_index')->name('otp.configconfiguration');
+        Route::get('/otp-credentials', 'credentials_index')->name('otp.credentials_index');
         Route::post('/otp-configuration/update/activation', 'updateActivationSettings')->name('otp_configurations.update.activation');
         Route::post('/otp-credentials-update', 'update_credentials')->name('update_credentials');
     });

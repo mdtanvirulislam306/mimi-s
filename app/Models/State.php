@@ -9,7 +9,7 @@ use App\Traits\PreventDemoModeChanges;
 class State extends Model
 {
     use HasFactory,PreventDemoModeChanges;
-
+    protected $fillable = ['id','name', 'country_id', 'status'];
 
     public function country(){
         return $this->belongsTo(Country::class);

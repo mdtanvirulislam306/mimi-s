@@ -35,7 +35,7 @@
 						</div>
 	                </div>
 					<!-- Show Language Switcher -->
-                    <div class="form-group row">
+                    {{-- <div class="form-group row">
 						<label class="col-md-3 col-from-label">{{translate('Show Language Switcher?')}}</label>
 						<div class="col-md-8">
 							<label class="aiz-switch aiz-switch-success mb-0">
@@ -55,9 +55,9 @@
 								<span></span>
 							</label>
 						</div>
-					</div>
+					</div> --}}
 					<!-- Enable stikcy header -->
-	                <div class="form-group row">
+	                {{-- <div class="form-group row">
 						<label class="col-md-3 col-from-label">{{translate('Enable stikcy header?')}}</label>
 						<div class="col-md-8">
 							<label class="aiz-switch aiz-switch-success mb-0">
@@ -66,11 +66,11 @@
 								<span></span>
 							</label>
 						</div>
-					</div>
+					</div> --}}
 					<div class="border-top pt-3">
 						<!-- Topbar Banner Large -->
 						<div class="form-group row">
-		                    <label class="col-md-3 col-from-label">{{ translate('Topbar Banner Large') }}</label>
+		                    <label class="col-md-3 col-from-label">{{ translate('Slider Bottom Banner Large') }}</label>
 							<div class="col-md-8">
 			                    <div class=" input-group " data-toggle="aizuploader" data-type="image">
 			                        <div class="input-group-prepend">
@@ -86,7 +86,7 @@
 		                </div>
 						<!-- Topbar Banner Medium -->
 						<div class="form-group row">
-		                    <label class="col-md-3 col-from-label">{{ translate('Topbar Banner Medium') }}</label>
+		                    <label class="col-md-3 col-from-label">{{ translate('Slider Bottom Banner Medium') }}</label>
 							<div class="col-md-8">
 			                    <div class=" input-group " data-toggle="aizuploader" data-type="image">
 			                        <div class="input-group-prepend">
@@ -102,7 +102,7 @@
 		                </div>
 						<!-- Topbar Banner Small -->
 						<div class="form-group row">
-		                    <label class="col-md-3 col-from-label">{{ translate('Topbar Banner Small') }}</label>
+		                    <label class="col-md-3 col-from-label">{{ translate('Slider Bottom Banner Small') }}</label>
 							<div class="col-md-8">
 			                    <div class=" input-group " data-toggle="aizuploader" data-type="image">
 			                        <div class="input-group-prepend">
@@ -141,7 +141,7 @@
                     </div>
 					<div class="border-top pt-3">
 						<!-- Header Nav Menu Text Color -->
-						<div class="form-group row">
+						{{-- <div class="form-group row">
 							<label class="col-md-3 col-from-label mb-md-0">{{translate('Header Nav Menu Text Color')}}</label>
 							<div class="col-md-8 d-flex">
 								<input type="hidden" name="types[]" value="header_nav_menu_text">
@@ -154,7 +154,7 @@
 									<label for="header_nav_menu_text_dark" class="mb-0 ml-2">{{translate('Dark')}}</label>
 								</div>
 							</div>
-						</div>
+						</div> --}}
 						<div class="border-top pt-3">
 						<!--Header background -->
 							<div class="form-group row">

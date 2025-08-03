@@ -12,7 +12,22 @@ class Order extends Model
     {
         return $this->hasMany(OrderDetail::class);
     }
-
+    /**
+     * Calculate the total weight of all products in the order.
+     * Returns 0 if a product or its weight is missing.
+     *
+     * @return float|int
+     */
+    public function getTotalProductWeight()
+    {
+        return $this->orderDetails()->with('product')->get()->sum(function($detail) {
+            if (isset($detail->product) && isset($detail->product->weight)) {
+                return $detail->product->weight;
+            }
+            return 0;
+        });
+    }
+    
     public function refund_requests()
     {
         return $this->hasMany(RefundRequest::class);

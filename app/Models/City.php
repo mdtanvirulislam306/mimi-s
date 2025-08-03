@@ -9,7 +9,7 @@ use App;
 class City extends Model
 {
     use PreventDemoModeChanges;
-
+    protected $fillable = ['id', 'name', 'state_id', 'cost', 'status'];
     public function getTranslation($field = '', $lang = false){
         $lang = $lang == false ? App::getLocale() : $lang;
         $city_translation = $this->hasMany(CityTranslation::class)->where('lang', $lang)->first();

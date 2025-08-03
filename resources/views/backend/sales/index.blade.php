@@ -21,6 +21,9 @@
                             @can('export_order')
                                 <a class="dropdown-item" href="javascript:void(0)" onclick="order_bulk_export()">{{ translate('Export') }}</a>
                             @endcan
+                            @can('send_to_pathao')
+                                <a class="dropdown-item" href="javascript:void(0)" onclick="send_to_pathao()">{{ translate('Send to Pathao') }}</a>
+                            @endcan
                             @if(auth()->user()->can('unpaid_order_payment_notification_send') && $unpaid_order_payment_notification->status == 1 && Route::currentRouteName() == 'unpaid_orders.index')
                                 <a class="dropdown-item" href="javascript:void(0)" onclick="bulk_unpaid_order_payment_notification()">{{ translate('Unpaid Order Payment Notification') }}</a>
                             @endif
@@ -318,6 +321,39 @@
             });
         }
         
+
+        function send_to_pathao() {
+            var orderIds = [];
+            $(".check-one[name='id[]']:checked").each(function() {
+            orderIds.push($(this).val());
+            });
+            
+            if(orderIds.length > 0){
+                
+                AIZ.plugins.notify('success', 'Processing with Pathao... Please wait for confirmation.');
+            $.ajax({
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{ route('send_to_pathao') }}",
+                type: 'POST',
+                data: {order_ids: orderIds},
+                success: function(response) {
+                if (response.success) {
+                    AIZ.plugins.notify('success', response.message);
+                } else {
+                    AIZ.plugins.notify('danger', response.message);
+                }
+                },
+                error: function(xhr) {
+                AIZ.plugins.notify('danger', '{{ translate('Something went wrong.') }}');
+                }
+            });
+            } else {
+            AIZ.plugins.notify('danger', '{{ translate('Please Select Order first.') }}');
+            }
+        }
+
         function order_bulk_export (){
             var url = '{{route('order-bulk-export')}}';
             $("#sort_orders").attr("action", url);

@@ -7,6 +7,7 @@ use App\Models\BusinessSetting;
 use App\Models\Country;
 use App\Models\PaymentMethod;
 use App\Models\Zone;
+use App\Services\PathaoCourierService;
 use Artisan;
 use CoreComponentRepository;
 use Illuminate\Support\Facades\Redirect;
@@ -14,11 +15,14 @@ use Illuminate\Support\Facades\URL;
 use Str;
 use DB;
 use ZipArchive;
+use App\Models\State;
 
 class BusinessSettingsController extends Controller
 {
-    public function __construct()
+    private $pathao;
+    public function __construct(PathaoCourierService $pathao)
     {
+        $this->pathao = $pathao;
         // Staff Permission Check
         $this->middleware(['permission:seller_commission_configuration'])->only('vendor_commission');
         $this->middleware(['permission:seller_verification_form_configuration'])->only('seller_verification_form');
@@ -536,6 +540,23 @@ class BusinessSettingsController extends Controller
                 return back();
             }
         }
+        if(is_array($request->types) && count($request->types) > 0) {
+            foreach ($request->types as $key=>$type) {
+                $business_settings = BusinessSetting::where('type', $type)->first();
+                if ($business_settings) {
+                    $business_settings->value = $request[$type];
+                    $business_settings->save();
+                } else {
+                    $business_settings = new BusinessSetting;
+                    $business_settings->type = $type;
+                    $business_settings->value = $request[$type];
+                    $business_settings->save();
+                }
+            }
+            Artisan::call('cache:clear');
+            flash(translate('Pathao credentials saved successfully'))->success();
+            return back();
+        } 
         $business_settings = BusinessSetting::where('type', $request->type)->first();
         $business_settings->value = $request[$request->type];
 
@@ -614,5 +635,42 @@ class BusinessSettingsController extends Controller
         $zip->extractTo('public/uploads/all/');
         flash(translate('Demo data uploaded successfully'))->success();
         return redirect()->back();
+    }
+
+    public function syncPathaoData(Request $request)
+    {
+        try {
+            $states = $this->pathao->getCities();
+           // dd($states['data']);
+            if ($states) {
+                foreach ($states['data'] as $state) {
+                    $city = State::updateOrCreate(
+                        ['id' => $state['city_id']],
+                        [
+                            'name' => $state['city_name'],
+                            'country_id' => 18, // Assuming country_id 1 is Bangladesh
+                            'status' => 1,
+                        ]
+                    );
+                    // Syncing zones and areas can be done similarly
+                    $zones = $this->pathao->getZones($state['city_id']);
+                    //dd($zones);
+                    foreach ($zones['data'] as $zone) {
+                        $city->cities()->updateOrCreate(
+                            ['id' => $zone['zone_id']],
+                            [
+                                'name' => $zone['zone_name'],
+                                'state_id' => $state['city_id'],
+                                'status' => 1,
+                            ]
+                        );
+                    }
+                }
+                flash(translate('States synced successfully'))->success();
+            }
+        } catch (\Exception $e) {
+            flash(translate('Failed to sync states: ' . $e->getMessage()))->error();
+        }
+        return back();
     }
 }
