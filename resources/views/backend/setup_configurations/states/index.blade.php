@@ -72,7 +72,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-5">
+        {{-- <div class="col-md-5">
     		<div class="card">
     			<div class="card-header">
     				<h5 class="mb-0 h6">{{ translate('Sync with Pathao') }}</h5>
@@ -88,7 +88,7 @@
     			</div>
     		</div>
     	</div>
-    </div>
+    </div> --}}
 
 @endsection
 
