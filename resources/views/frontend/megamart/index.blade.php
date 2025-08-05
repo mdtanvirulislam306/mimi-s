@@ -97,7 +97,7 @@
     <!-- Hot News Section End-->
 
     <!-- Flash Deals,Todays Deals, Campaign, Best Selling Banner Start-->
-<section class="container mt-5">
+<section class="container mt-2">
     <div class="row">
           {{-- Flash Deal --}}
             @php
@@ -107,7 +107,7 @@
                 
             @endphp
             @if ($flash_deal != null && $flash_products->count() > 0)
-            <div class="col-12 col-md-4 col-lg-3 mb-3 d-flex px-1 py-1 justify-content-center">
+            <div class="col-6 col-md-4 col-lg-3 mb-3 d-flex px-1 py-1 justify-content-center">
                 <div class="position-relative banner-hover overflow-hidden w-100">
                     <a href="{{ route('flash-deals') }}">
                         <img src="{{ uploaded_asset($flash_deal->banner) }}" alt="Flash" class="img-fluid w-100">
@@ -126,7 +126,7 @@
                 $todays_deal_banner = get_setting('todays_deal_banner', null, $lang);
                 $today_deal_products = get_todays_deal_products();
             @endphp
-            <div class="col-12 col-md-4 col-lg-3 mb-3 d-flex px-1 py-1 justify-content-center">
+            <div class="col-6 col-md-4 col-lg-3 mb-3 d-flex px-1 py-1 justify-content-center">
                 <div class="position-relative banner-hover overflow-hidden w-100">
                     <a href="{{ route('todays-deal') }}">
                         <img src="{{ uploaded_asset($todays_deal_banner) }}" alt="Today's Deal" class="img-fluid w-100">
@@ -145,7 +145,7 @@
                 $featured_banner = get_setting('featured_banner', null, $lang);
                 $featured_products = get_featured_products();
             @endphp
-            <div class="col-12 col-md-4 col-lg-3 mb-3 d-flex px-1 py-1 justify-content-center">
+            <div class="col-6 col-md-4 col-lg-3 mb-3 d-flex px-1 py-1 justify-content-center">
                 <div class="position-relative banner-hover overflow-hidden w-100">
                     <a href="{{ route('todays-deal') }}">
                         <img src="{{ uploaded_asset($featured_banner) }}" alt="Today's Deal" class="img-fluid w-100">
@@ -164,7 +164,7 @@
                 $best_saling_banner = get_setting('best_saling_banner', null, $lang);
                 $best_selling_products = get_best_selling_products(50);
             @endphp
-            <div class="col-12 col-md-4 col-lg-3 mb-3 d-flex px-1 py-1 justify-content-center">
+            <div class="col-6 col-md-4 col-lg-3 mb-3 d-flex px-1 py-1 justify-content-center">
                 <div class="position-relative banner-hover overflow-hidden w-100">
                     <a href="{{ route('todays-deal') }}">
                         <img src="{{ uploaded_asset($best_saling_banner) }}" alt="Today's Deal" class="img-fluid w-100">
@@ -181,7 +181,7 @@
 </section>
    <!-- Flash Deals,Todays Deals, Campaign, Best Selling Banner  End-->
    <!-- Category Section Start-->
-    <section class="w-100 container my-5">
+    <section class="w-100 container my-2">
         <div class="row no-gutters">
              @foreach (get_level_zero_categories()->take(12) as $key => $category)
               @php
@@ -286,7 +286,7 @@
     <!-- Campaign list start-->
     <section class="container">
       <div class="row g-4">
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-6 mb-3">
           <div
             class="p-3 d-flex justify-content-between flex-column text-center text-md-start flex-md-row justify-content-center align-items-center custom-coupon-card"
             style="background-color: #f6c5c5"

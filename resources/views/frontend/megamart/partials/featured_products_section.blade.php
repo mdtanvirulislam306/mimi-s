@@ -22,7 +22,7 @@
                         <div class="d-flex px-4 py-3 align-items-baseline justify-content-between">
                             <!-- Title -->
                             <h3 class="fs-16 fs-md-20 fw-700 mb-2 mb-sm-0">
-                                <span class="">{{ translate('Featured Products') }}</span>
+                                <span class="">{{ translate('Trending Products') }}</span>
                             </h3>
                             <!-- Links -->
                             <div class="d-flex">

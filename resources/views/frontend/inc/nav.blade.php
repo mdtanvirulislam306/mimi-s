@@ -1,53 +1,120 @@
+    <!-- Top Bar Banner -->
+    @php
+        $topbar_banner = get_setting('topbar_banner');
+        $topbar_banner_medium = get_setting('topbar_banner_medium');
+        $topbar_banner_small = get_setting('topbar_banner_small');
+        $topbar_banner_asset = uploaded_asset($topbar_banner);
+    @endphp
+    @if ($topbar_banner != null)
+        <div class="position-relative top-banner removable-session z-1035 " data-key="top-banner"
+            data-value="removed">
+            <a href="{{ get_setting('topbar_banner_link') }}" class="d-block text-reset h-40px h-lg-60px">
+                <!-- For Large device -->
+                <img src="{{ $topbar_banner_asset }}" class="d-none d-xl-block img-fit h-100" alt="{{ translate('topbar_banner') }}">
+                <!-- For Medium device -->
+                <img src="{{ $topbar_banner_medium != null ? uploaded_asset($topbar_banner_medium) : $topbar_banner_asset }}"
+                    class="d-none d-md-block d-xl-none img-fit h-100" alt="{{ translate('topbar_banner') }}">
+                <!-- For Small device -->
+                <img src="{{ $topbar_banner_small != null ? uploaded_asset($topbar_banner_small) : $topbar_banner_asset }}"
+                    class="d-md-none img-fit h-100" alt="{{ translate('topbar_banner') }}">
+            </a>
+            <button class="btn text-white h-100 absolute-top-right  set-session" data-key="top-banner"
+                data-value="removed" data-toggle="remove-parent" data-parent=".top-banner">
+                <i class="la la-close la-2x"></i>
+            </button>
+        </div>
+    @endif
 
-    <header class="@if (get_setting('header_stikcy') == 'on') sticky-top @endif z-1020 " 
-    style="{{ get_setting('header_background') ? 'background-color: '.get_setting('header_background') : ''  }};">
+    <!-- Top Bar -->
+    <div class="top-navbar bg-white z-1035 h-35px h-sm-auto">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col">
+                    <ul class="list-inline d-flex justify-content-between justify-content-lg-start mb-0">
+                        <!-- Language switcher -->
+                        @if (get_setting('show_language_switcher') == 'on')
+                            <li class="list-inline-item dropdown mr-4" id="lang-change">
+
+                                <a href="javascript:void(0)" class="dropdown-toggle text-secondary fs-12 py-2"
+                                    data-toggle="dropdown" data-display="static">
+                                    <span class="">{{ $system_language->name }}</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-left">
+                                    @foreach (get_all_active_language() as $key => $language)
+                                        <li>
+                                            <a href="javascript:void(0)" data-flag="{{ $language->code }}"
+                                                class="dropdown-item @if ($system_language->code == $language->code) active @endif">
+                                                <img src="{{ static_asset('assets/img/placeholder.jpg') }}"
+                                                    data-src="{{ static_asset('assets/img/flags/' . $language->code . '.png') }}"
+                                                    class="mr-1 lazyload" alt="{{ $language->name }}" height="11">
+                                                <span class="language">{{ $language->name }}</span>
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                        @endif
+
+                        <!-- Currency Switcher -->
+                        @if (get_setting('show_currency_switcher') == 'on')
+                            <li class="list-inline-item dropdown ml-auto ml-lg-0 mr-0" id="currency-change">
+                                @php
+                                    $system_currency = get_system_currency();
+                                @endphp
+
+                                <a href="javascript:void(0)" class="dropdown-toggle text-secondary fs-12 py-2"
+                                    data-toggle="dropdown" data-display="static">
+                                    {{ $system_currency->name }}
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left">
+                                    @foreach (get_all_active_currency() as $key => $currency)
+                                        <li>
+                                            <a class="dropdown-item @if ($system_currency->code == $currency->code) active @endif"
+                                                href="javascript:void(0)"
+                                                data-currency="{{ $currency->code }}">{{ $currency->name }}
+                                                ({{ $currency->symbol }})</a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                        @endif
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <header class="@if (get_setting('header_stikcy') == 'on') sticky-top @endif z-1020 bg-white">
         <!-- Search Bar -->
         <div class="position-relative logo-bar-area border-bottom border-md-nonea z-1025">
             <div class="container">
                 <div class="d-flex align-items-center">
-                    <!-- top menu sidebar button -->
-                    <button type="button" class="btn d-lg-none mr-3 mr-sm-4 p-0 active" data-toggle="class-toggle"
-                        data-target=".aiz-top-menu-sidebar">
-                        <svg id="Component_43_1" data-name="Component 43 – 1" xmlns="http://www.w3.org/2000/svg"
-                            width="16" height="16" viewBox="0 0 16 16">
-                            <rect id="Rectangle_19062" data-name="Rectangle 19062" width="16" height="2"
-                                transform="translate(0 7)" fill="#919199" />
-                            <rect id="Rectangle_19063" data-name="Rectangle 19063" width="16" height="2"
-                                fill="#919199" />
-                            <rect id="Rectangle_19064" data-name="Rectangle 19064" width="16" height="2"
-                                transform="translate(0 14)" fill="#919199" />
+                
+                   <button type="button" class="btn d-lg-none mr-3 mr-sm-4 p-0 active" data-toggle="class-toggle" data-target=".aiz-top-menu-sidebar">
+                        <svg id="Component_43_1" data-name="Component 43 – 1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                            <rect id="Rectangle_19062" data-name="Rectangle 19062" width="16" height="2" transform="translate(0 7)" fill="#919199"></rect>
+                            <rect id="Rectangle_19063" data-name="Rectangle 19063" width="16" height="2" fill="#919199"></rect>
+                            <rect id="Rectangle_19064" data-name="Rectangle 19064" width="16" height="2" transform="translate(0 14)" fill="#919199"></rect>
                         </svg>
 
                     </button>
-                    <!-- Header Logo -->
-                    <div class="col-auto pl-0 pr-3 d-flex align-items-center">
-                        <a class="d-block py-20px mr-3 ml-0" href="{{ route('home') }}">
-                            @php
-                                $header_logo = get_setting('header_logo');
-                            @endphp
-                            @if ($header_logo != null)
-                                <img src="{{ uploaded_asset($header_logo) }}" alt="{{ env('APP_NAME') }}"
-                                    class="mw-100 h-30px h-md-40px" height="40">
-                            @else
-                                <img src="{{ static_asset('assets/img/logo.png') }}" alt="{{ env('APP_NAME') }}"
-                                    class="mw-100 h-30px h-md-40px" height="40">
-                            @endif
+                    <div class="col-auto pl-0 pr-3 d-flex align-items-center d-lg-none">
+                        <a class="d-block py-20px mr-3 ml-0" href="https://mimis.com.bd">
+                        <img src="https://mimis.com.bd/public/uploads/all/Yf46zOvMJaEjPvxtTZfyUbCKgO9ne6a7dFPRh9LU.jpg" alt="MiMi's" class="mw-100 h-30px h-md-40px" height="40">
                         </a>
                     </div>
-                    <!-- Search Icon for small device -->
                     <div class="d-lg-none ml-auto mr-0">
-                        <a class="p-2 d-block text-reset" href="javascript:void(0);" data-toggle="class-toggle"
-                            data-target=".front-header-search">
+                        <a class="p-2 d-block text-reset" href="javascript:void(0);" data-toggle="class-toggle" data-target=".front-header-search">
                             <i class="las la-search la-flip-horizontal la-2x"></i>
                         </a>
                     </div>
-                    
                     <!-- Search field -->
-                    <div class="flex-grow-1 d-lg-none front-header-search d-flex align-items-center bg-white mx-xl-5">
+                    <div class="flex-grow-1 front-header-search d-flex align-items-center bg-white ">
                         <div class="position-relative flex-grow-1 px-3 px-lg-0">
                             <form action="{{ route('search') }}" method="GET" class="stop-propagation">
                                 <div class="d-flex position-relative align-items-center">
-                                    <div class="d-lg-none" data-toggle="class-toggle"
+                                    <div class="" data-toggle="class-toggle"
                                         data-target=".front-header-search">
                                         <button class="btn px-2" type="button"><i
                                                 class="la la-2x la-long-arrow-left"></i></button>
@@ -91,218 +158,7 @@
                             </div>
                         </div>
                     </div>
-                  
-                     <!-- Menu Bar -->
-        <div class="d-none d-lg-block position-relative h-70px">
-            <div class="container h-100">
-                <div class="d-flex h-100 justify-content-between">
-                    <!-- Header Menus -->
-                    <div class="ml-xl-4 w-100 overflow-hidden">
-                        <div class="d-flex align-items-center justify-content-center justify-content-xl-start h-100">
-                            <ul class="list-inline mb-0 pl-0 hor-swipe c-scrollbar-light">
-                                @if (get_setting('header_menu_labels') != null)
-                                    @foreach (json_decode(get_setting('header_menu_labels'), true) as $key => $value)
-                                        <li class="list-inline-item mr-0 animate-underline-white">
-                                            <a href="{{ json_decode(get_setting('header_menu_links'), true)[$key] }}"
-                                                class="fs-13 px-3 py-3 d-inline-block fw-700  header_menu_links hov-bg-black-10
-                                            @if (url()->current() == json_decode(get_setting('header_menu_links'), true)[$key]) active @endif" style="{{ get_setting('header_text_color') ? 'color: '.get_setting('header_text_color') : '' }}">
-                                                {{ translate($value) }}
-                                            </a>
-                                        </li>
-                                    @endforeach
-                                @endif
-                            </ul>
-                        </div>
-                    </div>
-                    {{-- cart --}}
-                </div>
-            </div>
-            <!-- Categoty Menus -->
-            <div class="hover-category-menu position-absolute w-100 top-100 left-0 right-0 z-3 d-none"
-                id="click-category-menu">
-                <div class="container">
-                    <div class="d-flex position-relative">
-                        <div class="position-static">
-                            @include('frontend.'.get_setting("homepage_select").'.partials.category_menu')
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-                    @if (Auth::check() && auth()->user()->user_type == 'customer')
-                        <!-- Compare -->
-                        <div class="d-none d-lg-block ml-3 mr-0">
-                            <div class="" id="compare">
-                                @include('frontend.partials.compare')
-                            </div>
-                        </div>
-                        <!-- Wishlist -->
-                        <div class="d-none d-lg-block mr-3" style="margin-left: 36px;">
-                            <div class="" id="wishlist">
-                                @include('frontend.partials.wishlist')
-                            </div>
-                        </div>
-                        <!-- Notifications -->
-                        <ul class="list-inline mb-0 h-100 d-none d-xl-flex justify-content-end align-items-center">
-                            <li class="list-inline-item ml-3 mr-3 pr-3 pl-0 dropdown">
-                                <a class="dropdown-toggle no-arrow text-secondary fs-12" data-toggle="dropdown"
-                                    href="javascript:void(0);" role="button" aria-haspopup="false"
-                                    aria-expanded="false"
-                                    onclick="nonLinkableNotificationRead()">
-                                    <span class="position-relative d-inline-block">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14.668" height="16"
-                                            viewBox="0 0 14.668 16">
-                                            <path id="_26._Notification" data-name="26. Notification"
-                                                d="M8.333,16A3.34,3.34,0,0,0,11,14.667H5.666A3.34,3.34,0,0,0,8.333,16ZM15.06,9.78a2.457,2.457,0,0,1-.727-1.747V6a6,6,0,1,0-12,0V8.033A2.457,2.457,0,0,1,1.606,9.78,2.083,2.083,0,0,0,3.08,13.333H13.586A2.083,2.083,0,0,0,15.06,9.78Z"
-                                                transform="translate(-0.999)" fill="#91919b" />
-                                        </svg>
-                                        @if (Auth::check() && count($user->unreadNotifications) > 0)
-                                            <span class="badge badge-primary badge-inline badge-pill absolute-top-right--10px unread-notification-count">{{ count($user->unreadNotifications) }}</span>
-                                        @endif
-                                    </span>
-                                </a>
-                                @auth
-                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg py-0 rounded-0">
-                                        <div class="p-3 bg-light border-bottom">
-                                            <h6 class="mb-0">{{ translate('Notifications') }}</h6>
-                                        </div>
-                                        <div class="c-scrollbar-light overflow-auto" style="max-height:300px;">
-                                            <ul class="list-group list-group-flush">
-                                                @forelse($user->unreadNotifications as $notification)
-                                                    @php
-                                                        $showNotification = true;
-                                                        if (($notification->type == 'App\Notifications\PreorderNotification') && !addon_is_activated('preorder'))
-                                                        {
-                                                            $showNotification = false;
-                                                        }
-                                                    @endphp
-                                                    @if($showNotification)
-                                                        @php
-                                                            $isLinkable = true;
-                                                            $notificationType = get_notification_type($notification->notification_type_id, 'id');
-                                                            $notifyContent = $notificationType->getTranslation('default_text');
-                                                            $notificationShowDesign = get_setting('notification_show_type');
-                                                            if($notification->type == 'App\Notifications\customNotification' && $notification->data['link'] == null){
-                                                                $isLinkable = false;
-                                                            }
-                                                        @endphp
-                                                        <li class="list-group-item">
-                                                            <div class="d-flex">
-                                                                @if($notificationShowDesign != 'only_text')
-                                                                    <div class="size-35px mr-2">
-                                                                        @php
-                                                                            $notifyImageDesign = '';
-                                                                            if($notificationShowDesign == 'design_2'){
-                                                                                $notifyImageDesign = 'rounded-1';
-                                                                            }
-                                                                            elseif($notificationShowDesign == 'design_3'){
-                                                                                $notifyImageDesign = 'rounded-circle';
-                                                                            }
-                                                                        @endphp
-                                                                        <img
-                                                                            src="{{ uploaded_asset($notificationType->image) }}"
-                                                                            onerror="this.onerror=null;this.src='{{ static_asset('assets/img/notification.png') }}';"
-                                                                            class="img-fit h-100 {{ $notifyImageDesign }}" >
-                                                                    </div>
-                                                                @endif
-                                                                <div>
-                                                                    @if ($notification->type == 'App\Notifications\OrderNotification')
-                                                                        @php
-                                                                            $orderCode  = $notification->data['order_code'];
-                                                                            $route = route('purchase_history.details', encrypt($notification->data['order_id']));
-                                                                                $orderCode = "<span class='text-blue'>".$orderCode."</span>";
-                                                                            $notifyContent = str_replace('[[order_code]]', $orderCode, $notifyContent);
-                                                                        @endphp
-                                                                    @elseif($notification->type == 'App\Notifications\PreorderNotification')
-                                                                        @php
-                                                                            $orderCode  = $notification->data['order_code'];
-                                                                            $route = route('preorder.order_details', encrypt($notification->data['preorder_id']));
-                                                                                $orderCode = "<span class='text-blue'>".$orderCode."</span>";
-                                                                            $notifyContent = str_replace('[[order_code]]', $orderCode, $notifyContent);
-                                                                        @endphp
-                                                                    @endif
-
-                                                                    @if($isLinkable = true)
-                                                                        <a href="{{ route('notification.read-and-redirect', encrypt($notification->id)) }}">
-                                                                    @endif
-                                                                        <span class="fs-12 text-dark text-truncate-2">{!! $notifyContent !!}</span>
-                                                                    @if($isLinkable = true)
-                                                                        </a>
-                                                                    @endif
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                    @endif
-                                                @empty
-                                                    <li class="list-group-item">
-                                                        <div class="py-4 text-center fs-16">
-                                                            {{ translate('No notification found') }}
-                                                        </div>
-                                                    </li>
-                                                @endforelse
-                                            </ul>
-                                        </div>
-                                        <div class="text-center border-top">
-                                            <a href="{{ route('customer.all-notifications') }}"
-                                                class="text-secondary fs-12 d-block py-2">
-                                                {{ translate('View All Notifications') }}
-                                            </a>
-                                        </div>
-                                    </div>
-                                @endauth
-                            </li>
-                        </ul>
-                    @endif
-                        <!-- Cart -->
                     
-                    <div class="d-none d-xl-block ml-auto mr-0">
-                        @auth
-                            <span
-                                class="d-flex align-items-center nav-user-info py-20px @if (isAdmin()) ml-5 @endif"
-                                id="nav-user-info">
-                                <!-- Image -->
-                                <span
-                                    class="size-40px rounded-circle overflow-hidden border border-transparent nav-user-img">
-                                    @if ($user->avatar_original != null)
-                                        <img src="{{ $user_avatar }}"
-                                            class="img-fit h-100" alt="{{ translate('avatar') }}"
-                                            onerror="this.onerror=null;this.src='{{ static_asset('assets/img/avatar-place.png') }}';">
-                                    @else
-                                        <img src="{{ static_asset('assets/img/avatar-place.png') }}" class="image" alt="{{ translate('avatar') }}"
-                                            onerror="this.onerror=null;this.src='{{ static_asset('assets/img/avatar-place.png') }}';">
-                                    @endif
-                                </span>
-                                <!-- Name -->
-                                <h4 class="h5 fs-14 fw-700  ml-2 mb-0" style="{{ get_setting('header_text_color') ? 'color: '.get_setting('header_text_color') : '' }}">{{ $user->name }}</h4>
-                            </span>
-                        @else
-                            <!--Login & Registration -->
-                            <span class="d-flex align-items-center nav-user-info ml-3">
-                                <!-- Image -->
-                                <span
-                                    class="size-40px rounded-circle overflow-hidden border d-flex align-items-center justify-content-center nav-user-img">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="19.902" height="20.012"
-                                        viewBox="0 0 19.902 20.012">
-                                        <path id="fe2df171891038b33e9624c27e96e367"
-                                            d="M15.71,12.71a6,6,0,1,0-7.42,0,10,10,0,0,0-6.22,8.18,1.006,1.006,0,1,0,2,.22,8,8,0,0,1,15.9,0,1,1,0,0,0,1,.89h.11a1,1,0,0,0,.88-1.1,10,10,0,0,0-6.25-8.19ZM12,12a4,4,0,1,1,4-4A4,4,0,0,1,12,12Z"
-                                            transform="translate(-2.064 -1.995)" fill="#91919b" />
-                                    </svg>
-                                </span>
-                                <a href="{{ route('user.login') }}"
-                                    class="text-reset opacity-60 hov-opacity-100 hov-text-primary fs-12 d-inline-block border-right border-soft-light border-width-2 pr-2 ml-3">{{ translate('Login') }}</a>
-                                <a href="{{ route(get_setting('customer_registration_verify') === '1' ? 'registration.verification' : 'user.registration') }}"
-                                {{-- <a href="{{ route('user.registration') }}" --}}
-                                    class="text-reset opacity-60 hov-opacity-100 hov-text-primary fs-12 d-inline-block py-2 pl-2">{{ translate('Registration') }}</a>
-                            </span>
-                        @endauth
-
-                    </div>
-                    <div class="d-none d-xl-block align-self-stretch ml-5 mr-0 has-transition bg-black-10"
-                        data-hover="dropdown">
-                        <div class="nav-cart-box dropdown h-100" id="cart_items" style="width: max-content;">
-                            @include('frontend.partials.cart.cart')
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -381,7 +237,7 @@
                                         </a>
                                     </li>
 
-                                
+                                  
 
                                     <li class="user-top-nav-element border border-top-0" data-id="1">
                                         <a href="{{ route('digital_purchase_history.index') }}"
@@ -480,7 +336,244 @@
             </div>
         </div>
 
-       
+        <!-- Menu Bar -->
+        <div class="d-none d-lg-block position-relative h-80px" style="{{ 
+        get_setting('header_background') ? 'background-color: ' . get_setting('header_background') : 'white' 
+        }};">
+            <div class="container h-100">
+                <div class="d-flex h-100">
+
+                     <!-- top menu sidebar button -->
+                    <button type="button" class="btn d-lg-none mr-3 mr-sm-4 p-0 active" data-toggle="class-toggle"
+                        data-target=".aiz-top-menu-sidebar">
+                        <svg id="Component_43_1" data-name="Component 43 – 1" xmlns="http://www.w3.org/2000/svg"
+                            width="16" height="16" viewBox="0 0 16 16">
+                            <rect id="Rectangle_19062" data-name="Rectangle 19062" width="16" height="2"
+                                transform="translate(0 7)" fill="#919199" />
+                            <rect id="Rectangle_19063" data-name="Rectangle 19063" width="16" height="2"
+                                fill="#919199" />
+                            <rect id="Rectangle_19064" data-name="Rectangle 19064" width="16" height="2"
+                                transform="translate(0 14)" fill="#919199" />
+                        </svg>
+
+                    </button>
+                    <!-- Header Logo -->
+                    <div class="col-auto pl-0 pr-3 d-flex align-items-center">
+                        <a class="d-block py-20px mr-3 ml-0" href="{{ route('home') }}">
+                            @php
+                                $header_logo = get_setting('header_logo');
+                            @endphp
+                            @if ($header_logo != null)
+                                <img src="{{ uploaded_asset($header_logo) }}" alt="{{ env('APP_NAME') }}"
+                                    class="mw-100 h-30px h-md-40px" height="40">
+                            @else
+                                <img src="{{ static_asset('assets/img/logo.png') }}" alt="{{ env('APP_NAME') }}"
+                                    class="mw-100 h-30px h-md-40px" height="40">
+                            @endif
+                        </a>
+                    </div>
+                    
+                    <!-- Header Menus -->
+                    @php
+                        $nav_txt_color = get_setting('header_text_color')??'white';
+                    @endphp
+                    <div class="ml-xl-4 w-100 overflow-hidden">
+                        <div class="d-flex align-items-center justify-content-center justify-content-xl-start h-100">
+                            <ul class="list-inline mb-0 pl-0 hor-swipe c-scrollbar-light">
+                                @if (get_setting('header_menu_labels') != null)
+                                    @foreach (json_decode(get_setting('header_menu_labels'), true) as $key => $value)
+                                        <li class="list-inline-item mr-0 animate-underline-white">
+                                            <a href="{{ json_decode(get_setting('header_menu_links'), true)[$key] }}"
+                                                class="fs-13 px-3 py-3 d-inline-block fw-700 header_menu_links hov-bg-black-10
+                                            @if (url()->current() == json_decode(get_setting('header_menu_links'), true)[$key]) active @endif" style="color:  {{ $nav_txt_color }} ">
+                                                {{ translate($value) }}
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                @endif
+                            </ul>
+                        </div>
+                    </div>
+
+
+                    @if (Auth::check() && auth()->user()->user_type == 'customer')
+                        
+                        <!-- Notifications -->
+                        <ul class="list-inline mb-0 h-100 d-none d-xl-flex justify-content-end align-items-center">
+                            <li class="list-inline">
+                                <!-- Search Icon for small device -->
+                                <div class=" ml-auto mr-0">
+                                    <a class="p-2 d-block text-white" href="javascript:void(0);" data-toggle="class-toggle"
+                                        data-target=".front-header-search">
+                                        <i class="las la-search la-flip-horizontal la-2x"></i>
+                                    </a>
+                                </div>
+                            </li>
+                            <li class="list-inline-item pr-3 pl-0 ">
+                                @include('frontend.partials.compare')
+                            </li>
+                            <l class="list-inline-item pr-3 pl-0 ">
+                               @include('frontend.partials.wishlist')
+                            </l>
+                            <li class="list-inline-item pr-3 pl-0 dropdown">
+                                <a class="dropdown-toggle no-arrow text-white fs-12" data-toggle="dropdown"
+                                    href="javascript:void(0);" role="button" aria-haspopup="false"
+                                    aria-expanded="false"
+                                    onclick="nonLinkableNotificationRead()">
+                                    <span class="position-relative d-inline-block">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14.668" height="16"
+                                            viewBox="0 0 14.668 16">
+                                            <path id="_26._Notification" data-name="26. Notification"
+                                                d="M8.333,16A3.34,3.34,0,0,0,11,14.667H5.666A3.34,3.34,0,0,0,8.333,16ZM15.06,9.78a2.457,2.457,0,0,1-.727-1.747V6a6,6,0,1,0-12,0V8.033A2.457,2.457,0,0,1,1.606,9.78,2.083,2.083,0,0,0,3.08,13.333H13.586A2.083,2.083,0,0,0,15.06,9.78Z"
+                                                transform="translate(-0.999)" fill="#ffffff" />
+                                        </svg>
+                                        @if (Auth::check() && count($user->unreadNotifications) > 0)
+                                            <span class="badge badge-primary badge-inline badge-pill absolute-top-right--10px unread-notification-count">{{ count($user->unreadNotifications) }}</span>
+                                        @endif
+                                    </span>
+                                </a>
+                                @auth
+                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg py-0 rounded-0">
+                                        <div class="p-3 bg-light border-bottom">
+                                            <h6 class="mb-0">{{ translate('Notifications') }}</h6>
+                                        </div>
+                                        <div class="c-scrollbar-light overflow-auto" style="max-height:300px;">
+                                            <ul class="list-group list-group-flush">
+                                                @forelse($user->unreadNotifications as $notification)
+                                                    @php
+                                                        $showNotification = true;
+                                                        if (($notification->type == 'App\Notifications\PreorderNotification') && !addon_is_activated('preorder'))
+                                                        {
+                                                            $showNotification = false;
+                                                        }
+                                                    @endphp
+                                                    @if($showNotification)
+                                                        @php
+                                                            $isLinkable = true;
+                                                            $notificationType = get_notification_type($notification->notification_type_id, 'id');
+                                                            $notifyContent = $notificationType->getTranslation('default_text');
+                                                            $notificationShowDesign = get_setting('notification_show_type');
+                                                            if($notification->type == 'App\Notifications\customNotification' && $notification->data['link'] == null){
+                                                                $isLinkable = false;
+                                                            }
+                                                        @endphp
+                                                        <li class="list-group-item">
+                                                            <div class="d-flex">
+                                                                @if($notificationShowDesign != 'only_text')
+                                                                    <div class="size-35px mr-2">
+                                                                        @php
+                                                                            $notifyImageDesign = '';
+                                                                            if($notificationShowDesign == 'design_2'){
+                                                                                $notifyImageDesign = 'rounded-1';
+                                                                            }
+                                                                            elseif($notificationShowDesign == 'design_3'){
+                                                                                $notifyImageDesign = 'rounded-circle';
+                                                                            }
+                                                                        @endphp
+                                                                        <img
+                                                                            src="{{ uploaded_asset($notificationType->image) }}"
+                                                                            onerror="this.onerror=null;this.src='{{ static_asset('assets/img/notification.png') }}';"
+                                                                            class="img-fit h-100 {{ $notifyImageDesign }}" >
+                                                                    </div>
+                                                                @endif
+                                                                <div>
+                                                                    @if ($notification->type == 'App\Notifications\OrderNotification')
+                                                                        @php
+                                                                            $orderCode  = $notification->data['order_code'];
+                                                                            $route = route('purchase_history.details', encrypt($notification->data['order_id']));
+                                                                                $orderCode = "<span class='text-blue'>".$orderCode."</span>";
+                                                                            $notifyContent = str_replace('[[order_code]]', $orderCode, $notifyContent);
+                                                                        @endphp
+                                                                    @elseif($notification->type == 'App\Notifications\PreorderNotification')
+                                                                        @php
+                                                                            $orderCode  = $notification->data['order_code'];
+                                                                            $route = route('preorder.order_details', encrypt($notification->data['preorder_id']));
+                                                                                $orderCode = "<span class='text-blue'>".$orderCode."</span>";
+                                                                            $notifyContent = str_replace('[[order_code]]', $orderCode, $notifyContent);
+                                                                        @endphp
+                                                                    @endif
+
+                                                                    @if($isLinkable = true)
+                                                                        <a href="{{ route('notification.read-and-redirect', encrypt($notification->id)) }}">
+                                                                    @endif
+                                                                        <span class="fs-12 text-dark text-truncate-2">{!! $notifyContent !!}</span>
+                                                                    @if($isLinkable = true)
+                                                                        </a>
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    @endif
+                                                @empty
+                                                    <li class="list-group-item">
+                                                        <div class="py-4 text-center fs-16">
+                                                            {{ translate('No notification found') }}
+                                                        </div>
+                                                    </li>
+                                                @endforelse
+                                            </ul>
+                                        </div>
+                                        <div class="text-center border-top">
+                                            <a href="{{ route('customer.all-notifications') }}"
+                                                class="text-secondary fs-12 d-block py-2">
+                                                {{ translate('View All Notifications') }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                @endauth
+                            </li>
+                            <li class="list-inline-item  ">
+                                <div class="d-none d-xl-block align-self-stretch  has-transition "
+                                    data-hover="dropdown">
+                                    <div class="nav-cart-box dropdown h-100" id="cart_items" style="width: max-content;">
+                                        @include('frontend.partials.cart.cart')
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    @endif
+                    <!-- Cart -->
+                    
+                    @auth
+                            <span
+                                class="d-flex align-items-center nav-user-info py-20px @if (isAdmin()) ml-5 @endif"
+                                id="nav-user-info">
+                                <!-- Image -->
+                                <span
+                                    class="size-48px rounded-circle  border border-transparent nav-user-img">
+                                    @if ($user->avatar_original != null)
+                                        <img src="{{ $user_avatar }}"
+                                            class="img-fit h-100" alt="{{ translate('avatar') }}"
+                                            onerror="this.onerror=null;this.src='{{ static_asset('assets/img/avatar-place.png') }}';">
+                                    @else
+                                        <img src="{{ static_asset('assets/img/avatar-place.png') }}" class="image" alt="{{ translate('avatar') }}"
+                                            onerror="this.onerror=null;this.src='{{ static_asset('assets/img/avatar-place.png') }}';">
+                                    @endif
+                                </span>
+                                <!-- Name -->
+                                <h4 class="h5 fs-14 fw-700 text-dark ml-2 mb-0" style="color:{{get_setting('header_text_color')??'white' }}!important;">{{ $user->name }}</h4>
+                            </span>
+                        @else
+                            <!--Login & Registration -->
+                            
+                            <span class="d-flex align-items-center nav-user-info ml-3">
+                                <a href="{{ route('user.login') }}">
+                                <!-- Image -->
+                                <span
+                                    class="size-40px rounded-circle overflow-hidden border d-flex align-items-center justify-content-center nav-user-img">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="19.902" height="20.012"
+                                        viewBox="0 0 19.902 20.012">
+                                        <path id="fe2df171891038b33e9624c27e96e367"
+                                            d="M15.71,12.71a6,6,0,1,0-7.42,0,10,10,0,0,0-6.22,8.18,1.006,1.006,0,1,0,2,.22,8,8,0,0,1,15.9,0,1,1,0,0,0,1,.89h.11a1,1,0,0,0,.88-1.1,10,10,0,0,0-6.25-8.19ZM12,12a4,4,0,1,1,4-4A4,4,0,0,1,12,12Z"
+                                            transform="translate(-2.064 -1.995)" fill="#ffffff" />
+                                    </svg>
+                                </span>
+                            </a>
+                            </span>
+                        @endauth
+                </div>
+            </div>
+        </div>
     </header>
 
     <!-- Top Menu Sidebar -->
@@ -500,7 +593,7 @@
                             <img src="{{ $user_avatar }}" class="img-fit h-100" alt="{{ translate('avatar') }}"
                                 onerror="this.onerror=null;this.src='{{ static_asset('assets/img/avatar-place.png') }}';">
                         @else
-                            <img src="{{ static_asset('assets/img/avatar-place.png') }}" class="image" alt="{{ translate('avatar') }}"
+                            <img src="{{ static_asset('assets/img/avatar-place.png') }}" class="image " alt="{{ translate('avatar') }}"
                                 onerror="this.onerror=null;this.src='{{ static_asset('assets/img/avatar-place.png') }}';">
                         @endif
                     </span>
@@ -517,7 +610,7 @@
                             viewBox="0 0 19.902 20.012">
                             <path id="fe2df171891038b33e9624c27e96e367"
                                 d="M15.71,12.71a6,6,0,1,0-7.42,0,10,10,0,0,0-6.22,8.18,1.006,1.006,0,1,0,2,.22,8,8,0,0,1,15.9,0,1,1,0,0,0,1,.89h.11a1,1,0,0,0,.88-1.1,10,10,0,0,0-6.25-8.19ZM12,12a4,4,0,1,1,4-4A4,4,0,0,1,12,12Z"
-                                transform="translate(-2.064 -1.995)" fill="#91919b" />
+                                transform="translate(-2.064 -1.995)" fill="#ffffff" />
                         </svg>
                     </span>
 
