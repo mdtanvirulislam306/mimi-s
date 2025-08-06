@@ -2,16 +2,16 @@
 
 @section('content')
 
-<h4 class="text-center text-muted">{{translate('POS Activation for Seller')}}</h4>
+<h4 class="text-center text-muted">{{translate('POS Settings')}}</h4>
 <div class="row">
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0 h6">{{translate('POS Activation for Seller')}}</h5>
+                <h5 class="mb-0 h6">{{translate('Enable Thermal Print')}}</h5>
             </div>
             <div class="card-body text-center">
                 <label class="aiz-switch aiz-switch-success mb-0">
-                    <input type="checkbox" onchange="updateSettings(this, 'pos_activation_for_seller')" @if(get_setting('pos_activation_for_seller') == 1) checked @endif>
+                    <input type="checkbox" onchange="updateSettings(this, 'enable_thermal_print')" @if(get_setting('enable_thermal_print') == 1) checked @endif>
                     <span class="slider round"></span>
                 </label>
             </div>

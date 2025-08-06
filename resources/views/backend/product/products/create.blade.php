@@ -978,9 +978,9 @@
         update_sku();
     });
 
-    $('input[name="unit_price"]').on('keyup', function() {
-        update_sku();
-    });
+    // $('input[name="unit_price"]').on('keyup', function() {
+    //     update_sku();
+    // });
 
     $('input[name="name"]').on('keyup', function() {
         update_sku();

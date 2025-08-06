@@ -661,7 +661,9 @@ function addToCart(stock_id){
             }, function(data){
                 if(data.success == 1){
                     AIZ.plugins.notify('success', data.message );
-                    window.open("{{ route('admin.invoice.thermal_printer', ['order_id' => 'ORDER_ID_PLACEHOLDER']) }}".replace('ORDER_ID_PLACEHOLDER', data.order_id), '_blank');
+                    @if (get_setting('enable_thermal_print') )
+                         window.open("{{ route('admin.invoice.thermal_printer', ['order_id' => 'ORDER_ID_PLACEHOLDER']) }}".replace('ORDER_ID_PLACEHOLDER', data.order_id), '_blank');
+                    @endif
                     location.reload();
                 }
                 else{

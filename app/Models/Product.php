@@ -141,4 +141,26 @@ class Product extends Model
         return $this->belongsTo(Note::class, 'refund_note_id');
     }
 
+    
+    public static function getTotalOrders($productId, $variant = null)
+    {
+        $query = OrderDetail::where('product_id', $productId);
+
+        if ($variant !== null) {
+            $query->where('variation', $variant);
+        }
+
+        return $query->sum('quantity');
+    }
+
+    public static function getTotalOrderQty($productId, $variant = null)
+    {
+        $query = OrderDetail::where('product_id', $productId);
+
+        if ($variant !== null) {
+            $query->where('variation', $variant);
+        }
+
+        return $query->sum('quantity');
+    }
 }

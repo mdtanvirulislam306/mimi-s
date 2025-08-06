@@ -8,7 +8,10 @@
                                     <th>Variation</th>
                                     <th>SKU</th>
                                     <th>Price</th>
-                                    <th>Stock</th>
+                                    <th>Total Order</th>
+                                    <th>Running Stock</th>
+                                    <th>Total Order Qty</th>
+                                    <th>Total Stock</th>
                                     <th>Copy SKU</th>
                                 </tr>
                             </thead>
@@ -21,7 +24,10 @@
                                             <span class="sku-text">{{ $variation->sku ?? '-' }}</span>
                                         </td>
                                         <td>{{ $variation->price ?? '-' }}</td>
+                                        <td>{{ \app\models\Product::getTotalOrders($variation->product_id,$variation->variant) ?? '-' }}</td>
                                         <td>{{ $variation->qty ?? '-' }}</td>
+                                        <td>{{ \app\models\Product::getTotalOrderQty($variation->product_id,$variation->variant) ?? '-' }}</td>
+                                        <td>{{ $variation->qty+ \app\models\Product::getTotalOrderQty($variation->product_id,$variation->variant)}}</td>
                                         <td>
                                             @if(!empty($variation->sku))
                                                 <button type="button" class="btn btn-outline-primary btn-sm copy-sku-btn" data-sku="{{ $variation->sku }}">

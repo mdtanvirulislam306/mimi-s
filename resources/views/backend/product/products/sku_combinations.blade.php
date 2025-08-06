@@ -55,16 +55,16 @@
 					<label for="" class="control-label">{{ $str }}</label>
 				</td>
 				<td>
-					<input type="number" lang="en" name="price_{{ $str }}" value="{{ $unit_price }}" min="0" step="0.01" class="form-control" required>
+					<input type="number" lang="en" name="price_{{ $str }}" min="0" step="1" class="form-control" required>
 				</td>
 				<td>
-					<input type="text" name="sku_{{ $str }}" value="" class="form-control">
+					<input type="text" name="" value="" class="form-control">
 				</td>
 				<td>
-					<input type="number" lang="en" name="qty_{{ $str }}" value="10" min="0" step="1" class="form-control" required>
+					<input type="number" lang="en" name="qty_{{ $str }}" min="0" step="1" class="form-control" required>
 				</td>
 				<td>
-					<input type="text" lang="en" name="barcode_{{ $str }}" value="" class="form-control" >
+					<input type="text" lang="en" name="" value="" class="form-control" >
 				</td>
 				<td>
 					<div class=" input-group " data-toggle="aizuploader" data-type="image">

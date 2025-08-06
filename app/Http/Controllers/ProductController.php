@@ -552,7 +552,7 @@ class ProductController extends Controller
             $colors_active = 0;
         }
 
-        $unit_price = $request->unit_price;
+        //$unit_price = $request->unit_price;
         $product_name = $request->name;
 
         if ($request->has('choice_no')) {
@@ -571,7 +571,7 @@ class ProductController extends Controller
         }
 
         $combinations = (new CombinationService())->generate_combination($options);
-        return view('backend.product.products.sku_combinations', compact('combinations', 'unit_price', 'colors_active', 'product_name'));
+        return view('backend.product.products.sku_combinations', compact('combinations', 'colors_active', 'product_name'));
     }
 
     public function sku_combination_edit(Request $request)
@@ -626,8 +626,7 @@ class ProductController extends Controller
     public function getProductVariantsSkuList(Request $request)
     {
         $product = Product::findOrFail($request->id);
-        $variants = $product->stocks()->select('variant', 'sku', 'qty', 'price')->get();
-
+        $variants = $product->stocks()->select('product_id','variant', 'sku', 'qty', 'price')->get();
         return view('modals.sku_table_modal', compact('variants'));
     }
 }

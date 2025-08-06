@@ -63,12 +63,7 @@
                                 if($stock != null){
                                     echo $stock->price;
                                 }
-                                else {
-                                    echo $unit_price;
-                                }
-                            }
-                            else{
-                                echo $unit_price;
+                               
                             }
                            @endphp" min="0" step="0.01" class="form-control" required>
                 </td>
@@ -77,18 +72,12 @@
                             if($stock != null) {
                                 echo $stock->sku;
                             }
-                            else {
-                                echo $str;
-                            }
                            @endphp" class="form-control">
                 </td>
                 <td>
                     <input type="number" lang="en" name="qty_{{ $str }}" value="@php
                             if($stock != null){
                                 echo $stock->qty;
-                            }
-                            else{
-                                echo '10';
                             }
                            @endphp" min="0" step="1" class="form-control" required>
                 </td>
