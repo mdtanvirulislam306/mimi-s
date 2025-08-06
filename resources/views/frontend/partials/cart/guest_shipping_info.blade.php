@@ -10,14 +10,14 @@
     </div>
 
     <!-- Email -->
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-md-2 mt-md-2">
             <label>{{ translate('Email')}} <span class="text-danger">*</span></label>
         </div>
         <div class="col-md-10">
             <input type="email" class="form-control mb-3 rounded-0" placeholder="{{ translate('Your Email')}}" name="email" value="" required>
         </div>
-    </div>
+    </div> --}}
 
     <!-- Address -->
     <div class="row">
@@ -30,7 +30,7 @@
     </div>
 
     <!-- Country -->
-    <div class="row">
+    <div class="row d-none">
         <div class="col-md-2 mt-md-2">
             <label>{{ translate('Country')}} <span class="text-danger">*</span></label>
         </div>
@@ -40,7 +40,7 @@
                     data-live-search="true" data-placeholder="{{ translate('Select your country') }}" name="country_id" required>
                     <option value="">{{ translate('Select your country') }}</option>
                     @foreach (get_active_countries() as $key => $country)
-                        <option value="{{ $country->id }}">{{ $country->name }}</option>
+                            <option value="{{ $country->id }}" @if ($country->id==18) selected   @endif>{{ $country->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -50,7 +50,7 @@
     <!-- State -->
     <div class="row">
         <div class="col-md-2 mt-md-2">
-            <label>{{ translate('State')}} <span class="text-danger">*</span></label>
+            <label>{{ translate('District')}} <span class="text-danger">*</span></label>
         </div>
         <div class="col-md-10">
             <select class="form-control mb-3 aiz-selectpicker rounded-0" data-live-search="true" name="state_id" required>
@@ -62,7 +62,7 @@
     <!-- City -->
     <div class="row">
         <div class="col-md-2 mt-md-2">
-            <label>{{ translate('City')}} <span class="text-danger">*</span></label>
+            <label>{{ translate('Thana')}} <span class="text-danger">*</span></label>
         </div>
         <div class="col-md-10">
             <select class="form-control mb-3 aiz-selectpicker rounded-0" data-live-search="true" name="city_id" required>
@@ -105,14 +105,14 @@
     @endif
 
     <!-- Postal code -->
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-md-2 mt-md-2">
             <label>{{ translate('Postal code')}} <span class="text-danger">*</span></label>
         </div>
         <div class="col-md-10">
             <input type="text" class="form-control mb-3 rounded-0" placeholder="{{ translate('Your Postal Code')}}" name="postal_code" value="" required>
         </div>
-    </div>
+    </div> --}}
 
     <!-- Phone -->
     <div class="row">

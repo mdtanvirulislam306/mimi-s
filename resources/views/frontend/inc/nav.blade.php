@@ -26,64 +26,7 @@
     @endif
 
     <!-- Top Bar -->
-    <div class="top-navbar bg-white z-1035 h-35px h-sm-auto">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col">
-                    <ul class="list-inline d-flex justify-content-between justify-content-lg-start mb-0">
-                        <!-- Language switcher -->
-                        @if (get_setting('show_language_switcher') == 'on')
-                            <li class="list-inline-item dropdown mr-4" id="lang-change">
-
-                                <a href="javascript:void(0)" class="dropdown-toggle text-secondary fs-12 py-2"
-                                    data-toggle="dropdown" data-display="static">
-                                    <span class="">{{ $system_language->name }}</span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-left">
-                                    @foreach (get_all_active_language() as $key => $language)
-                                        <li>
-                                            <a href="javascript:void(0)" data-flag="{{ $language->code }}"
-                                                class="dropdown-item @if ($system_language->code == $language->code) active @endif">
-                                                <img src="{{ static_asset('assets/img/placeholder.jpg') }}"
-                                                    data-src="{{ static_asset('assets/img/flags/' . $language->code . '.png') }}"
-                                                    class="mr-1 lazyload" alt="{{ $language->name }}" height="11">
-                                                <span class="language">{{ $language->name }}</span>
-                                            </a>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </li>
-                        @endif
-
-                        <!-- Currency Switcher -->
-                        @if (get_setting('show_currency_switcher') == 'on')
-                            <li class="list-inline-item dropdown ml-auto ml-lg-0 mr-0" id="currency-change">
-                                @php
-                                    $system_currency = get_system_currency();
-                                @endphp
-
-                                <a href="javascript:void(0)" class="dropdown-toggle text-secondary fs-12 py-2"
-                                    data-toggle="dropdown" data-display="static">
-                                    {{ $system_currency->name }}
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left">
-                                    @foreach (get_all_active_currency() as $key => $currency)
-                                        <li>
-                                            <a class="dropdown-item @if ($system_currency->code == $currency->code) active @endif"
-                                                href="javascript:void(0)"
-                                                data-currency="{{ $currency->code }}">{{ $currency->name }}
-                                                ({{ $currency->symbol }})</a>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </li>
-                        @endif
-
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 
     <header class="@if (get_setting('header_stikcy') == 'on') sticky-top @endif z-1020 bg-white">
         <!-- Search Bar -->
@@ -163,7 +106,7 @@
             </div>
 
             <!-- Loged in user Menus -->
-            <div class="hover-user-top-menu position-absolute top-100 left-0 right-0 z-3">
+            <div class="hover-user-top-menu position-absolute top-80px left-0 right-0 z-3">
                 <div class="container">
                     <div class="position-static float-right">
                         <div class="aiz-user-top-menu bg-white rounded-0 border-top shadow-sm" style="width:220px;">
@@ -396,7 +339,7 @@
                     </div>
 
 
-                    @if (Auth::check() && auth()->user()->user_type == 'customer')
+                    @if (true)
                         
                         <!-- Notifications -->
                         <ul class="list-inline mb-0 h-100 d-none d-xl-flex justify-content-end align-items-center">
@@ -415,113 +358,7 @@
                             <l class="list-inline-item pr-3 pl-0 ">
                                @include('frontend.partials.wishlist')
                             </l>
-                            <li class="list-inline-item pr-3 pl-0 dropdown">
-                                <a class="dropdown-toggle no-arrow text-white fs-12" data-toggle="dropdown"
-                                    href="javascript:void(0);" role="button" aria-haspopup="false"
-                                    aria-expanded="false"
-                                    onclick="nonLinkableNotificationRead()">
-                                    <span class="position-relative d-inline-block">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14.668" height="16"
-                                            viewBox="0 0 14.668 16">
-                                            <path id="_26._Notification" data-name="26. Notification"
-                                                d="M8.333,16A3.34,3.34,0,0,0,11,14.667H5.666A3.34,3.34,0,0,0,8.333,16ZM15.06,9.78a2.457,2.457,0,0,1-.727-1.747V6a6,6,0,1,0-12,0V8.033A2.457,2.457,0,0,1,1.606,9.78,2.083,2.083,0,0,0,3.08,13.333H13.586A2.083,2.083,0,0,0,15.06,9.78Z"
-                                                transform="translate(-0.999)" fill="#ffffff" />
-                                        </svg>
-                                        @if (Auth::check() && count($user->unreadNotifications) > 0)
-                                            <span class="badge badge-primary badge-inline badge-pill absolute-top-right--10px unread-notification-count">{{ count($user->unreadNotifications) }}</span>
-                                        @endif
-                                    </span>
-                                </a>
-                                @auth
-                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg py-0 rounded-0">
-                                        <div class="p-3 bg-light border-bottom">
-                                            <h6 class="mb-0">{{ translate('Notifications') }}</h6>
-                                        </div>
-                                        <div class="c-scrollbar-light overflow-auto" style="max-height:300px;">
-                                            <ul class="list-group list-group-flush">
-                                                @forelse($user->unreadNotifications as $notification)
-                                                    @php
-                                                        $showNotification = true;
-                                                        if (($notification->type == 'App\Notifications\PreorderNotification') && !addon_is_activated('preorder'))
-                                                        {
-                                                            $showNotification = false;
-                                                        }
-                                                    @endphp
-                                                    @if($showNotification)
-                                                        @php
-                                                            $isLinkable = true;
-                                                            $notificationType = get_notification_type($notification->notification_type_id, 'id');
-                                                            $notifyContent = $notificationType->getTranslation('default_text');
-                                                            $notificationShowDesign = get_setting('notification_show_type');
-                                                            if($notification->type == 'App\Notifications\customNotification' && $notification->data['link'] == null){
-                                                                $isLinkable = false;
-                                                            }
-                                                        @endphp
-                                                        <li class="list-group-item">
-                                                            <div class="d-flex">
-                                                                @if($notificationShowDesign != 'only_text')
-                                                                    <div class="size-35px mr-2">
-                                                                        @php
-                                                                            $notifyImageDesign = '';
-                                                                            if($notificationShowDesign == 'design_2'){
-                                                                                $notifyImageDesign = 'rounded-1';
-                                                                            }
-                                                                            elseif($notificationShowDesign == 'design_3'){
-                                                                                $notifyImageDesign = 'rounded-circle';
-                                                                            }
-                                                                        @endphp
-                                                                        <img
-                                                                            src="{{ uploaded_asset($notificationType->image) }}"
-                                                                            onerror="this.onerror=null;this.src='{{ static_asset('assets/img/notification.png') }}';"
-                                                                            class="img-fit h-100 {{ $notifyImageDesign }}" >
-                                                                    </div>
-                                                                @endif
-                                                                <div>
-                                                                    @if ($notification->type == 'App\Notifications\OrderNotification')
-                                                                        @php
-                                                                            $orderCode  = $notification->data['order_code'];
-                                                                            $route = route('purchase_history.details', encrypt($notification->data['order_id']));
-                                                                                $orderCode = "<span class='text-blue'>".$orderCode."</span>";
-                                                                            $notifyContent = str_replace('[[order_code]]', $orderCode, $notifyContent);
-                                                                        @endphp
-                                                                    @elseif($notification->type == 'App\Notifications\PreorderNotification')
-                                                                        @php
-                                                                            $orderCode  = $notification->data['order_code'];
-                                                                            $route = route('preorder.order_details', encrypt($notification->data['preorder_id']));
-                                                                                $orderCode = "<span class='text-blue'>".$orderCode."</span>";
-                                                                            $notifyContent = str_replace('[[order_code]]', $orderCode, $notifyContent);
-                                                                        @endphp
-                                                                    @endif
-
-                                                                    @if($isLinkable = true)
-                                                                        <a href="{{ route('notification.read-and-redirect', encrypt($notification->id)) }}">
-                                                                    @endif
-                                                                        <span class="fs-12 text-dark text-truncate-2">{!! $notifyContent !!}</span>
-                                                                    @if($isLinkable = true)
-                                                                        </a>
-                                                                    @endif
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                    @endif
-                                                @empty
-                                                    <li class="list-group-item">
-                                                        <div class="py-4 text-center fs-16">
-                                                            {{ translate('No notification found') }}
-                                                        </div>
-                                                    </li>
-                                                @endforelse
-                                            </ul>
-                                        </div>
-                                        <div class="text-center border-top">
-                                            <a href="{{ route('customer.all-notifications') }}"
-                                                class="text-secondary fs-12 d-block py-2">
-                                                {{ translate('View All Notifications') }}
-                                            </a>
-                                        </div>
-                                    </div>
-                                @endauth
-                            </li>
+                            
                             <li class="list-inline-item  ">
                                 <div class="d-none d-xl-block align-self-stretch  has-transition "
                                     data-hover="dropdown">

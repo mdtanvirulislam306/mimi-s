@@ -66,7 +66,7 @@
                                         <!-- Agree Box -->
                                         <div class="pt-2rem fs-14">
                                             <label class="aiz-checkbox">
-                                                <input type="checkbox" required id="agree_checkbox" onchange="stepCompletionPaymentInfo()">
+                                                <input type="checkbox" required id="agree_checkbox" checked onchange="stepCompletionPaymentInfo()">
                                                 <span class="aiz-square-check"></span>
                                                 <span>{{ translate('I agree to the') }}</span>
                                             </label>
@@ -322,7 +322,7 @@
                 }
                 @if (get_setting('shipping_type') == 'area_wise_shipping')
                     if ($(el).attr('name') == 'city_id') {
-                        let country_id = $('select[name="country_id"]').val();
+                        let country_id = 18; // Default country ID, can be changed as needed
                         let city_id = $(this).val();
                         updateDeliveryAddress(country_id, city_id);
                     }
@@ -378,7 +378,7 @@
 
         function updateDeliveryInfo(shipping_type, type_id, user_id, country_id = 0, city_id = 0) {
             @if (get_setting('shipping_type') == 'area_wise_shipping' || get_setting('shipping_type') == 'carrier_wise_shipping')
-                country_id = $('select[name="country_id"]').val() != null ? $('select[name="country_id"]').val() : 0;
+                country_id =18; // Default country ID, can be changed as needed
                 city_id = $('select[name="city_id"]').val() != null ? $('select[name="city_id"]').val() : 0;
             @endif
             $('.aiz-refresh').addClass('active');

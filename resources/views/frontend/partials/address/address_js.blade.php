@@ -59,8 +59,8 @@
         });
     }
 
-    $(document).on('change', '[name=country_id]', function() {
-        var country_id = $(this).val();
+    $(document).ready(function() {
+        var country_id = 18; // Default country ID, can be changed as needed
         get_states(country_id);
     });
 

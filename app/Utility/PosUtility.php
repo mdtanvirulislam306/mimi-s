@@ -15,6 +15,7 @@ use Session;
 use Mail;
 use App\Mail\InvoiceEmailManager;
 use App\Models\User;
+use phpDocumentor\Reflection\Types\Null_;
 
 class PosUtility
 {
@@ -81,7 +82,7 @@ class PosUtility
             $data['address'] = $request->address?? NULL;
             // $data['country'] = Country::find($request->country_id)->name;
             $data['state'] = State::find($request->state_id)->name?? NULL;
-            $data['city'] = City::find($request->city_id)->name;
+            $data['city'] = City::find($request->city_id)->name??NULL;
             // $data['postal_code'] = $request->postal_code;
             $data['phone'] = $request->phone;
         }
