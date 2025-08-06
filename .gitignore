@@ -29,7 +29,3 @@ Homestead.json
 .phpactor.json
 auth.json
 
-
-
-!public/assets/css
-!public/assets/css/*
