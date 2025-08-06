@@ -68,7 +68,7 @@
         </div>
     </div>
     <!-- Top Bar Banner -->
-    @php
+    {{-- @php
         $topbar_banner = get_setting('topbar_banner');
         $topbar_banner_medium = get_setting('topbar_banner_medium');
         $topbar_banner_small = get_setting('topbar_banner_small');
@@ -87,7 +87,7 @@
                     class="d-md-none img-fit h-100" alt="{{ translate('topbar_banner') }}">
             </a>
         </div>
-    @endif
+    @endif --}}
 
     <!-- Hot News Section  Start-->
     {{-- <div class="bg-pink d-flex flex-column flex-md-row text-white justify-content-center align-items-center py-3 px-2 text-center text-md-left">

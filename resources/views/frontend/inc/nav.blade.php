@@ -346,7 +346,7 @@
                             <li class="list-inline">
                                 <!-- Search Icon for small device -->
                                 <div class=" ml-auto mr-0">
-                                    <a class="p-2 d-block text-white" href="javascript:void(0);" data-toggle="class-toggle"
+                                    <a class="p-2 d-block " style="color:{{get_setting('header_text_color')??'white' }}!important;" href="javascript:void(0);" data-toggle="class-toggle"
                                         data-target=".front-header-search">
                                         <i class="las la-search la-flip-horizontal la-2x"></i>
                                     </a>
