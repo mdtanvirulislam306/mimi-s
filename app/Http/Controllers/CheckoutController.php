@@ -236,7 +236,7 @@ class CheckoutController extends Controller
             $success = 0;
             $user->delete();
         }
-
+dd($success);
         if($success == 0){
             return $success;
         }
