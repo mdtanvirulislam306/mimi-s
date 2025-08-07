@@ -11,7 +11,7 @@
     @foreach (Auth::user()->addresses as $key => $address)
         <div class="border mb-4">
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-12">
                     <label class="aiz-megabox d-block bg-white mb-0">
                         <input type="radio" name="address_id" value="{{ $address->id }}" @if ($address->id == $address_id)
                             checked
@@ -21,28 +21,28 @@
                             <span class="aiz-rounded-check flex-shrink-0 mt-1"></span>
                             <!-- Address -->
                             <span class="flex-grow-1 pl-3 text-left">
-                                <div class="row">
-                                    <span class="fs-14 text-secondary col-md-3 col-5">{{ translate('Address') }}</span>
+                                <div class="">
+                                    <span class="fs-14 text-secondary col-md-3 col-5">{{ translate('Address') }}: </span>
                                     <span class="fs-14 text-dark fw-500 ml-2 col">{{ $address->address }}</span>
                                 {{-- </div>
-                                <div class="row">
+                                <div class="">
                                     <span class="fs-14 text-secondary col-md-3 col-5">{{ translate('Postal Code') }}</span>
                                     <span class="fs-14 text-dark fw-500 ml-2 col">{{ $address->postal_code }}</span>
                                 </div> --}}
-                                <div class="row">
-                                    <span class="fs-14 text-secondary col-md-3 col-5">{{ translate('City') }}</span>
+                                <div class="">
+                                    <span class="fs-14 text-secondary col-md-3 col-5">{{ translate('City') }}: </span>
                                     <span class="fs-14 text-dark fw-500 ml-2 col">{{ optional($address->city)->name }}</span>
                                 </div>
-                                <div class="row">
-                                    <span class="fs-14 text-secondary col-md-3 col-5">{{ translate('State') }}</span>
+                                <div class="">
+                                    <span class="fs-14 text-secondary col-md-3 col-5">{{ translate('State') }}: </span>
                                     <span class="fs-14 text-dark fw-500 ml-2 col">{{ optional($address->state)->name }}</span>
                                 </div>
-                                <div class="row">
-                                    <span class="fs-14 text-secondary col-md-3 col-5">{{ translate('Country') }}</span>
+                                <div class="">
+                                    <span class="fs-14 text-secondary col-md-3 col-5">{{ translate('Country') }}: </span>
                                     <span class="fs-14 text-dark fw-500 ml-2 col">{{ optional($address->country)->name }}</span>
                                 </div>
-                                <div class="row">
-                                    <span class="fs-14 text-secondary col-md-3 col-5">{{ translate('Phone') }}</span>
+                                <div class="">
+                                    <span class="fs-14 text-secondary col-md-3 col-5">{{ translate('Phone') }}: </span>
                                     <span class="fs-14 text-dark fw-500 ml-2 col">{{ $address->phone }}</span>
                                 </div>
                             </span>
