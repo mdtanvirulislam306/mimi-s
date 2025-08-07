@@ -228,6 +228,7 @@ class CheckoutController extends Controller
         $user->password = Hash::make($password);
         $user->email_verified_at = $isEmailVerificationEnabled != 1 ? date('Y-m-d H:m:s') : null;
         $user->save();
+        dd($user);
         // Guest Account Opening and verification(if activated) eamil send
         try {
             SmsUtility::account_opening($user,$password);
