@@ -30,6 +30,7 @@ class SmsUtility
         try {
             sendSMS($user->phone, env('APP_NAME'), $sms_body);
         } catch (\Exception $e) {
+            dd($e->getMessage());
         }
     }
     public static function password_reset($user = '')
