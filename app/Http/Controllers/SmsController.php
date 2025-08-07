@@ -25,10 +25,10 @@ class SmsController extends Controller
     public function send(Request $request)
     {
         foreach ($request->user_phones as $key => $phone) {
-            sendSMS($phone, env('APP_NAME'), $request->content, $request->template_id);
+            sendSMS($phone, env('APP_NAME'), $request->content);
         }
 
     	flash(translate('SMS has been sent.'))->success();
-    	return redirect()->route('admin.dashboard');
+    	return redirect()->back();
     }
 }

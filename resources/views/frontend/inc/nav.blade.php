@@ -352,10 +352,10 @@
                                     </a>
                                 </div>
                             </li>
-                            <li class="list-inline-item pr-3 pl-0 ">
+                            <li class="list-inline-item px-2 pl-0 ">
                                 @include('frontend.partials.compare')
                             </li>
-                            <l class="list-inline-item pr-3 pl-0 ">
+                            <l class="list-inline-item px-2 pl-0 ">
                                @include('frontend.partials.wishlist')
                             </l>
                             

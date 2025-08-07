@@ -12,9 +12,9 @@ class SmsUtility
         $sms_body       = $sms_template->sms_body;
         $sms_body       = str_replace('[[code]]', $user->verification_code, $sms_body);
         $sms_body       = str_replace('[[site_name]]', env('APP_NAME'), $sms_body);
-        $template_id    = $sms_template->template_id;
+        
         try {
-            sendSMS($user->phone, env('APP_NAME'), $sms_body, $template_id);
+            sendSMS($user->phone, env('APP_NAME'), $sms_body);
         } catch (\Exception $e) {
 
         }
@@ -26,9 +26,9 @@ class SmsUtility
         $sms_body       = $sms_template->sms_body;
         $sms_body       = str_replace('[[password]]', $password, $sms_body);
         $sms_body       = str_replace('[[site_name]]', env('APP_NAME'), $sms_body);
-        $template_id    = $sms_template->template_id;
+        
         try {
-            sendSMS($user->phone, env('APP_NAME'), $sms_body, $template_id);
+            sendSMS($user->phone, env('APP_NAME'), $sms_body);
         } catch (\Exception $e) {
 
         }
@@ -38,9 +38,9 @@ class SmsUtility
         $sms_template   = SmsTemplate::where('identifier','password_reset')->first();
         $sms_body       = $sms_template->sms_body;
         $sms_body       = str_replace('[[code]]', $user->verification_code, $sms_body);
-        $template_id    = $sms_template->template_id;
+        
         try {
-            sendSMS($user->phone, env('APP_NAME'), $sms_body, $template_id);
+            sendSMS($user->phone, env('APP_NAME'), $sms_body);
         } catch (\Exception $e) {
 
         }
@@ -51,9 +51,9 @@ class SmsUtility
         $sms_template   = SmsTemplate::where('identifier','order_placement')->first();
         $sms_body       = $sms_template->sms_body;
         $sms_body       = str_replace('[[order_code]]', $order->code, $sms_body);
-        $template_id    = $sms_template->template_id;
+        
         try {
-            sendSMS($phone, env('APP_NAME'), $sms_body, $template_id);
+            sendSMS($phone, env('APP_NAME'), $sms_body);
         } catch (\Exception $e) {
 
         }
@@ -67,10 +67,10 @@ class SmsUtility
 
         $sms_body       = str_replace('[[delivery_status]]', $delivery_status, $sms_body);
         $sms_body       = str_replace('[[order_code]]', $order->code, $sms_body);
-        $template_id    = $sms_template->template_id;
+        
 
         try {
-            sendSMS($phone, env('APP_NAME'), $sms_body, $template_id);
+            sendSMS($phone, env('APP_NAME'), $sms_body);
         } catch (\Exception $e) {
 
         }
@@ -82,9 +82,9 @@ class SmsUtility
         $sms_body       = $sms_template->sms_body;
         $sms_body       = str_replace('[[payment_status]]', $order->payment_status, $sms_body);
         $sms_body       = str_replace('[[order_code]]', $order->code, $sms_body);
-        $template_id    = $sms_template->template_id;
+        
         try {
-            sendSMS($phone, env('APP_NAME'), $sms_body, $template_id);
+            sendSMS($phone, env('APP_NAME'), $sms_body);
         } catch (\Exception $e) {
 
         }
@@ -95,9 +95,9 @@ class SmsUtility
         $sms_template   = SmsTemplate::where('identifier','assign_delivery_boy')->first();
         $sms_body       = $sms_template->sms_body;
         $sms_body       = str_replace('[[order_code]]', $code, $sms_body);
-        $template_id    = $sms_template->template_id;
+        
         try {
-            sendSMS($phone, env('APP_NAME'), $sms_body, $template_id);
+            sendSMS($phone, env('APP_NAME'), $sms_body);
         } catch (\Exception $e) {
 
         }

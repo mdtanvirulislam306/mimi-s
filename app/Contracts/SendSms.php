@@ -8,5 +8,5 @@ interface SendSms {
      * @param mixed $value
      */
 
-     public function send($to, $from, $text, $template_id);
+     public function send($to, $from, $text);
 }

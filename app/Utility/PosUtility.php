@@ -2,6 +2,7 @@
 
 namespace App\Utility;
 
+use App\Http\Controllers\OTPVerificationController;
 use App\Models\ProductStock;
 use App\Models\Address;
 use App\Models\Cart;
@@ -14,7 +15,10 @@ use App\Models\Product;
 use Session;
 use Mail;
 use App\Mail\InvoiceEmailManager;
+use App\Models\SmsTemplate;
 use App\Models\User;
+
+
 use phpDocumentor\Reflection\Types\Null_;
 
 class PosUtility
@@ -322,7 +326,15 @@ class PosUtility
                         } catch (\Exception $e) {
                         }
                     }
+                    //sends sms to customer
+                    if (addon_is_activated('otp_system') && SmsTemplate::where('identifier', 'order_placement')->first()->status == 1) {
+                        try {
+                            $otpController = new OTPVerificationController;
+                            $otpController->send_order_code($order);
+                        } catch (\Exception $e) {
 
+                        }
+                    }
                     //sends email to customer with the invoice pdf attached
                     if (env('MAIL_USERNAME') != null) {
                         try {

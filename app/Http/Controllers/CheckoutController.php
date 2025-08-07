@@ -16,6 +16,7 @@ use App\Models\Product;
 use App\Models\User;
 use App\Utility\EmailUtility;
 use App\Utility\NotificationUtility;
+use App\Utility\SmsUtility;
 use Session;
 use Auth;
 use Hash;
@@ -204,7 +205,7 @@ class CheckoutController extends Controller
     {
         $validator = Validator::make($guest_shipping_info, [
             'name' => 'required|string|max:255',
-            'phone' => 'required|phone|unique:users|max:12',
+            'phone' => 'required|string|unique:users|max:12',
             'address' => 'required|max:255',
             'country_id' => 'required|Integer',
             'state_id' => 'required|Integer',
@@ -222,7 +223,7 @@ class CheckoutController extends Controller
         // User Create
         $user = new User();
         $user->name = $guest_shipping_info['name'];
-        $user->email = $guest_shipping_info['email'];
+        $user->email = $guest_shipping_info['email']?? null;
         $user->phone = addon_is_activated('otp_system') ? '+'.$guest_shipping_info['country_code'].$guest_shipping_info['phone'] : null;
         $user->password = Hash::make($password);
         $user->email_verified_at = $isEmailVerificationEnabled != 1 ? date('Y-m-d H:m:s') : null;
@@ -230,7 +231,7 @@ class CheckoutController extends Controller
 
         // Guest Account Opening and verification(if activated) eamil send
         try {
-            EmailUtility::customer_registration_email('registration_from_system_email_to_customer', $user, $password);
+            SmsUtility::account_opening($user,$password);
         } catch (\Exception $e) {
             $success = 0;
             $user->delete();
@@ -240,17 +241,6 @@ class CheckoutController extends Controller
             return $success;
         }
 
-        // Sending email verification Notification
-        if($isEmailVerificationEnabled == 1){
-            EmailUtility::email_verification($user, 'customer');
-        }
-
-        // Customer Account Opening Email to Admin
-        if ((get_email_template_data('customer_reg_email_to_admin', 'status') == 1)) {
-            try {
-                EmailUtility::customer_registration_email('customer_reg_email_to_admin', $user, null);
-            } catch (\Exception $e) {}
-        }
 
         // User Address Create
         $address = new Address;
@@ -259,7 +249,7 @@ class CheckoutController extends Controller
         $address->country_id    = $guest_shipping_info['country_id'];
         $address->state_id      = $guest_shipping_info['state_id'];
         $address->city_id       = $guest_shipping_info['city_id'];
-        $address->postal_code   = $guest_shipping_info['postal_code'];
+        $address->postal_code   = $guest_shipping_info['postal_code']?? null;
         $address->phone         = '+'.$guest_shipping_info['country_code'].$guest_shipping_info['phone'];
         $address->longitude     = isset($guest_shipping_info['longitude']) ? $guest_shipping_info['longitude'] : null;
         $address->latitude      = isset($guest_shipping_info['latitude']) ? $guest_shipping_info['latitude'] : null;

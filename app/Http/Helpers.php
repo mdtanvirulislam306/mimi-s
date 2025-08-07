@@ -66,9 +66,9 @@ use App\Utility\EmailUtility;
 
 //sensSMS function for OTP
 if (!function_exists('sendSMS')) {
-    function sendSMS($to, $from, $text, $template_id)
+    function sendSMS($to, $from, $text)
     {
-        return SendSMSUtility::sendSMS($to, $from, $text, $template_id);
+        return SendSMSUtility::sendSMS($to, $from, $text);
     }
 }
 

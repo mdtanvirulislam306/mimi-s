@@ -29,13 +29,13 @@
                             <textarea class="form-control" name="content" required></textarea>
                         </div>
                     </div>
-                    <div class="form-group row">
+                    {{-- <div class="form-group row">
                         <label class="col-md-2 col-form-label">{{translate('Template ID')}}</label>
                         <div class="col-md-10">
                             <input type="text" name="template_id"  class="form-control" placeholder="{{translate('Template Id')}}">
                             <small class="form-text text-danger">{{ ('**N.B : Template ID is Required Only for Fast2SMS DLT Manual **') }}</small>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="card-footer">
                     <button class="btn btn-primary" type="submit">{{translate('Send')}}</button>
