@@ -26,9 +26,12 @@ class SmsUtility
         $sms_body       = $sms_template->sms_body;
         $sms_body       = str_replace('[[password]]', $password, $sms_body);
         $sms_body       = str_replace('[[site_name]]', env('APP_NAME'), $sms_body);
-        
+       
+        try {
             sendSMS($user->phone, env('APP_NAME'), $sms_body);
-      
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
     public static function password_reset($user = '')
     {
