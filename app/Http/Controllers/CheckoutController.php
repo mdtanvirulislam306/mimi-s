@@ -233,7 +233,7 @@ class CheckoutController extends Controller
         try {
             SmsUtility::account_opening($user,$password);
         } catch (\Exception $e) {
-            //return $e->getMessage();
+            return $e->getMessage();
             $success = 0;
             $user->delete();
         }
