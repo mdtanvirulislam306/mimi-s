@@ -215,7 +215,7 @@ class CheckoutController extends Controller
         if ($validator->fails()) {
             return $validator->errors();
         }
-
+       
         $success = 1;
         $password = substr(hash('sha512', rand()), 0, 8);
         $isEmailVerificationEnabled = get_setting('email_verification');
@@ -224,7 +224,7 @@ class CheckoutController extends Controller
         $user = new User();
         $user->name = $guest_shipping_info['name'];
         $user->email = $guest_shipping_info['email']?? null;
-        $user->phone = addon_is_activated('otp_system') ? '+'.$guest_shipping_info['country_code'].$guest_shipping_info['phone'] : null;
+        $user->phone = $guest_shipping_info['phone'];
         $user->password = Hash::make($password);
         $user->email_verified_at = $isEmailVerificationEnabled != 1 ? date('Y-m-d H:m:s') : null;
         $user->save();
@@ -232,7 +232,7 @@ class CheckoutController extends Controller
         try {
             SmsUtility::account_opening($user,$password);
         } catch (\Exception $e) {
-            return $e->getMessage();
+            //return $e->getMessage();
             $success = 0;
             $user->delete();
         }
