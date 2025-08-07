@@ -131,7 +131,7 @@ class CheckoutController extends Controller
         if(auth()->user() == null){
            
             $guest_user = $this->createUser($request->except('_token', 'payment_option'));
-            // dd($guest_user);
+            dd($guest_user);
             if(gettype($guest_user) == "object"){
                 $errors = $guest_user;
                 return redirect()->route('checkout')->withErrors($errors);
@@ -228,7 +228,6 @@ class CheckoutController extends Controller
         $user->password = Hash::make($password);
         $user->email_verified_at = $isEmailVerificationEnabled != 1 ? date('Y-m-d H:m:s') : null;
         $user->save();
-
         // Guest Account Opening and verification(if activated) eamil send
         try {
             SmsUtility::account_opening($user,$password);
