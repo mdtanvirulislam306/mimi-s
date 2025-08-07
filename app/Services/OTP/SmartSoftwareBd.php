@@ -18,6 +18,7 @@ class SmartSoftwareBd implements SendSms {
 if (substr($to, 0, 2) === '01') {
     $to = '880' . substr($to, 1);
 }
+dd($to); // ✅ Debugging line, remove in production
     // ✅ Data array
     $data = [
         "recipient" => $to,
