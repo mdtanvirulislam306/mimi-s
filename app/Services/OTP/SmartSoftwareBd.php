@@ -48,7 +48,7 @@ if (substr($to, 0, 2) === '01') {
     if ($error) {
         return response()->json(['success' => false, 'error' => $error], 500);
     }
-dd($response); // ✅ Debugging line, remove in production
+//dd($response); // ✅ Debugging line, remove in production
     return json_decode($response, true); // ✅ Structured return
 }
 
