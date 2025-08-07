@@ -230,14 +230,13 @@ class CheckoutController extends Controller
         $user->save();
         //dd($user);
         // Guest Account Opening and verification(if activated) eamil send
-        try {
+      
             SmsUtility::account_opening($user,$password);
-        } catch (\Exception $e) {
-            return $e->getMessage();
+        
+           $e->getMessage();
             $success = 0;
             $user->delete();
-        }
-dd($success);
+
         if($success == 0){
             return $success;
         }
