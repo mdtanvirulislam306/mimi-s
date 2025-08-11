@@ -664,7 +664,7 @@ function addToCart(stock_id){
                     @if (get_setting('enable_thermal_print') )
                          window.open("{{ route('admin.invoice.thermal_printer', ['order_id' => 'ORDER_ID_PLACEHOLDER']) }}".replace('ORDER_ID_PLACEHOLDER', data.order_id), '_blank');
                     @else
-                        window.open("{{ route('invoice.download', ['order_id' => 'ORDER_ID_PLACEHOLDER']) }}".replace('ORDER_ID_PLACEHOLDER', data.order_id), '_blank');
+                        window.open("{{ route('invoice.view', ['order_id' => 'ORDER_ID_PLACEHOLDER']) }}".replace('ORDER_ID_PLACEHOLDER', data.order_id), '_blank');
                     @endif
                     location.reload();
                 }
