@@ -9,7 +9,7 @@
     <div class="card-body">
         <form method="GET" action="{{ route('staff_wise_sale_report.index') }}" id="staff_sale_report" class="row g-3 mb-4">
         <div class="col-md-3">
-            <label for="start_date" class="form-label">Start Date</label>
+            <label for="start_date" class="form-label">Date</label>
             <input type="text" class="aiz-date-range form-control" value="{{ $date }}"
                             name="date" placeholder="{{ translate('Filter by date') }}" data-format="DD-MM-Y"
                             data-separator=" to " data-advanced-range="true" autocomplete="off">

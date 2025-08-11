@@ -43,17 +43,53 @@ class ReportController extends Controller
         return view('backend.reports.stock_report', compact('products', 'sort_by'));
     }
 
-    public function in_house_sale_report(Request $request)
-    {
-        $sort_by = null;
-        $products = Product::orderBy('num_of_sale', 'desc')->where('added_by', 'admin');
-        if ($request->has('category_id')) {
-            $sort_by = $request->category_id;
-            $products = $products->where('category_id', $sort_by);
-        }
-        $products = $products->paginate(15);
-        return view('backend.reports.in_house_sale_report', compact('products', 'sort_by'));
+  public function in_house_sale_report(Request $request)
+{
+    // Validate incoming request
+    $request->validate([
+        'date'      => 'nullable|string',
+        'branch_id' => 'nullable|integer',
+        'sort'      => 'nullable|in:asc,desc',
+    ]);
+
+    $date     = $request->date;
+    $sortBy   = $request->branch_id;
+    $sort     = $request->sort;
+                $sort = $sort == 'asc' ? 'asc' : 'desc';
+      
+    // Base query - only admin added products
+    $products = Product::where('added_by', 'admin')->orderBy('num_of_sale', $sort);
+
+    // Filter by branch if given
+    if ($sortBy) {
+        $products->where('branch_id', $sortBy);
     }
+
+    // Filter by date range
+    if (!empty($date)) {
+        [$start, $end] = explode(" to ", $date);
+        $products->whereBetween('created_at', [
+            date('Y-m-d 00:00:00', strtotime($start)),
+            date('Y-m-d 23:59:59', strtotime($end)),
+        ]);
+    } else {
+        // Default: last 30 days if no date filter
+        $products->whereBetween('created_at', [
+            now()->subDays(30)->format('Y-m-d 00:00:00'),
+            now()->format('Y-m-d 23:59:59'),
+        ]);
+    }
+
+    // Paginate results
+    $products = $products->paginate(15);
+
+    return view('backend.reports.in_house_sale_report', [
+        'products' => $products,
+        'sort_by'  => $sortBy,
+        'date'     => $date,
+    ]);
+}
+
 
     public function staff_wise_sale_report(Request $request)
     {

@@ -50,6 +50,10 @@ class Product extends Model
     {
         return $this->belongsTo(Brand::class);
     }
+    public function branch()
+    {
+        return $this->belongsTo(BranchModel::class, 'branch_id');
+    }
 
     public function user()
     {
