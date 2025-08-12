@@ -1053,11 +1053,11 @@
                         </li>
                         @endcan
                        
-                        @can('products_stock_report')
+                        @can('daily_sale_report')
                         <li class="aiz-side-nav-item">
-                            <a href="{{ route('stock_report.index') }}"
-                                class="aiz-side-nav-link {{ areActiveRoutes(['stock_report.index'])}}">
-                                <span class="aiz-side-nav-text">{{ translate('Products Stock') }}</span>
+                            <a href="{{ route('daily_sale_report.index') }}"
+                                class="aiz-side-nav-link {{ areActiveRoutes(['daily_sale_report.index'])}}">
+                                <span class="aiz-side-nav-text">{{ translate('Daily Sales') }}</span>
                             </a>
                         </li>
                         @endcan

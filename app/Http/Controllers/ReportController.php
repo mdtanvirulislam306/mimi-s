@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\CommissionHistory;
+use App\Models\DailySalesExport;
+use App\Models\InHouseSalesExport;
 use App\Models\Order;
 use App\Models\Wallet;
 use App\Models\User;
@@ -15,7 +17,7 @@ use DB;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\StaffWiseSaleExport;
-
+use Twilio\Rest\Api\V2010\Account\Usage\Record\DailyInstance;
 
 class ReportController extends Controller
 {
@@ -91,6 +93,137 @@ class ReportController extends Controller
 }
 
 
+  public function in_house_export(Request $request)
+{
+    // Validate incoming request
+    $request->validate([
+        'date'      => 'nullable|string',
+        'branch_id' => 'nullable|integer',
+        'sort'      => 'nullable|in:asc,desc',
+    ]);
+
+    $date     = $request->date;
+    $sortBy   = $request->branch_id;
+    $sort     = $request->sort;
+                $sort = $sort == 'asc' ? 'asc' : 'desc';
+      
+    // Base query - only admin added products
+    $products = Product::where('added_by', 'admin')->orderBy('num_of_sale', $sort);
+
+    // Filter by branch if given
+    if ($sortBy) {
+        $products->where('branch_id', $sortBy);
+    }
+
+    // Filter by date range
+    if (!empty($date)) {
+        [$start, $end] = explode(" to ", $date);
+        $products->whereBetween('created_at', [
+            date('Y-m-d 00:00:00', strtotime($start)),
+            date('Y-m-d 23:59:59', strtotime($end)),
+        ]);
+    } else {
+        // Default: last 30 days if no date filter
+        $products->whereBetween('created_at', [
+            now()->subDays(30)->format('Y-m-d 00:00:00'),
+            now()->format('Y-m-d 23:59:59'),
+        ]);
+    }
+
+    // Paginate results
+    $products = $products->get();
+    $sales = $products->map(function ($product) {
+        return [
+            'name' => $product->name,   
+            'branch' => $product->branch ? $product->branch->name : 'N/A',
+            'sales_count' => $product->num_of_sale,
+        ];
+    });
+         if(!empty($sales)) {
+          return Excel::download(new InHouseSalesExport($sales), 'In House Sales Report.xlsx');
+        }
+        return back();
+}
+    public function daily_sale_report(Request $request)
+    {
+        $query = Order::query();
+
+        // Filter by branch
+        if ($request->filled('branch_id')) {
+            $query->where('branch_id', $request->branch_id);
+        }
+
+        // Filter by staff
+        if ($request->filled('staff_id')) {
+            $query->where('sale_by', $request->staff_id);
+        }
+
+        // Filter by date range
+        if ($request->filled('date')) {
+            [$start, $end] = explode(' to ', $request->date);
+            $query->whereBetween('created_at', [
+                date('Y-m-d 00:00:00', strtotime($start)),
+                date('Y-m-d 23:59:59', strtotime($end)),
+            ]);
+        }
+
+        // Group by date and aggregate
+        $sales = $query->selectRaw('DATE(created_at) as date,
+                COUNT(*) as total_sale,
+                SUM(grand_total) as grand_total')
+            ->groupBy(DB::raw('DATE(created_at)'))
+            ->orderBy('date', 'desc')
+            ->paginate(15);
+//dd($sales);
+ $staffs = User::where('user_type', 'staff')->get();
+        return view('backend.reports.daily_sale_report', [
+            'sales'     => $sales,
+            'branch_id' => $request->branch_id,
+            'staff_id'  => $request->staff_id,
+            'date'      => $request->date,
+            'staffs'    => $staffs,
+        ]);
+        
+    }
+
+        public function daily_sale_export(Request $request)
+    {
+        $query = Order::query();
+
+        // Filter by branch
+        if ($request->filled('branch_id')) {
+            $query->where('branch_id', $request->branch_id);
+        }
+
+        // Filter by staff
+        if ($request->filled('staff_id')) {
+            $query->where('sale_by', $request->staff_id);
+        }
+
+        // Filter by date range
+        if ($request->filled('date')) {
+            [$start, $end] = explode(' to ', $request->date);
+            $query->whereBetween('created_at', [
+                date('Y-m-d 00:00:00', strtotime($start)),
+                date('Y-m-d 23:59:59', strtotime($end)),
+            ]);
+        }
+
+        // Group by date and aggregate
+        $sales = $query->selectRaw('DATE(created_at) as date,
+                COUNT(*) as total_sale,
+                SUM(grand_total) as grand_total')
+            ->groupBy(DB::raw('DATE(created_at)'))
+            ->orderBy('date', 'desc')
+            ->get();
+//dd($sales);
+
+
+         if(!empty($sales)) {
+          return Excel::download(new DailySalesExport($sales), 'Daily Sales Report.xlsx');
+        }
+        return back();
+    }
     public function staff_wise_sale_report(Request $request)
     {
         

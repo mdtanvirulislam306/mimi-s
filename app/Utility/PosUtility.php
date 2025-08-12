@@ -207,7 +207,6 @@ class PosUtility
 
     public static function orderStore($data)
     {
-       //dd($data);
         $shippingInfo = $data['shippingInfo'];
         if ($shippingInfo == null || $shippingInfo['name'] == null || $shippingInfo['phone'] == null ) {
             return array('success' => 0, 'message' => translate("Please Add Shipping Information."));
@@ -223,6 +222,7 @@ class PosUtility
                 }
                 $order->shipping_address = json_encode($shippingInfo);
                 $order->sale_by = $data['sale_by'];
+                $order->branch_id = $data['branch_id'];
 
                 $order->payment_type    = $data['payment_type'];
                 $order->delivery_viewed = '0';

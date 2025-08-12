@@ -75,3 +75,13 @@
 </div>
 
 @endsection
+@section('script')
+    <script>
+        function order_bulk_export (){
+            var url = '{{route('in_house_export')}}';
+            $("#staff_sale_report").attr("action", url);
+            $('#staff_sale_report').submit();
+            $("#staff_sale_report").attr("action", '');
+        }
+    </script>
+@endsection

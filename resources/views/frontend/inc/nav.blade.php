@@ -1,32 +1,3 @@
-    <!-- Top Bar Banner -->
-    @php
-        $topbar_banner = get_setting('topbar_banner');
-        $topbar_banner_medium = get_setting('topbar_banner_medium');
-        $topbar_banner_small = get_setting('topbar_banner_small');
-        $topbar_banner_asset = uploaded_asset($topbar_banner);
-    @endphp
-    @if ($topbar_banner != null)
-        <div class="position-relative top-banner removable-session z-1035 " data-key="top-banner"
-            data-value="removed">
-            <a href="{{ get_setting('topbar_banner_link') }}" class="d-block text-reset h-40px h-lg-60px">
-                <!-- For Large device -->
-                <img src="{{ $topbar_banner_asset }}" class="d-none d-xl-block img-fit h-100" alt="{{ translate('topbar_banner') }}">
-                <!-- For Medium device -->
-                <img src="{{ $topbar_banner_medium != null ? uploaded_asset($topbar_banner_medium) : $topbar_banner_asset }}"
-                    class="d-none d-md-block d-xl-none img-fit h-100" alt="{{ translate('topbar_banner') }}">
-                <!-- For Small device -->
-                <img src="{{ $topbar_banner_small != null ? uploaded_asset($topbar_banner_small) : $topbar_banner_asset }}"
-                    class="d-md-none img-fit h-100" alt="{{ translate('topbar_banner') }}">
-            </a>
-            <button class="btn text-white h-100 absolute-top-right  set-session" data-key="top-banner"
-                data-value="removed" data-toggle="remove-parent" data-parent=".top-banner">
-                <i class="la la-close la-2x"></i>
-            </button>
-        </div>
-    @endif
-
-    <!-- Top Bar -->
-    
 
     <header class="@if (get_setting('header_stikcy') == 'on') sticky-top @endif z-1020 bg-white">
         <!-- Search Bar -->

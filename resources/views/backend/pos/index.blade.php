@@ -645,6 +645,7 @@ function addToCart(stock_id){
             var offline_payment_amount = $('input[name=offline_payment_amount]').val();
             var offline_trx_id = $('input[name=trx_id]').val();
             var offline_payment_proof = $('input[name=payment_proof]').val();
+            var branch_id = $('select[name=branch_id]').val();
             
             $.post('{{ route('pos.order_place') }}',{
                 _token                  : AIZ.data.csrf, 
@@ -656,7 +657,8 @@ function addToCart(stock_id){
                 offline_payment_method  : offline_payment_method,
                 offline_payment_amount  : offline_payment_amount,
                 offline_trx_id          : offline_trx_id,
-                offline_payment_proof   : offline_payment_proof
+                offline_payment_proof   : offline_payment_proof,
+                branch_id               : branch_id
                 
             }, function(data){
                 if(data.success == 1){

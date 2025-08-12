@@ -52,6 +52,7 @@ use App\Http\Controllers\ClubPointController;
 use App\Http\Controllers\CommissionController;
 use AizPackages\ColorCodeConverter\Services\ColorCodeConverter;
 use App\Models\AppTranslation;
+use App\Models\BranchModel;
 use App\Models\CustomerPackagePayment;
 use App\Models\EmailTemplate;
 use App\Models\FlashDealProduct;
@@ -63,6 +64,7 @@ use App\Models\PreorderConversationMessage;
 use App\Models\PreorderConversationThread;
 use App\Models\PreorderProduct;
 use App\Utility\EmailUtility;
+use App\Models\Staff;
 
 //sensSMS function for OTP
 if (!function_exists('sendSMS')) {
@@ -3057,5 +3059,50 @@ if (!function_exists('get_todays_deal_products')) {
         });
         return $todays_deal_products;
 
+    }
+
+}
+// allBranches
+if (!function_exists('all_branches')) {
+    function all_branches()
+    {
+        $branches = BranchModel::all();
+        return $branches;
+
+    }
+}   
+if (!function_exists('get_todays_deal_products')) {
+    function get_todays_deal_products()
+    {
+         $todays_deal_products = Cache::rememberForever('todays_deal_products', function () {
+            return filter_products(Product::with('thumbnail')->where('todays_deal', '1'))->get();
+        });
+        return $todays_deal_products;
+
+    }
+}
+
+   
+if (!function_exists('get_branch_name')) {
+    function get_branch_name($id = null)
+    {
+        $branch = BranchModel::find($id);
+        if ($branch) {
+            return $branch->name;
+        }
+        return null;
+    }
+}
+
+
+   
+if (!function_exists('get_staff_name')) {
+    function get_staff_name($id = null)
+    {
+        $staff = Staff::find($id);
+        if ($staff) {
+            return $staff->name;
+        }
+        return null;
     }
 }
