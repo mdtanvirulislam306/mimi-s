@@ -299,7 +299,7 @@
             style="background-color: #f6c5c5"
           >
             <div>
-              <h6>Our Policy: Best Price!</h6>
+              <h5>Our Policy: Best Price!</h5>
               <p>Sign up to avoid missing discounts!</p>
             </div>
             <div>
@@ -313,7 +313,7 @@
             style="background-color: #d7f6c5"
           >
             <div>
-              <h6>Click for Campaigns!</h6>
+              <h5>Click for Campaigns!</h5>
               <p>Sign up to avoid missing discounts!</p>
             </div>
             <div>

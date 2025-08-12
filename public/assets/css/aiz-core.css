@@ -15848,21 +15848,21 @@ a:hover,a:focus{
 
 .custom-coupon-card {
  
-  border: 1px solid red;
+  border: 2px solid red;
   border-radius: 7px;
   row-gap: 20;
 }
-.custom-coupon-card h6 {
+.custom-coupon-card h5 {
   color: #d62828;
 }
 
 .custom-coupon-card2 {
   
-  border: 1px solid #5fc524;
+  border: 2px solid #5fc524;
   border-radius: 7px;
   row-gap: 20;
 }
-.custom-coupon-card2 h6 {
+.custom-coupon-card2 h5 {
   color: #419c0c;
 }
 .custom-coupon-card2 a {
