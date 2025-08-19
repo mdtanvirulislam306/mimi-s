@@ -21,9 +21,9 @@
                             @can('export_order')
                                 <a class="dropdown-item" href="javascript:void(0)" onclick="order_bulk_export()">{{ translate('Export') }}</a>
                             @endcan
-                            @can('send_to_pathao')
+                            {{-- @can('send_to_pathao')
                                 <a class="dropdown-item" href="javascript:void(0)" onclick="send_to_pathao()">{{ translate('Send to Pathao') }}</a>
-                            @endcan
+                            @endcan --}}
                             @if(auth()->user()->can('unpaid_order_payment_notification_send') && $unpaid_order_payment_notification->status == 1 && Route::currentRouteName() == 'unpaid_orders.index')
                                 <a class="dropdown-item" href="javascript:void(0)" onclick="bulk_unpaid_order_payment_notification()">{{ translate('Unpaid Order Payment Notification') }}</a>
                             @endif
@@ -113,7 +113,7 @@
                             <th>{{ translate('Order Code') }}</th>
                             <th data-breakpoints="md">{{ translate('Num. of Products') }}</th>
                             <th data-breakpoints="md">{{ translate('Customer') }}</th>
-                            <th data-breakpoints="md">{{ translate('Seller') }}</th>
+                            <th data-breakpoints="md">{{ translate('Date') }}</th>
                             <th data-breakpoints="md">{{ translate('Amount') }}</th>
                             <th data-breakpoints="md">{{ translate('Delivery Status') }}</th>
                             <th data-breakpoints="md">{{ translate('Payment method') }}</th>
@@ -147,26 +147,21 @@
                                     @if ($order->viewed == 0)
                                         <span class="badge badge-inline badge-info">{{ translate('New') }}</span>
                                     @endif
-                                    @if (addon_is_activated('pos_system') && $order->order_from == 'pos')
-                                        <span class="badge badge-inline badge-danger">{{ translate('POS') }}</span>
-                                    @endif
                                 </td>
                                 <td>
                                     {{ count($order->orderDetails) }}
                                 </td>
                                 <td>
                                     @if ($order->user != null)
-                                        {{ $order->user->name }}
+                                        {{ $order->user->name }}</br>
+                                        {{ $order->user->phone }}
                                     @else
-                                        Guest ({{ $order->guest_id }})
+                                        Guest ({{ $order->guest_id }})</br>
+                                        {{ json_decode($order->shipping_address)->phone }}
                                     @endif
                                 </td>
                                 <td>
-                                    @if ($order->shop)
-                                        {{ $order->shop->name }}
-                                    @else
-                                        {{ translate('Inhouse Order') }}
-                                    @endif
+                                   {{ date('d-m-Y h:i A', strtotime($order->created_at)) }}
                                 </td>
                                 <td>
                                     {{ single_price($order->grand_total) }}

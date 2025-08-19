@@ -211,6 +211,13 @@
                                                 @endphp
                                                 {{translate('SKU')}}: {{ $product_stock['sku'] ?? '' }}
                                             </small>
+                                        @elseif ($orderDetail->product != null && $orderDetail->product->auction_product == 1)
+                                            <strong>
+                                                <a href="{{ route('auction-product', $orderDetail->product->slug) }}" target="_blank"
+                                                    class="text-muted">
+                                                    {{ $orderDetail->product->getTranslation('name') }}
+                                                </a>
+                                            </strong>
                                         @else
                                             <strong>{{ translate('Product Unavailable') }}</strong>
                                         @endif
@@ -242,14 +249,16 @@
                                         {{ single_price($orderDetail->price / $orderDetail->quantity) }}
                                     </td>
                                     <td class="text-center">
-                                           <form action="{{ route('orders.item.destroy', [$order->id, $orderDetail->id]) }}" method="POST" class="d-inline-block">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">
-                                                <i class="las la-trash"></i>
-                                            </button>
-                                        </form>
+                                            <form action="{{ route('orders.destroy', $order->id) }}" method="POST"
+                                                class="d-inline-block">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm confirm-delete">
+                                                    <i class="las la-trash"></i>
+                                                </button>
+                                            </form>
                                     </td>
+                                   
                                 </tr>
                             @endforeach
                         </tbody>
@@ -304,10 +313,6 @@
                 <div class="no-print text-right">
                     <a href="{{ route('invoice.download', $order->id) }}" type="button" class="btn btn-icon btn-light"><i
                             class="las la-print"></i></a>
-
-                             <button type="button" onclick="edit_order_modal_show()" class="btn btn-success">
-                        <i class="las la-plus"></i> {{ translate('Add Product') }}
-                    </button>
                 </div>
             </div>
 
@@ -341,26 +346,14 @@
      <!-- confirm payment Status Modal -->
     <div id="order-edit-modal" class="modal fade">
         <div class="modal-dialog modal-lg modal-dialog-centered">
-            
+            <form action="{{ route('orders.update', $order->id) }}" method="POST">
+            @csrf
+            @method('PUT')
             <div class="modal-content p-2rem">
-                <div class="modal-body">
-                <form action="{{ route('orders.item.add', $order->id) }}" method="POST">
-                    @csrf
-                    <div class="form-group">
-                        <label>{{ translate('Select Product') }}</label>
-                        <select name="sku" class="form-control aiz-selectpicker" data-live-search="true" required>
-                            @foreach(\App\Models\ProductStock::all() as $stock)
-                                <option value="{{ $stock->sku }}">{{ $stock->product->name }}{{  $stock->variant?' - '.$stock->variant:''  }}{{$stock->sku?' - '.$stock->sku:''}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>{{ translate('Quantity') }}</label>
-                        <input type="number" name="quantity" class="form-control" value="1" min="1" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">{{ translate('Add Product') }}</button>
-                </form>
-            </div>
+                <div class="modal-body text-center">
+
+                    
+                </div>
             </div>
         </div>
     </div>
@@ -426,7 +419,12 @@
         });
 
         function edit_order_modal_show() {
-            $('#order-edit-modal').modal('show');
+            $.get('{{ route('orders.edit', $order->id) }}', {
+                _token: '{{ @csrf_token() }}'
+            }, function(data) {
+                $('#order-edit-modal .modal-body').html(data.html);
+                $('#order-edit-modal').modal('show');
+            });
         }
     </script>
 @endsection

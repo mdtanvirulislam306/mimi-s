@@ -672,7 +672,7 @@
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('all_orders.index') }}"
                                 class="aiz-side-nav-link {{ areActiveRoutes(['all_orders.index', 'all_orders.show'])}}">
-                                <span class="aiz-side-nav-text">{{translate('All Orders')}}</span>
+                                <span class="aiz-side-nav-text">{{translate('Website Orders')}}</span>
                             </a>
                         </li>
                         @endcan
@@ -680,20 +680,10 @@
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('inhouse_orders.index') }}"
                                 class="aiz-side-nav-link {{ areActiveRoutes(['inhouse_orders.index', 'inhouse_orders.show'])}}">
-                                <span class="aiz-side-nav-text">{{translate('Inhouse orders')}}</span>
+                                <span class="aiz-side-nav-text">{{translate('POS orders')}}</span>
                             </a>
                         </li>
                         @endcan
-                        @if (get_setting('vendor_system_activation') == 1)
-                        @can('view_seller_orders')
-                        <li class="aiz-side-nav-item">
-                            <a href="{{ route('seller_orders.index') }}"
-                                class="aiz-side-nav-link {{ areActiveRoutes(['seller_orders.index', 'seller_orders.show'])}}">
-                                <span class="aiz-side-nav-text">{{translate('Seller Orders')}}</span>
-                            </a>
-                        </li>
-                        @endcan
-                        @endif
 
                         @can('view_pickup_point_orders')
                         <li class="aiz-side-nav-item">

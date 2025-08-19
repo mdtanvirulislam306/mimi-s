@@ -18,6 +18,7 @@ use Auth;
 use Mail;
 use App\Mail\InvoiceEmailManager;
 use App\Models\OrdersExport;
+use App\Models\ProductStock;
 use App\Utility\NotificationUtility;
 use CoreComponentRepository;
 use App\Utility\SmsUtility;
@@ -41,7 +42,7 @@ class OrderController extends Controller
     // All Orders
     public function all_orders(Request $request)
     {
-        CoreComponentRepository::instantiateShopRepository();
+   
 
         $date = $request->date;
         $sort_search = null;
@@ -53,10 +54,7 @@ class OrderController extends Controller
         $admin_user_id = get_admin()->id;
 
         if (Route::currentRouteName() == 'inhouse_orders.index' && Auth::user()->can('view_inhouse_orders')) {
-            $orders = $orders->where('orders.seller_id', '=', $admin_user_id);
-        }
-        elseif (Route::currentRouteName() == 'seller_orders.index' && Auth::user()->can('view_seller_orders')) {
-            $orders = $orders->where('orders.seller_id', '!=', $admin_user_id);
+            $orders = $orders->where('orders.order_from', '=', 'pos');
         }
         elseif (Route::currentRouteName() == 'pick_up_point.index' && Auth::user()->can('view_pickup_point_orders')) {
             if (get_setting('vendor_system_activation') != 1) {
@@ -72,9 +70,7 @@ class OrderController extends Controller
             }
         }
         elseif (Route::currentRouteName() == 'all_orders.index' && Auth::user()->can('view_all_orders')) {
-            if (get_setting('vendor_system_activation') != 1) {
-                $orders = $orders->where('orders.seller_id', '=', $admin_user_id);
-            }
+           $orders = $orders->where('orders.order_from', '=', 'web');
         }
         elseif (Route::currentRouteName() == 'offline_payment_orders.index' && Auth::user()->can('view_all_offline_payment_orders')) {
             $orders = $orders->where('orders.manual_payment', 1);
@@ -118,16 +114,14 @@ class OrderController extends Controller
         $order = Order::findOrFail(decrypt($id));
         
         $order_shipping_address = json_decode($order->shipping_address);
-        $delivery_boys = User::where('state', $order_shipping_address->state)
-                ->where('user_type', 'delivery_boy')
-                ->get();
+
                 
         if(env('DEMO_MODE') != 'On') {
             $order->viewed = 1;
             $order->save();
         }
 
-        return view('backend.sales.show', compact('order', 'delivery_boys'));
+        return view('backend.sales.show', compact('order'));
     }
 
     /**
@@ -160,16 +154,8 @@ class OrderController extends Controller
         $shippingAddress = [];
         if ($address != null) {
             $shippingAddress['name']        = Auth::user()->name;
-            $shippingAddress['email']       = Auth::user()->email;
             $shippingAddress['address']     = $address->address;
-            $shippingAddress['country']     = $address->country->name;
-            $shippingAddress['state']       = $address->state->name;
-            $shippingAddress['city']        = $address->city->name;
-            $shippingAddress['postal_code'] = $address->postal_code;
             $shippingAddress['phone']       = $address->phone;
-            if ($address->latitude || $address->longitude) {
-                $shippingAddress['lat_lang'] = $address->latitude . ',' . $address->longitude;
-            }
         }
 
         $combined_order = new CombinedOrder;
@@ -679,4 +665,105 @@ class OrderController extends Controller
                     ]);
         
     }
+
+    public function order_edit($id)
+    {
+        $order = Order::findOrFail($id);
+        $stocks = ProductStock::all();
+        if ($order) {
+            return response()->json([
+                'success' => true,
+                'html' => view('backend.sales.edit', compact('order','stocks'))->render()
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => translate('Order not found')
+            ]);
+        }
+    }
+
+    public function destroyItem($orderId, $itemId)
+        {
+        $order = Order::findOrFail($orderId);
+        $orderDetail = OrderDetail::where('order_id', $orderId)->where('id', $itemId)->first();
+             if (count($order->orderDetails)<2) {
+            flash(translate('Order must not be empty'))->error();
+            return back();
+        }
+        if (!$orderDetail) {
+            flash(translate('Order item not found'))->error();
+            return back();
+        }
+
+        // Restock product quantity if not digital
+        $product = Product::find($orderDetail->product_id);
+        if ($product && $product->digital != 1) {
+            $productStock = ProductStock::where('product_id', $product->id)
+                ->where('variant', $orderDetail->variation)
+                ->first();
+            if ($productStock) {
+                $productStock->qty += $orderDetail->quantity;
+                $productStock->save();
+            }
+        }
+
+        // Delete the order detail
+        $orderDetail->delete();
+
+        // Update order grand total
+        $order->grand_total = $order->orderDetails->sum('price');
+        $order->save();
+
+        flash(translate('Order item deleted successfully'))->success();
+        return back();
+        }
+
+        public function addItem(Request $request, $orderId)
+            {
+                $request->validate([ 
+                    'quantity'   => 'required|integer|min:1',
+                ]);
+
+                $product = ProductStock::where('sku', $request->sku)->first();
+                if ($product->qty < $request->quantity) {
+                    flash(translate('Insufficient stock for this product'))->error();
+                    return back();
+                }
+                // Check if the product is already in the order
+                $existingOrderDetail = OrderDetail::where('order_id', $orderId)
+                    ->where('product_id', $product->product_id)
+                    ->where('variation', $product->variant)
+                    ->first();
+                if ($existingOrderDetail) {
+                    // Update the existing order detail
+                    $existingOrderDetail->quantity += $request->quantity;
+                    $existingOrderDetail->price += $product->price * $request->quantity;
+                    $existingOrderDetail->save();
+                    // Update grand total
+                    $order = Order::find($orderId);
+                    $order->grand_total = $order->orderDetails->sum('price');
+                    $order->save();
+                    
+                }else{
+                $orderDetail = new OrderDetail();
+                $orderDetail->order_id = $orderId;
+                $orderDetail->product_id = $product->product_id;
+                $orderDetail->price = $product->price * $request->quantity;
+                $orderDetail->tax = 0; // প্রয়োজনে হিসেব করবে
+                $orderDetail->shipping_cost = 0; 
+                $orderDetail->quantity = $request->quantity;
+                $orderDetail->variation = $product->variant;
+                $orderDetail->save();
+
+                // গ্র্যান্ড টোটাল আপডেট
+                $order = Order::find($orderId);
+                $order->grand_total = $order->orderDetails->sum('price');
+                $order->save();
+                    }
+                flash(translate('Product has been added.'))->success();
+                return back();
+            }
+
+
 }

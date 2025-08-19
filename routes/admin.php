@@ -447,6 +447,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
 
         // send order to pathao
         Route::post('send-to-pathao', 'sendOrderToPathao')->name('send_to_pathao');
+
+        Route::get('/order-edit/{id}', 'order_edit')->name('orders.edit');
+
+        Route::delete('/orders/{order}/item/{item}', [OrderController::class, 'destroyItem'])->name('orders.item.destroy');
+        Route::post('/orders/{order}/item', [OrderController::class, 'addItem'])->name('orders.item.add');
+
     });
 
     Route::post('/pay_to_seller', [CommissionController::class, 'pay_to_seller'])->name('commissions.pay_to_seller');

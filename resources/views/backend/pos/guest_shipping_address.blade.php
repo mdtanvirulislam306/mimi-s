@@ -22,31 +22,3 @@
         </div>
     </div>
 </div>
-
-<div class="form-group">
-    <div class="row">
-        <div class="col-sm-2 control-label">
-            <label>{{ translate('District')}} </label>
-        </div>
-        <div class="col-sm-10">
-            <select class="form-control mb-3 aiz-selectpicker" data-live-search="true" name="state_id" >
-                <option value="">{{ translate('Select your district') }}</option>
-                @foreach ($state as $key => $district)
-                    <option value="{{ $district->id }}">{{ $district->name }}</option>
-                @endforeach
-            </select>
-        </div>
-    </div>
-</div>
-<div class="form-group">
-    <div class="row">
-        <div class="col-sm-2">
-            <label>{{ translate('City')}}</label>
-        </div>
-        <div class="col-sm-10">
-            <select class="form-control mb-3 aiz-selectpicker" data-live-search="true" name="city_id" required>
-
-            </select>
-        </div>
-    </div>
-</div>

@@ -12,6 +12,7 @@ class OrdersExport implements FromCollection, WithMapping, WithHeadings
     use PreventDemoModeChanges;
 
     protected $order_ids;
+    protected $index = 0; // counter
 
     public function __construct($order_ids)
     {
@@ -20,37 +21,37 @@ class OrdersExport implements FromCollection, WithMapping, WithHeadings
 
     public function collection()
     {
-        return Order::findMany($this->order_ids);
+        return Order::with('user')->findMany($this->order_ids);
     }
 
     public function headings(): array
     {
         return [
-            'Order Code',
-            'Num. of Products',
-            'Customer',
-            'Seller',
-            'Amount',
-            'Delivery Status',
-            'Payment method',
-            'Payment Status',
+            'SL',
+            'Date',
+            'Invoice No',
+            'Customer Name',
+            'Customer Number',
+            'Total Amount',
+            'Customer Address'
         ];
     }
 
     /**
-    * @var Order  $order
+    * @var Order $order
     */
     public function map($order): array
     {
+        $this->index++;
+
         return [
+            $this->index, 
+            date('d-m-Y h:i A', strtotime($order->created_at)),
             $order->code,
-            count($order->orderDetails),
-            $order->user != null ? $order->user->name : '',
-            $order->shop != null ? $order->shop->name : translate('Inhouse Order'),
-            single_price($order->grand_total),
-            translate(ucfirst(str_replace('_', ' ', $order->delivery_status))),
-            translate(ucfirst(str_replace('_', ' ', $order->payment_type))),
-            translate(ucfirst($order->payment_status)),
+            $order->user->name ??  (json_decode($order->shipping_address)->name ?? ''),
+            $order->user->phone ?? (json_decode($order->shipping_address)->phone ?? ''),
+            $order->grand_total,
+            json_decode($order->shipping_address)->address ?? '' 
         ];
     }
 }

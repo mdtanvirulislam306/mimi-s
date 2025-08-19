@@ -36,90 +36,90 @@ class SearchController extends Controller
 
         $conditions = [];
 
-        if(addon_is_activated('preorder') && $request->product_type == 'preorder_product'){
-                $products = PreorderProduct::where('is_published',1);
-                $products = filter_preorder_product($products);
-            if ($category_id != null) {
-                $category_ids[] = $category_id;
-                $category = Category::with('childrenCategories')->find($category_id);
+        // if(addon_is_activated('preorder') && $request->product_type == 'preorder_product'){
+        //         $products = PreorderProduct::where('is_published',1);
+        //         $products = filter_preorder_product($products);
+        //     if ($category_id != null) {
+        //         $category_ids[] = $category_id;
+        //         $category = Category::with('childrenCategories')->find($category_id);
 
-                $products = $category->preorderProducts();
-            } else {
-                $categories = Category::with('childrenCategories', 'coverImage')->where('level', 0)->orderBy('order_level', 'desc')->get();
-            }
+        //         $products = $category->preorderProducts();
+        //     } else {
+        //         $categories = Category::with('childrenCategories', 'coverImage')->where('level', 0)->orderBy('order_level', 'desc')->get();
+        //     }
 
-            if ($request->has('is_available') && $request->is_available !== null) {
-                $availability = $request->is_available;
-                $currentDate = Carbon::now()->format('Y-m-d');
+        //     if ($request->has('is_available') && $request->is_available !== null) {
+        //         $availability = $request->is_available;
+        //         $currentDate = Carbon::now()->format('Y-m-d');
             
-                $products->where(function ($query) use ($availability, $currentDate) {
-                    if ($availability == 1) {
-                        $query->where('is_available', 1)->orWhere('available_date', '<=', $currentDate);
-                    } else {
-                        $query->where(function ($query) {
-                            $query->where('is_available', '!=', 1)
-                                  ->orWhereNull('is_available');
-                        })
-                        ->where(function ($query) use ($currentDate) {
-                            $query->whereNull('available_date')
-                                  ->orWhere('available_date', '>', $currentDate);
-                        });
-                    }
-                });
+        //         $products->where(function ($query) use ($availability, $currentDate) {
+        //             if ($availability == 1) {
+        //                 $query->where('is_available', 1)->orWhere('available_date', '<=', $currentDate);
+        //             } else {
+        //                 $query->where(function ($query) {
+        //                     $query->where('is_available', '!=', 1)
+        //                           ->orWhereNull('is_available');
+        //                 })
+        //                 ->where(function ($query) use ($currentDate) {
+        //                     $query->whereNull('available_date')
+        //                           ->orWhere('available_date', '>', $currentDate);
+        //                 });
+        //             }
+        //         });
             
-                $is_available = $availability;
-            } else {
-                $is_available = null;
+        //         $is_available = $availability;
+        //     } else {
+        //         $is_available = null;
 
-            }
+        //     }
 
-            if ($min_price != null && $max_price != null) {
-                $products->where('unit_price', '>=', $min_price)->where('unit_price', '<=', $max_price);
-            }
+        //     if ($min_price != null && $max_price != null) {
+        //         $products->where('unit_price', '>=', $min_price)->where('unit_price', '<=', $max_price);
+        //     }
 
-            if ($query != null) {
+        //     if ($query != null) {
 
-                $products->where(function ($q) use ($query) {
-                    foreach (explode(' ', trim($query)) as $word) {
-                        $q->where('product_name', 'like', '%' . $word . '%')
-                            ->orWhere('tags', 'like', '%' . $word . '%')
-                            ->orWhereHas('preorder_product_translations', function ($q) use ($word) {
-                                $q->where('product_name', 'like', '%' . $word . '%');
-                            });
-                    }
-                });
+        //         $products->where(function ($q) use ($query) {
+        //             foreach (explode(' ', trim($query)) as $word) {
+        //                 $q->where('product_name', 'like', '%' . $word . '%')
+        //                     ->orWhere('tags', 'like', '%' . $word . '%')
+        //                     ->orWhereHas('preorder_product_translations', function ($q) use ($word) {
+        //                         $q->where('product_name', 'like', '%' . $word . '%');
+        //                     });
+        //             }
+        //         });
 
-                $case1 = $query . '%';
-                $case2 = '%' . $query . '%';
+        //         $case1 = $query . '%';
+        //         $case2 = '%' . $query . '%';
 
-                $products->orderByRaw('CASE
-                    WHEN product_name LIKE "'.$case1.'" THEN 1
-                    WHEN product_name LIKE "'.$case2.'" THEN 2
-                    ELSE 3
-                    END');
-            }
+        //         $products->orderByRaw('CASE
+        //             WHEN product_name LIKE "'.$case1.'" THEN 1
+        //             WHEN product_name LIKE "'.$case2.'" THEN 2
+        //             ELSE 3
+        //             END');
+        //     }
 
-            switch ($sort_by) {
-                case 'newest':
-                    $products->orderBy('created_at', 'desc');
-                    break;
-                case 'oldest':
-                    $products->orderBy('created_at', 'asc');
-                    break;
-                case 'price-asc':
-                    $products->orderBy('unit_price', 'asc');
-                    break;
-                case 'price-desc':
-                    $products->orderBy('unit_price', 'desc');
-                    break;
-                default:
-                    $products->orderBy('id', 'desc');
-                    break;
-            }
-            $products = $products->with('taxes')->paginate(12, ['*'], 'preorder_product')->appends(request()->query());
+        //     switch ($sort_by) {
+        //         case 'newest':
+        //             $products->orderBy('created_at', 'desc');
+        //             break;
+        //         case 'oldest':
+        //             $products->orderBy('created_at', 'asc');
+        //             break;
+        //         case 'price-asc':
+        //             $products->orderBy('unit_price', 'asc');
+        //             break;
+        //         case 'price-desc':
+        //             $products->orderBy('unit_price', 'desc');
+        //             break;
+        //         default:
+        //             $products->orderBy('id', 'desc');
+        //             break;
+        //     }
+        //     $products = $products->with('taxes')->paginate(12, ['*'], 'preorder_product')->appends(request()->query());
             
-            return view('frontend.product_listing', compact('products', 'query', 'category', 'categories', 'category_id', 'brand_id', 'sort_by', 'seller_id', 'min_price', 'max_price', 'attributes', 'selected_attribute_values', 'colors', 'selected_color','product_type','is_available'));            
-        }
+        //     return view('frontend.product_listing', compact('products', 'query', 'category', 'categories', 'category_id', 'brand_id', 'sort_by', 'seller_id', 'min_price', 'max_price', 'attributes', 'selected_attribute_values', 'colors', 'selected_color','product_type','is_available'));            
+        // }
 
 
         if ($brand_id != null) {
