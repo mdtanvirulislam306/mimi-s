@@ -33,7 +33,8 @@ class OrdersExport implements FromCollection, WithMapping, WithHeadings
             'Customer Name',
             'Customer Number',
             'Total Amount',
-            'Customer Address'
+            'Customer Address',
+            'District',
         ];
     }
 
@@ -51,7 +52,8 @@ class OrdersExport implements FromCollection, WithMapping, WithHeadings
             $order->user->name ??  (json_decode($order->shipping_address)->name ?? ''),
             $order->user->phone ?? (json_decode($order->shipping_address)->phone ?? ''),
             $order->grand_total,
-            json_decode($order->shipping_address)->address ?? '' 
+            json_decode($order->shipping_address)->address ?? '',
+            $order->user->state ??  (json_decode($order->shipping_address)->state ?? ''),
         ];
     }
 }

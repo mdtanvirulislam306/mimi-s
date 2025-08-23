@@ -10060,7 +10060,7 @@ input[type="number"] {
 }
 
 .aiz-switch input:empty~span:before {
-    background-color: #e8ebf1;
+    background-color: #fff700;
 }
 
 .aiz-switch input:empty~span:after {
@@ -10074,7 +10074,7 @@ input[type="number"] {
     text-align: center;
     vertical-align: middle;
     color: #f8f9fb;
-    background-color: #fff;
+    background-color: #bd0101;
 }
 
 .aiz-switch input:checked~span:after {

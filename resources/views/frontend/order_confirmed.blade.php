@@ -96,7 +96,7 @@
                                     </tr>
                                     <tr>
                                         <td class="w-50 fw-600 border-top-0 pl-0 py-2">{{ translate('Shipping address')}}:</td>
-                                        <td class="border-top-0 py-2">{{ json_decode($first_order->shipping_address)->address }}</td>
+                                        <td class="border-top-0 py-2">{{ json_decode($first_order->shipping_address)->address }} {{ json_decode($first_order->shipping_address)->state }}</td>
                                     </tr>
                                 </table>
                             </div>

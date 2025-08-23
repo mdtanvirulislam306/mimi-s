@@ -46,6 +46,7 @@ class OrderController extends Controller
 
         $date = $request->date;
         $sort_search = null;
+        $sku_search = $request->sku_search;
         $delivery_status = null;
         $payment_status = '';
         $order_type = '';
@@ -92,6 +93,12 @@ class OrderController extends Controller
             $sort_search = $request->search;
             $orders = $orders->where('code', 'like', '%' . $sort_search . '%');
         }
+
+        if ($sku_search != null) {
+            $orders = $orders->whereHas('orderDetails', function($q) use ($sku_search) {
+                $q->where('sku', 'like', '%' . $sku_search . '%');
+            });
+        }
         if ($request->payment_status != null) {
             $orders = $orders->where('payment_status', $request->payment_status);
             $payment_status = $request->payment_status;
@@ -106,7 +113,7 @@ class OrderController extends Controller
         }
         $orders = $orders->paginate(15);
         $unpaid_order_payment_notification = get_notification_type('complete_unpaid_order_payment', 'type');
-        return view('backend.sales.index', compact('orders', 'sort_search', 'order_type', 'payment_status', 'delivery_status', 'date', 'unpaid_order_payment_notification'));
+        return view('backend.sales.index', compact('orders', 'sort_search', 'order_type', 'payment_status', 'delivery_status', 'date', 'unpaid_order_payment_notification','sku_search'));
     }
 
     public function show($id)
@@ -142,18 +149,18 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+      
         $carts = Cart::where('user_id', Auth::user()->id)->active()->get();
-
         if ($carts->isEmpty()) {
             flash(translate('Your cart is empty'))->warning();
             return redirect()->route('home');
         }
 
         $address = Address::where('id', $carts[0]['address_id'])->first();
-
         $shippingAddress = [];
         if ($address != null) {
             $shippingAddress['name']        = Auth::user()->name;
+            $shippingAddress['state']       = $address->state->name;
             $shippingAddress['address']     = $address->address;
             $shippingAddress['phone']       = $address->phone;
         }
@@ -201,7 +208,7 @@ class OrderController extends Controller
                 $coupon_discount += $cartItem['discount'];
 
                 $product_variation = $cartItem['variation'];
-
+                $sku = ProductStock::where('product_id', $product->id)->where('variant', $product_variation)->first()->sku;
                 $product_stock = $product->stocks->where('variant', $product_variation)->first();
                 if ($product->digital != 1 && $cartItem['quantity'] > $product_stock->qty) {
                     flash(translate('The requested quantity is not available for ') . $product->getTranslation('name'))->warning();
@@ -217,6 +224,7 @@ class OrderController extends Controller
                 $order_detail->seller_id = $product->user_id;
                 $order_detail->product_id = $product->id;
                 $order_detail->variation = $product_variation;
+                $order_detail->sku = $sku;
                 $order_detail->price = cart_product_price($cartItem, $product, false, false) * $cartItem['quantity'];
                 $order_detail->tax = cart_product_tax($cartItem, $product, false) * $cartItem['quantity'];
                 $order_detail->shipping_type = $cartItem['shipping_type'];
@@ -744,6 +752,11 @@ class OrderController extends Controller
                     $order = Order::find($orderId);
                     $order->grand_total = $order->orderDetails->sum('price');
                     $order->save();
+
+                // Reduce stock quantity
+                $product->qty -= $request->quantity;
+                $product->save();
+
                     
                 }else{
                 $orderDetail = new OrderDetail();
@@ -760,6 +773,9 @@ class OrderController extends Controller
                 $order = Order::find($orderId);
                 $order->grand_total = $order->orderDetails->sum('price');
                 $order->save();
+                // স্টক আপডেট
+                $product->qty -= $request->quantity;
+                $product->save();
                     }
                 flash(translate('Product has been added.'))->success();
                 return back();

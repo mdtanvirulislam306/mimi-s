@@ -207,6 +207,7 @@ class CheckoutController extends Controller
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:12',
             'address' => 'required|max:255',
+            'state_id' => 'required|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -241,6 +242,7 @@ class CheckoutController extends Controller
         $address = new Address;
         $address->user_id       = $user->id;
         $address->address       = $guest_shipping_info['address'];
+        $address->state_id       = $guest_shipping_info['state_id'];
         $address->phone         = '+'.$guest_shipping_info['country_code'].$guest_shipping_info['phone'];
         $address->save();
 

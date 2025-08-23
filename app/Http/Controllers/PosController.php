@@ -94,8 +94,8 @@ class PosController extends Controller
     {
         Session::forget('pos.shipping_info');
         $user_id = $request->id;
-        $state = State::where('country_id', 18)->get();
-        return ($user_id == '') ? view('backend.pos.guest_shipping_address',compact('state')) : view('backend.pos.shipping_address', compact('user_id', ));
+        $states = State::where('country_id', 18)->get();
+        return ($user_id == '') ? view('backend.pos.guest_shipping_address',compact('states')) : view('backend.pos.shipping_address', compact('user_id', ));
     }
 
     public function set_shipping_address(Request $request)
@@ -141,7 +141,7 @@ class PosController extends Controller
     public function order_store(Request $request)
     {
         $request->merge(['temp_usder_id' => Session::get('pos.temp_user_id'), 'shippingInfo' => Session::get('pos.shipping_info'), 'shippingCost' => Session::get('pos.shipping', 0), 'discount' => Session::get('pos.discount'),'sale_by'=>auth()->user()->id]);
-     
+  
         $response = PosUtility::orderStore($request->except(['_token']));
 
         if ($response['success']) {

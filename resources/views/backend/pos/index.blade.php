@@ -202,6 +202,9 @@
                                     </div>
                                 </div>
                             </div>
+                            <div>
+                                <input type="checkbox" name="web_order" id="" class="form-control">Website Order
+                            </div>
                         </div>
                         <div class="my-2 my-md-0">
                             <button type="button" class="btn btn-primary btn-block" onclick="orderConfirmation()">{{ translate('Place Order') }}</button>
@@ -646,6 +649,7 @@ function addToCart(stock_id){
             var offline_trx_id = $('input[name=trx_id]').val();
             var offline_payment_proof = $('input[name=payment_proof]').val();
             var branch_id = $('select[name=branch_id]').val();
+            var web_order = $('input[name=web_order]').is(':checked') ? 'web' : 'pos';
             
             $.post('{{ route('pos.order_place') }}',{
                 _token                  : AIZ.data.csrf, 
@@ -658,7 +662,8 @@ function addToCart(stock_id){
                 offline_payment_amount  : offline_payment_amount,
                 offline_trx_id          : offline_trx_id,
                 offline_payment_proof   : offline_payment_proof,
-                branch_id               : branch_id
+                branch_id               : branch_id,
+                web_order               : web_order
                 
             }, function(data){
                 if(data.success == 1){

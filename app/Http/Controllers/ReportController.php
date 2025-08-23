@@ -157,6 +157,9 @@ class ReportController extends Controller
         if ($request->filled('staff_id')) {
             $query->where('sale_by', $request->staff_id);
         }
+        if ($request->filled('payment_status')) {
+            $query->where('payment_status', $request->payment_status);
+        }
 
         // Filter by date range
         if ($request->filled('date')) {

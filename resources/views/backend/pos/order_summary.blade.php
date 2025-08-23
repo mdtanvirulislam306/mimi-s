@@ -71,6 +71,12 @@
 							<span class="fw-600">{{ Session::get('pos.shipping_info')['address'] }}</span>
 						</div>
 						@endif
+						@if (Session::get('pos.shipping_info')['state'] != null)
+							<div class="d-flex justify-content-between  mb-2">
+							<span class="">{{translate('District')}}:</span>
+							<span class="fw-600">{{ Session::get('pos.shipping_info')['state'] }}</span>
+						</div>
+						@endif
 					
 					@else
 						<div class="text-center p-4">

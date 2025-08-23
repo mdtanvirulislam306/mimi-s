@@ -84,6 +84,22 @@
                             placeholder="{{ translate('Type Order code & hit Enter') }}">
                     </div>
                 </div>
+                
+                <div class="col-lg-2">
+                    <div class="form-group mb-0">
+                        <select class="form-control aiz-selectpicker" name="sku_search" id="sku_search" data-live-search="true">
+                            <option value="">{{ translate('Filter by Product') }}</option>
+                            @foreach (\App\Models\ProductStock::with('product:id,name')->select('id','product_id','variant','sku')->get() as $prod)
+                            <option value="{{ $prod->sku }}" 
+                                @if (!empty($sku_search) && $sku_search == $prod->sku) selected @endif>
+                                {{ $prod->product->name }} 
+                                {{ $prod->variant ? ' - '.$prod->variant : '' }} 
+                                {{ $prod->sku ? ' - '.$prod->sku : '' }}
+                            </option>
+                        @endforeach
+                        </select>
+                    </div>
+                </div>
                 <div class="col-auto">
                     <div class="form-group mb-0">
                         <button type="submit" class="btn btn-primary">{{ translate('Filter') }}</button>
@@ -113,6 +129,7 @@
                             <th>{{ translate('Order Code') }}</th>
                             <th data-breakpoints="md">{{ translate('Num. of Products') }}</th>
                             <th data-breakpoints="md">{{ translate('Customer') }}</th>
+                            <th data-breakpoints="md">{{ translate('Date') }}</th>
                             <th data-breakpoints="md">{{ translate('Date') }}</th>
                             <th data-breakpoints="md">{{ translate('Amount') }}</th>
                             <th data-breakpoints="md">{{ translate('Delivery Status') }}</th>
@@ -156,7 +173,7 @@
                                         {{ $order->user->name }}</br>
                                         {{ $order->user->phone }}
                                     @else
-                                        Guest ({{ $order->guest_id }})</br>
+                                        {{json_decode($order->shipping_address)->name}}</br>
                                         {{ json_decode($order->shipping_address)->phone }}
                                     @endif
                                 </td>
