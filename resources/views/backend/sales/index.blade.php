@@ -130,7 +130,6 @@
                             <th data-breakpoints="md">{{ translate('Num. of Products') }}</th>
                             <th data-breakpoints="md">{{ translate('Customer') }}</th>
                             <th data-breakpoints="md">{{ translate('Date') }}</th>
-                            <th data-breakpoints="md">{{ translate('Date') }}</th>
                             <th data-breakpoints="md">{{ translate('Amount') }}</th>
                             <th data-breakpoints="md">{{ translate('Delivery Status') }}</th>
                             <th data-breakpoints="md">{{ translate('Payment method') }}</th>
