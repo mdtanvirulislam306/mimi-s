@@ -50,6 +50,7 @@ class ProductStockService
     
 public function store(array $data, $product)
 {
+    
     $collection = collect($data);
 
     $options = ProductUtility::get_attribute_options($collection);
@@ -69,14 +70,12 @@ public function store(array $data, $product)
         foreach ($combinations as $combination) {
             $str = ProductUtility::get_combination_string($combination, $collection);
             $sku = request()['sku_' . str_replace('.', '_', $str)] ?? null;
-
             $incomingSkus[] = $sku;
 
             // আগের DB থেকে sku খুঁজি
             $existingStock = ProductStock::where('product_id', $product->id)
                 ->where('sku', $sku)
                 ->first();
-
             if ($existingStock) {
                 // যদি SKU আগে থেকেই থাকে → শুধু update হবে (sku & barcode ছাড়া সব)
                 $existingStock->update([

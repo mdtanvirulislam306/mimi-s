@@ -350,7 +350,7 @@
                     <button type="button" class="btn btn-secondary btn-base-3" data-dismiss="modal">{{translate('Close')}}</button>
                     <button type="button" onclick="oflinePayment()" class="btn btn-base-1 btn-warning">{{translate('Offline Payment')}}</button>
                     <button type="button" onclick="submitOrder('cash_on_delivery')" class="btn btn-base-1 btn-info">{{translate('Confirm with COD')}}</button>
-                    <button type="button" onclick="submitOrder('cash')" class="btn btn-base-1 btn-success">{{translate('Confirm with Cash')}}</button>
+                    <button type="button" id="submitOrderBtn" onclick="submitOrder('cash')" class="btn btn-base-1 btn-success">{{translate('Confirm with Cash')}}</button>
                 </div>
             </div>
         </div>
@@ -639,48 +639,54 @@ function addToCart(stock_id){
             $('#offlin_payment').modal('show');
         }
 
-        function submitOrder(payment_type){
-            var user_id = $('select[name=user_id]').val();
-            var shipping = $('input[name=shipping]:checked').val();
-            var discount = $('input[name=discount]').val();
-            var shipping_address = $('input[name=address_id]:checked').val();
-            var offline_payment_method = $('input[name=offline_payment_method]').val();
-            var offline_payment_amount = $('input[name=offline_payment_amount]').val();
-            var offline_trx_id = $('input[name=trx_id]').val();
-            var offline_payment_proof = $('input[name=payment_proof]').val();
-            var branch_id = $('select[name=branch_id]').val();
-            var web_order = $('input[name=web_order]').is(':checked') ? 'web' : 'pos';
-            
-            $.post('{{ route('pos.order_place') }}',{
-                _token                  : AIZ.data.csrf, 
-                user_id                 : user_id,
-                shipping_address        : shipping_address, 
-                payment_type            : payment_type, 
-                shipping                : shipping, 
-                discount                : discount,
-                offline_payment_method  : offline_payment_method,
-                offline_payment_amount  : offline_payment_amount,
-                offline_trx_id          : offline_trx_id,
-                offline_payment_proof   : offline_payment_proof,
-                branch_id               : branch_id,
-                web_order               : web_order
-                
-            }, function(data){
-                if(data.success == 1){
-                    AIZ.plugins.notify('success', data.message );
-                    @if (get_setting('enable_thermal_print') )
-                         window.open("{{ route('admin.invoice.thermal_printer', ['order_id' => 'ORDER_ID_PLACEHOLDER']) }}".replace('ORDER_ID_PLACEHOLDER', data.order_id), '_blank');
-                    @else
-                        window.open("{{ route('invoice.view', ['order_id' => 'ORDER_ID_PLACEHOLDER']) }}".replace('ORDER_ID_PLACEHOLDER', data.order_id), '_blank');
-                    @endif
-                    location.reload();
-                }
-                else{
-                    AIZ.plugins.notify('danger', data.message );
-                }
-            });
-        }
+       function submitOrder(payment_type){
+    var $btn = $("#submitOrderBtn");
 
+    $btn.prop("disabled", true).text("Processing...");
+
+    var user_id = $('select[name=user_id]').val();
+    var shipping = $('input[name=shipping]:checked').val();
+    var discount = $('input[name=discount]').val();
+    var shipping_address = $('input[name=address_id]:checked').val();
+    var offline_payment_method = $('input[name=offline_payment_method]').val();
+    var offline_payment_amount = $('input[name=offline_payment_amount]').val();
+    var offline_trx_id = $('input[name=trx_id]').val();
+    var offline_payment_proof = $('input[name=payment_proof]').val();
+    var branch_id = $('select[name=branch_id]').val();
+    var web_order = $('input[name=web_order]').is(':checked') ? 'web' : 'pos';
+    
+    $.post('{{ route('pos.order_place') }}',{
+        _token                  : AIZ.data.csrf, 
+        user_id                 : user_id,
+        shipping_address        : shipping_address, 
+        payment_type            : payment_type, 
+        shipping                : shipping, 
+        discount                : discount,
+        offline_payment_method  : offline_payment_method,
+        offline_payment_amount  : offline_payment_amount,
+        offline_trx_id          : offline_trx_id,
+        offline_payment_proof   : offline_payment_proof,
+        branch_id               : branch_id,
+        web_order               : web_order
+    }, function(data){
+        if(data.success == 1){
+            AIZ.plugins.notify('success', data.message );
+            @if (get_setting('enable_thermal_print') )
+                window.open("{{ route('admin.invoice.thermal_printer', ['order_id' => 'ORDER_ID_PLACEHOLDER']) }}".replace('ORDER_ID_PLACEHOLDER', data.order_id), '_blank');
+            @else
+                window.open("{{ route('invoice.view', ['order_id' => 'ORDER_ID_PLACEHOLDER']) }}".replace('ORDER_ID_PLACEHOLDER', data.order_id), '_blank');
+            @endif
+            location.reload();
+        }
+        else{
+            AIZ.plugins.notify('danger', data.message );
+            $btn.prop("disabled", false).text("{{translate('Confirm with Cash')}}");
+        }
+    }).fail(function(){
+        AIZ.plugins.notify('danger', 'Something went wrong!');
+        $btn.prop("disabled", false).text("{{translate('Confirm with Cash')}}");
+    });
+}
 
         //address
         // $(document).on('change', '[name=country_id]', function() {
