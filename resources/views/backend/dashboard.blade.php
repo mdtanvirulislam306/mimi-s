@@ -12,7 +12,6 @@
         </div>
     @endif
 
-    @dd(get_setting('contact_address'))
     @can('admin_dashboard')
         <div class="row gutters-16">
 
