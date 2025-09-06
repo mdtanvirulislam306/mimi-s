@@ -79,7 +79,7 @@
 					<td class="text-right"></td>
 				</tr>
 				<tr>
-					<td class="text-right small"><span class="gry-color small">{{  translate('Order ID') }}:</span> <span class="strong">{{ $order->code }}</span></td>
+					<td class="small"><span class="gry-color small">{{  translate('Order ID') }}:</span> <span class="strong">{{ $order->code }}</span></td>
 				</tr>
 				<tr>
 					<td class="gry-color small">{{  translate('Phone') }}: {{ get_setting('contact_phone') }}</td>

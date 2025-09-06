@@ -11,6 +11,8 @@
             </div>
         </div>
     @endif
+
+    @dd(get_setting('contact_address'))
     @can('admin_dashboard')
         <div class="row gutters-16">
 
@@ -160,8 +162,11 @@
                             <div class="d-flex flex-column justify-content-between h-100">
                                 <div class="d-flex justify-content-between">
                                     <div>
-                                        <h1 class="fs-30 fw-600 text-dark mb-1">{{ $total_brands }}</h1>
-                                        <h3 class="fs-13 fw-600 text-secondary mb-0">{{ translate('Total Brands') }}</h3>
+                                        @php
+                                                $stock = App\Models\ProductStock::sum('qty');
+                                            @endphp
+                                        <h1 class="fs-30 fw-600 text-dark mb-1">{{ $stock  }}</h1>
+                                        <h3 class="fs-13 fw-600 text-secondary mb-0">{{ translate('Remaining stock') }}</h3>
                                     </div>
                                     <div class="mt-2">
                                         <svg id="Layer_51" data-name="Layer 51" xmlns="http://www.w3.org/2000/svg"
@@ -174,35 +179,6 @@
                                                 transform="translate(-1.557 -1.135)" fill="#d5d6dc" />
                                         </svg>
                                     </div>
-                                </div>
-                                <div>
-                                    <h3 class="fs-13 fw-600 text-secondary mb-2">{{ translate('Top Brands') }}</h3>
-                                    @foreach ($top_brands as $key => $top_brand)
-                                        <div class="d-flex justify-content-between mb-0">
-                                            @php
-                                                $badge = 'badge-success';
-                                                if ($key == 1) {
-                                                    $badge = 'badge-primary';
-                                                }
-                                                if ($key == 2) {
-                                                    $badge = 'badge-info';
-                                                }
-                                                $lang = App::getLocale();
-                                                $brand = App\Models\BrandTranslation::where('brand_id', $top_brand->id)
-                                                    ->where('lang', $lang)
-                                                    ->first();
-                                            @endphp
-                                            <h3 class="fs-13 fw-600 mb-0 text-truncate mr-2"
-                                                title="{{ $brand ? $brand->name : translate('Not Found') }}">
-                                                <span
-                                                    class="badge badge-md badge-dot badge-circle {{ $badge }} mr-2"></span>
-                                                {{ $brand ? $brand->name : translate('Not Found') }}
-                                            </h3>
-                                            <h3 class="fs-13 fw-600 mb-0">
-                                                {{ single_price($top_brand->total) }}
-                                            </h3>
-                                        </div>
-                                    @endforeach
                                 </div>
                             </div>
                         </div>
