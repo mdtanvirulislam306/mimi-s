@@ -77,4 +77,13 @@ class Order extends Model
     {
         return $this->hasOne(CommissionHistory::class);
     }
+    /**
+     * Calculate the total quantity of all items in the order.
+     *
+     * @return int
+     */
+    public function getTotalQuantity()
+    {
+        return (int) $this->orderDetails()->sum('quantity');
+    }
 }

@@ -781,5 +781,23 @@ class OrderController extends Controller
                 return back();
             }
 
+            public function shipping_update(Request $request, $orderId)
+            {
+                $order = Order::findOrFail($orderId);
+            $shippingAddress = [
+                'name' => $request->input('name'),
+                'email'=>null,
+                'address' => $request->input('address'),
+                'state' => $request->input('state'),
+                'city' => $request->input('city'),
+                'phone' => $request->input('phone'),
+            ];
+
+            $order->shipping_address = json_encode($shippingAddress);
+            $order->save();
+
+                flash(translate('Shipping address has been updated.'))->success();
+                return back();
+            }
 
 }

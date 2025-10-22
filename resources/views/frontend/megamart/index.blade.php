@@ -109,6 +109,7 @@
           {{-- Flash Deal --}}
             @php
                 $flash_deal = get_featured_flash_deal();
+               
                 $flash_products = get_flash_deal_products($flash_deal->id)
 
                 

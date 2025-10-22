@@ -452,6 +452,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
 
         Route::delete('/orders/{order}/item/{item}', [OrderController::class, 'destroyItem'])->name('orders.item.destroy');
         Route::post('/orders/{order}/item', [OrderController::class, 'addItem'])->name('orders.item.add');
+        Route::post('/orders/{order}/shipping/update', [OrderController::class, 'shipping_update'])->name('orders.shipping.update');
 
     });
 

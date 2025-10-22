@@ -96,6 +96,7 @@
                             {{ $order->user->phone }}<br>
                         </address>
                     @endif
+                    <button class="btn btn-primary btn-sm" onclick="edit_shipping_modal_show()">Update Address</button>
                     @if ($order->manual_payment && is_array(json_decode($order->manual_payment_data, true)))
                         <br>
                         <strong class="text-main">{{ translate('Payment Information') }}</strong><br>
@@ -364,6 +365,35 @@
             </div>
         </div>
     </div>
+
+     <!-- confirm payment Status Modal -->
+    <div id="shipping-edit-modal" class="modal fade">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            
+            <div class="modal-content p-2rem">
+                <div class="modal-body">
+                <form action="{{ route('orders.shipping.update', $order->id) }}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label>{{ translate('Name') }}</label>
+                        <input type="text" class="form-control" name="name" value="{{ json_decode($order->shipping_address)->name ?? $order->user->name }}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>{{ translate('Phone') }}</label>
+                        <input type="text" class="form-control" name="phone" value="{{ json_decode($order->shipping_address)->phone ?? $order->user->phone }}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>{{ translate('Address') }}</label>
+                        <input type="text" class="form-control" name="address" value="{{ json_decode($order->shipping_address)->address ?? $order->user->address }}" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">{{ translate('Update') }}</button>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 
@@ -428,5 +458,10 @@
         function edit_order_modal_show() {
             $('#order-edit-modal').modal('show');
         }
+        function edit_shipping_modal_show() {
+            $('#shipping-edit-modal').modal('show');
+        }
+
+        
     </script>
 @endsection

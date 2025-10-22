@@ -61,6 +61,7 @@
                 {{-- <th>Branch</th>
                 <th>Staff</th> --}}
                 <th>Total Sales</th>
+                <th>Quantity</th>
                 <th>Total Amount</th>
             </tr>
         </thead>
@@ -68,6 +69,7 @@
             @php
                 $total_sales = 0;
                 $total_amount = 0;
+                $total_quantity = 0;
             @endphp
             @forelse($sales as $sale)
                 <tr>
@@ -75,10 +77,12 @@
                     {{-- <td>{{ get_branch_name($branch_id)??'N/A' }}</td>
                     <td>{{ get_staff_name($staff_id)??'N/A' }}</td> --}}
                     <td>{{ $sale->total_sale }}</td>
+                    <td>{{ $sale->getTotalQuantity() }}</td>
                     <td>{{ $sale->grand_total }}</td>
                 </tr>
                 @php
                     $total_sales += $sale->total_sale;
+                    $total_quantity += $sale->getTotalQuantity();
                     $total_amount += $sale->grand_total;
                 @endphp
             @empty
@@ -89,6 +93,7 @@
             <tr>
                 <td><strong>Total</strong></td>
                 <td><strong>{{$total_sales}}</strong></td>
+                <td><strong>{{$total_quantity}}</strong></td>
                 <td><strong>{{$total_amount}}</strong></td>
             </tr>
         </tbody>
