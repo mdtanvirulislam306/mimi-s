@@ -179,7 +179,6 @@ class ReportController extends Controller
             ->groupBy(DB::raw('DATE(orders.created_at)'))
             ->orderBy('date', 'desc')
             ->get();
-            dd($sales);
  $staffs = User::where('user_type', 'staff')->get();
         return view('backend.reports.daily_sale_report', [
             'sales'     => $sales,
