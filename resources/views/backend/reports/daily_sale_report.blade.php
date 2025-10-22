@@ -77,12 +77,12 @@
                     {{-- <td>{{ get_branch_name($branch_id)??'N/A' }}</td>
                     <td>{{ get_staff_name($staff_id)??'N/A' }}</td> --}}
                     <td>{{ $sale->total_sale }}</td>
-                    <td>{{ $sale->getTotalQuantity() }}</td>
+                    <td>{{ $sale->total_quantity }}</td>
                     <td>{{ $sale->grand_total }}</td>
                 </tr>
                 @php
                     $total_sales += $sale->total_sale;
-                    $total_quantity += $sale->getTotalQuantity();
+                    $total_quantity += $sale->total_quantity;
                     $total_amount += $sale->grand_total;
                 @endphp
             @empty
