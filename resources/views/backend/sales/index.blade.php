@@ -77,11 +77,18 @@
                             data-separator=" to " data-advanced-range="true" autocomplete="off">
                     </div>
                 </div>
-                <div class="col-lg-2">
+                <div class="col-lg-1">
                     <div class="form-group mb-0">
                         <input type="text" class="form-control" id="search"
                             name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset
                             placeholder="{{ translate('Type Order code & hit Enter') }}">
+                    </div>
+                </div>
+                <div class="col-lg-1">
+                    <div class="form-group mb-0">
+                        <input type="text" class="form-control" id="customer_phone"
+                            name="customer_phone"@isset($customer_phone) value="{{ $customer_phone }}" @endisset
+                            placeholder="{{ translate('Type phone number & hit Enter') }}">
                     </div>
                 </div>
                 

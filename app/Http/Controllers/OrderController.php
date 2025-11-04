@@ -40,19 +40,19 @@ class OrderController extends Controller
     }
 
     // All Orders
-    public function all_orders(Request $request)
+   public function all_orders(Request $request)
     {
-   
-
         $date = $request->date;
         $sort_search = null;
         $sku_search = $request->sku_search;
         $delivery_status = null;
         $payment_status = '';
         $order_type = '';
+        $customer_phone = $request->customer_phone; 
 
         $orders = Order::orderBy('id', 'desc');
         $admin_user_id = get_admin()->id;
+
 
         if (Route::currentRouteName() == 'inhouse_orders.index' && Auth::user()->can('view_inhouse_orders')) {
             $orders = $orders->where('orders.order_from', '=', 'pos');
@@ -78,8 +78,8 @@ class OrderController extends Controller
             if($request->order_type != null){
                 $order_type = $request->order_type;
                 $orders = $order_type =='inhouse_orders' ? 
-                            $orders->where('orders.seller_id', '=', $admin_user_id) : 
-                            $orders->where('orders.seller_id', '!=', $admin_user_id);
+                             $orders->where('orders.seller_id', '=', $admin_user_id) : 
+                             $orders->where('orders.seller_id', '!=', $admin_user_id);
             }
         }
         elseif (Route::currentRouteName() == 'unpaid_orders.index' && Auth::user()->can('view_all_unpaid_orders')) {
@@ -88,6 +88,7 @@ class OrderController extends Controller
         else {
             abort(403);
         }
+
 
         if ($request->search) {
             $sort_search = $request->search;
@@ -99,6 +100,11 @@ class OrderController extends Controller
                 $q->where('sku', 'like', '%' . $sku_search . '%');
             });
         }
+        
+        if ($customer_phone != null) {
+            $orders = $orders->whereJsonContains('shipping_address->phone', $customer_phone);
+        }
+
         if ($request->payment_status != null) {
             $orders = $orders->where('payment_status', $request->payment_status);
             $payment_status = $request->payment_status;
@@ -108,12 +114,14 @@ class OrderController extends Controller
             $delivery_status = $request->delivery_status;
         }
         if ($date != null) {
-            $orders = $orders->where('created_at', '>=', date('Y-m-d', strtotime(explode(" to ", $date)[0])) . '  00:00:00')
-                ->where('created_at', '<=', date('Y-m-d', strtotime(explode(" to ", $date)[1])) . '  23:59:59');
+            $orders = $orders->where('created_at', '>=', date('Y-m-d', strtotime(explode(" to ", $date)[0])) . '  00:00:00')
+                ->where('created_at', '<=', date('Y-m-d', strtotime(explode(" to ", $date)[1])) . '  23:59:59');
         }
+        
         $orders = $orders->paginate(15);
         $unpaid_order_payment_notification = get_notification_type('complete_unpaid_order_payment', 'type');
-        return view('backend.sales.index', compact('orders', 'sort_search', 'order_type', 'payment_status', 'delivery_status', 'date', 'unpaid_order_payment_notification','sku_search'));
+        
+        return view('backend.sales.index', compact('orders', 'sort_search', 'order_type', 'payment_status', 'delivery_status', 'date', 'unpaid_order_payment_notification', 'sku_search', 'customer_phone'));
     }
 
     public function show($id)

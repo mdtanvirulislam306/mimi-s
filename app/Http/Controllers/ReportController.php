@@ -172,13 +172,13 @@ class ReportController extends Controller
 
         // Group by date and aggregate
             $sales = $query->join('order_details', 'orders.id', '=', 'order_details.order_id')
-            ->selectRaw("DATE(orders.created_at) as date,
-            COUNT(DISTINCT orders.id) as total_sale,
-            SUM(orders.grand_total) as grand_total,
-            SUM(order_details.quantity) as total_quantity")
-            ->groupBy(DB::raw('DATE(orders.created_at)'))
-            ->orderBy('date', 'desc')
-            ->get();
+    ->selectRaw("DATE(orders.created_at) as date,
+        COUNT(DISTINCT orders.id) as total_sale,
+        SUM(order_details.price) as grand_total,  
+        SUM(order_details.quantity) as total_quantity")
+    ->groupBy(DB::raw('DATE(orders.created_at)'))
+    ->orderBy('date', 'desc')
+    ->get();
  $staffs = User::where('user_type', 'staff')->get();
         return view('backend.reports.daily_sale_report', [
             'sales'     => $sales,
@@ -187,6 +187,7 @@ class ReportController extends Controller
             'date'      => $request->date,
             'staffs'    => $staffs,
         ]);
+     
         
     }
 
