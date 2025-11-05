@@ -8,6 +8,9 @@ use App\Traits\PreventDemoModeChanges;
 class Order extends Model
 {
     use PreventDemoModeChanges;
+    protected $casts = [
+    'manual_payment_data' => 'array', 
+];
     public function orderDetails()
     {
         return $this->hasMany(OrderDetail::class);

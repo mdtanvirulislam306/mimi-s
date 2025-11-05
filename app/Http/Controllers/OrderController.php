@@ -726,9 +726,11 @@ class OrderController extends Controller
 
         // Delete the order detail
         $orderDetail->delete();
-
+       
         // Update order grand total
+        $order = Order::findOrFail($orderId);
         $order->grand_total = $order->orderDetails->sum('price');
+    
         $order->save();
 
         flash(translate('Order item deleted successfully'))->success();
