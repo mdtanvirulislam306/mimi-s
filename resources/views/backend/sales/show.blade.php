@@ -386,7 +386,7 @@
                     
                     <div class="form-group">
                         <label>{{ translate('Address') }}</label>
-                        <input type="text" class="form-control" name="address" value="{{ json_decode($order->shipping_address)->address ?? $order->user->address }}" required>
+                        <input type="text" class="form-control" name="address" value="{{$order->shipping_address?json_decode($order->shipping_address)->address: $order->user->address }}" required>
                     </div>
                     <button type="submit" class="btn btn-primary">{{ translate('Update') }}</button>
                 </form>

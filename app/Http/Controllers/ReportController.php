@@ -171,11 +171,15 @@ class ReportController extends Controller
         }
 
         // Group by date and aggregate
-            $sales = $query->join('order_details', 'orders.id', '=', 'order_details.order_id')
-    ->selectRaw("DATE(orders.created_at) as date,
+       $sales = $query
+    ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+    ->selectRaw("
+        DATE(orders.created_at) as date,
         COUNT(DISTINCT orders.id) as total_sale,
-        SUM(order_details.price) as grand_total,  
-        SUM(order_details.quantity) as total_quantity")
+        SUM(order_details.price) 
+            - SUM(DISTINCT orders.coupon_discount) as grand_total,
+        SUM(order_details.quantity) as total_quantity
+    ")
     ->groupBy(DB::raw('DATE(orders.created_at)'))
     ->orderBy('date', 'desc')
     ->get();
